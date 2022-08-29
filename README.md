@@ -29,19 +29,21 @@ License, is used at a resolution of 256x256 textures for the surfaces. Textures 
 
 Parts of the UsdPreviewSurface specification not tested by this model include the path "useSpecularWorkflow 1", and the clearcoat-related, displacement, and occlusion values.
 
+Full disclosure: I currently work for NVIDIA. However, I am making this simple USD file as an independent test from NVIDIA's efforts. Having worked through the UsdPreviewSurface proposal myself for my free program Mineways, I hope this test file will save others time and effort, while also helping to independently push for a more fleshed-out specification of USD, to widen its appeal.
+
 ## Conclusions on UsdPreviewSurface
 
 I'm putting conclusions first, since what follows is an extensive set of tests for a variety of applications.
 
-One notable problem with UsdPreviewSurface as of August 2022 is that the "emissiveColor" is minimally specified as "Emissive component." It is unclear whether the color is meant to be specified as the material's on-screen appearance, or meant to be specified in, say, nits. These are actually two questions: 1) how does an object with an emissive color appear when directly viewed? and 2) how does this emission color work with other lights?
+One notable problem with UsdPreviewSurface as of August 2022 is that the "emissiveColor" is minimally specified as "Emissive component." It is unclear whether the color is meant to be specified as the material's on-screen appearance, or meant to be specified in, say, nits. These are actually two questions: 1) how does an object with an emissive color appear when directly viewed? and 2) how does this emission color work with other lights? For the first question, it is simple to say that the emissiveColor should be treated as a fixed color for the surface, the color that is always shown. However, USD has [an elaborate camera model](https://graphics.pixar.com/usd/dev/api/class_usd_geom_camera.html), including an exposure attribute, which implies that the appearance of the light should change as the exposure changes.
 
 In McUsd I use a [nits interpretation](http://www.realtimerendering.com/blog/physical-units-for-lights/), since that is what worked well with Omniverse. The emissive texture is scaled up by 1000 (nits) by using the "scale" input so that it gives off a reasonable amount of light to surrounding objects. This is unlikely to be the standard way in the future, though currently there is no standard way.
 
 This question of magnitude for lighting is part of a larger question, how physical lights are specified in USD. Currently [UsdLux](https://graphics.pixar.com/usd/release/api/usd_lux_page_front.html) and related light specifications use a film-related relative pair of values, ["exponent and intensity"](https://rmanwiki.pixar.com/display/REN23/PxrMeshLight), not tied to any physical units.
 
-The "roughness" input is loosely specified as of August 2022. It says "This value is usually squared before use with a GGX or Beckmann lobe." Choosing the square, which is the common usage in the Burley model (see [page 14](https://disneyanimation.com/publications/physically-based-shading-at-disney/)), would be one way to go. GGX is also the common choice, from my experience. But, these are just my limited opinions; the standard setters need to choose one (and only one), for consistency among applications.
+The "roughness" input is loosely specified as of August 2022. It says "This value is usually squared before use with a GGX or Beckmann lobe." Choosing the square of the roughness, which is the common usage in the Burley model (see [page 14](https://disneyanimation.com/publications/physically-based-shading-at-disney/)), is the common way to go. GGX is also the common choice, from my experience. The standard setters need to choose, for better consistency among applications. As an example, [glTF has chosen roughness-squared and GGX](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#material-structure) - see that section for their reasons.
 
-I would appreciate some recommendations about how opacityThreshold should be set for cutouts. A value of 0.0 means that the alpha (transparency) value is indeed treated as semitransparency. An opacityThreshold greater than 0.0 gives a level where the alpha is compared and judged to be fully transparent (if below this value) or fully opaque (if above or equal to this value). This is clear enough, but I suggest that the specification note an opacityThreshold of 0.5 is a common cutoff value. As an example using an RGBA texture authored for use as a billboard, here is it rendered with an opacityThreshold of 0.01, 0.5, and 0.99. The 0.5 value is, in my opinion, the best render of the three.
+I would appreciate some recommendations about how opacityThreshold should be set for cutouts. A value of 0.0 means that the alpha (transparency) value is indeed treated as semitransparency. An opacityThreshold greater than 0.0 gives a level where the alpha is compared and judged to be fully transparent (if below this value) or fully opaque (if above or equal to this value). This is clear enough, but I suggest that the specification note an opacityThreshold of 0.5 is a common cutoff value. As an example, using an RGBA texture authored for use as a billboard, here is it rendered with an opacityThreshold of 0.01, 0.5, and 0.99. The 0.5 value is, in my opinion, the best render of the three.
 
 ![opacityThreshold 0.01](/images/opacity_0.01.png "opacityThreshold 0.01")
 ![opacityThreshold 0.5](/images/opacity_0.5.png "opacityThreshold 0.5")
@@ -61,7 +63,7 @@ These various conditions and others will be noted after each rendering, as best 
 
 ### Omniverse Create
 
-I focused on [Omniverse Create](https://www.nvidia.com/en-us/omniverse/apps/create/) as the target for this USD test file, as Mineways is a "connector" for the Omniverse system, and [Omniverse is free](https://www.nvidia.com/en-us/omniverse/download/) and far along in its rendering of UsdPreviewSurface. Also, full disclosure, I work for NVIDIA.
+I focused on [Omniverse Create](https://www.nvidia.com/en-us/omniverse/apps/create/) as the target for this USD test file, as Mineways is a "connector" for the Omniverse system, and [Omniverse is free](https://www.nvidia.com/en-us/omniverse/download/) and far along in its rendering of UsdPreviewSurface.
 
 Load procedure: drag and drop McUsd.usda file into the viewport of Omniverse Create.
 
