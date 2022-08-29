@@ -3,14 +3,16 @@ Simple [USD](https://graphics.pixar.com/usd/release/index.html) scene geometry w
 
 Download this repository and then load the McUsd.usda file in the models directory into your favorite USD file viewer.
 
+The "Mc" is for Minecraft, not McDonalds. Though that's fine if you think the latter. I'd be happy if this file was served billions of times to help others.
+
 ## Goals
 
-The overarching goal is to help the community strive to give similar or the same renderings, as possible. Consistent interpretation of this material description benefits us all.
+The overarching goal is to help the community strive to give similar or the same renderings, as possible. Consistent interpretation of [the UsdPreviewSurface material description](https://graphics.pixar.com/usd/release/spec_usdpreviewsurface.html) benefits us all. While, as of August 2022, this description is still a "proposal," numerous companies have implemented it in their systems.
 
-This material test is aimed at a few elements:
+This material test file has a few purposes:
 * Help people implementing UsdPreviewSurface material viewers, providing some reasonably complex surfaces that can highlight common bugs.
 * Give examples in the human-readable USDA format to help understanding.
-* Note loose areas of the current specification, in anticipation of these being fully specified in time.
+* Note loose areas of the current specification, to help encourage these becoming fully specified.
 * Show the state of various implementations of UsdPreviewSurface, in order to determine areas where the specification is not yet followed.
 
 You're encouraged to move around the model and render from different viewpoints, to change the lights to suit you (an area where USD will someday have more physical lighting units, making interchange cleaner), and in general modify what you need. The model is first and foremost meant as a aid in testing and debugging UsdPreviewSurfaces.
@@ -31,7 +33,19 @@ Parts of the UsdPreviewSurface specification not tested by this model include th
 
 I'm putting conclusions first, since what follows is an extensive set of tests for a variety of applications.
 
-TODO: Emission does not use physical units, and, as spec'ed, colors cannot be > 1.0. Roughness needs nailing down.
+One notable problem with UsdPreviewSurface as of August 2022 is that the "emissiveColor" is minimally specified as "Emissive component." It is unclear whether the color is meant to be specified as the material's on screen appearance, or meant to be specified in, say, nits. These are actually two questions: 1) how does an object with an emissive color appear when directly viewed? and 2) how does this emission color work with other lights?
+
+In McUsd I use a [nits interpretation](http://www.realtimerendering.com/blog/physical-units-for-lights/), since that is what worked well with Omniverse. The emissive texture is scaled up by 1000 (nits) by using the "scale" input so that it gives off a reasonable amount of light to surrounding objects. This is unlikely to be the standard way in the future, though currently there is no standard way.
+
+This question of magnitude for lighting is part of a larger question, how physical lights are specified in USD. Currently [UsdLux](https://graphics.pixar.com/usd/release/api/usd_lux_page_front.html) and related light specifications use a film-related relative pair of values, ["exponent and intensity"](https://rmanwiki.pixar.com/display/REN23/PxrMeshLight), not tied to any physical units.
+
+The "roughness" input is loosely specified as of August 2022. It says "This value is usually squared before use with a GGX or Beckmann lobe." Choosing the square, which is the common usage in the Burley model (see [page 14](https://disneyanimation.com/publications/physically-based-shading-at-disney/)), would be one way to go. GGX is also the common choice, from my experience. But, these are just my limited opinions; the standard setters need to choose one (and only one), for consistency among applications.
+
+I would appreciate some recommendations about how opacityThreshold should be set for cutouts. A value of 0.0 means that the alpha (transparency) value is indeed treated as semitransparency. An opacityThreshold greater than 0.0 gives a level where the alpha is compared and judged to be fully transparent (if below this value) or fully opaque (if above or equal to this value). This is clear enough, but I suggest that the specification note an opacityThreshold of 0.5 is a common cutoff value. As an example using an RGBA texture authored for use as a billboard, here is it rendered with an opacityThreshold of 0.01, 0.5, and 0.99. The 0.5 value is, in my opinion, the best render of the three.
+
+![opacityThreshold 0.01](/images/opacity_0.01.png "opacityThreshold 0.01")
+![opacityThreshold 0.5](/images/opacity_0.5.png "opacityThreshold 0.5")
+![opacityThreshold 0.99](/images/opacity_0.99.png "opacityThreshold 0.99")
 
 ## Application Test Results
 
@@ -47,11 +61,11 @@ These various conditions and others will be noted after each rendering, as best 
 
 ### Omniverse Create
 
-I focused on [Omniverse Create](https://www.nvidia.com/en-us/omniverse/apps/create/) as the target for this USD test file, as Mineways is a "connector" for the Omniverse system, and Omniverse is free and far along in its rendering of UsdPreviewSurface. Also, full disclosure, I work for NVIDIA.
+I focused on [Omniverse Create](https://www.nvidia.com/en-us/omniverse/apps/create/) as the target for this USD test file, as Mineways is a "connector" for the Omniverse system, and [Omniverse is free](https://www.nvidia.com/en-us/omniverse/download/) and far along in its rendering of UsdPreviewSurface. Also, full disclosure, I work for NVIDIA.
 
 Load procedure: drag and drop McUsd.usda file into the viewport of Omniverse Create.
 
-There are [a few renderers in Omniverse](https://docs.omniverse.nvidia.com/prod_kit/prod_materials-and-rendering/render-settings_overview.html), along with the hydra renderer Pixar Storm being included as an option. All results are from 
+There are [a few renderers in Omniverse](https://docs.omniverse.nvidia.com/prod_kit/prod_materials-and-rendering/render-settings_overview.html), along with the hydra renderer Pixar Storm being included as an option. All results are from Omniverse Create 2022.3.0-beta.5.
 
 #### Omniverse RTX - Interactive (Path Tracing)
 
