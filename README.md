@@ -33,7 +33,7 @@ Parts of the UsdPreviewSurface specification not tested by this model include th
 
 I'm putting conclusions first, since what follows is an extensive set of tests for a variety of applications.
 
-One notable problem with UsdPreviewSurface as of August 2022 is that the "emissiveColor" is minimally specified as "Emissive component." It is unclear whether the color is meant to be specified as the material's on screen appearance, or meant to be specified in, say, nits. These are actually two questions: 1) how does an object with an emissive color appear when directly viewed? and 2) how does this emission color work with other lights?
+One notable problem with UsdPreviewSurface as of August 2022 is that the "emissiveColor" is minimally specified as "Emissive component." It is unclear whether the color is meant to be specified as the material's on-screen appearance, or meant to be specified in, say, nits. These are actually two questions: 1) how does an object with an emissive color appear when directly viewed? and 2) how does this emission color work with other lights?
 
 In McUsd I use a [nits interpretation](http://www.realtimerendering.com/blog/physical-units-for-lights/), since that is what worked well with Omniverse. The emissive texture is scaled up by 1000 (nits) by using the "scale" input so that it gives off a reasonable amount of light to surrounding objects. This is unlikely to be the standard way in the future, though currently there is no standard way.
 
@@ -113,5 +113,13 @@ The Sketchfab rendering can be [directly examined on their site](https://skfb.ly
 
 Sketchfab does not translate the camera or lights. It uses rasterization and related techniques for interactive rendering, so giving typical limitations: the lava does not emit light, the glass block does not cast a shadow, true reflections are not generated for shiny surfaces. There are some interesting specular highlights on the glass block that are not visible in the Omniverse renderings.
 
+---
+## License
+
+**[CC-NC-BY-SA](LICENSE)**
+
+Textures from the [JG-RTX resource pack](https://github.com/jasonjgardner/jg-rtx), which has the same license.
+
+---
 # Contact
 Email [me](http://erichaines.com) at [erich@acm.org](mailto:erich@acm.org).
