@@ -33,7 +33,7 @@ Parts of the UsdPreviewSurface specification not tested by this model include th
 
 Note: I currently work for NVIDIA. However, I am making this simple USD file as an independent, free test, separate from NVIDIA. Having worked through the UsdPreviewSurface proposal myself for my free program Mineways, I hope this test file will save others time and effort, while also helping to independently push for a more fleshed-out specification of USD, to widen its appeal. I would be happy to see a UsdPreviewSurface conformance suite of USD files and images generated from some more knowledgeable source. If there is such a thing, please point me at it.
 
-I was inspired to take a bit of time to make this project due to hearing at SIGGRAPH 2022 about the pickup of USD in [open metaverse initiatives](https://cesium.com/building-the-open-metaverse-siggraph-2022/) and [ASWF's USD efforts](https://www.aswf.io/news/academy-software-foundation-launches-digital-production-example-library-as-newest-project-to-house-production-grade-content/). I hope you find it of use.
+I was inspired to take a bit of time to make this project due to hearing at SIGGRAPH 2022 about the pickup of USD in [open metaverse initiatives](https://cesium.com/building-the-open-metaverse-siggraph-2022/) and [ASWF's USD efforts](https://www.aswf.io/news/academy-software-foundation-launches-digital-production-example-library-as-newest-project-to-house-production-grade-content/). More important, the [USD Working Group](https://github.com/AcademySoftwareFoundation/wg-usd) is open to participation by all. Their openness inspired this effort.
 
 ## Conclusions on UsdPreviewSurface
 
