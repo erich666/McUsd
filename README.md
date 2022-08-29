@@ -73,7 +73,7 @@ Load procedure: Nothing further. By default, the "RTX - Interactive (Path Tracin
 
 This renderer is progressive, shooting more and more frames of rays and blending these results in. Here is the render after around 140 frames or so:
 
-![Omniverse RTX - Interactive (Path Tracing)](/images/ov_path_trace.png "Omniverse RTX - Interactive (Path Tracing)")
+![Omniverse RTX - Interactive (Path Tracing)](/images/ov_interactive.png "Omniverse RTX - Interactive (Path Tracing)")
 
 #### Omniverse RTX - Real-Time
 
