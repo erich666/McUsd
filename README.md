@@ -3,7 +3,7 @@ Simple [USD](https://graphics.pixar.com/usd/release/index.html) scene geometry w
 
 Download this repository and then load the McUsd.usda file in the models directory into your favorite USD file viewer. Or, [view the model in your browser](https://skfb.ly/oxyUE) through Sketchfab. Or, have an phone? Try out [Sketchfab's USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz). You'll have to shrink it down in AR mode (pinch, on an iPhone) - each block is a meter in size!
 
-The "Mc" is for Minecraft, not McDonalds. Though that's fine if you think the latter. I'd be happy if this file was served billions of times to help others. Well, maybe tens of times - billions means something's going wrong somewhere.
+The "Mc" is for Minecraft, not McDonalds. Short URL for this page: http://bit.ly/gitmcusd
 
 ![McUsd: JG-RTX textures, rendered in Omniverse](/images/ov_interactive.png "McUsd: JG-RTX textures, rendered in Omniverse")
 
@@ -37,7 +37,7 @@ License, is used at a resolution of 256x256 textures for the surfaces. Textures 
 
 Parts of the UsdPreviewSurface specification not tested by this model include the path "useSpecularWorkflow 1", and the clearcoat-related, displacement, and occlusion values.
 
-Note: I currently work for NVIDIA. However, I am making this simple USD file as an independent, free test, separate from NVIDIA. Having worked through the UsdPreviewSurface proposal myself for my free program Mineways, I hope this test file will save others time and effort, while also helping to independently push for a more fleshed-out specification of USD, to widen its appeal. I would be happy to see a UsdPreviewSurface conformance suite of USD files and images generated from some more knowledgeable source. If there is such a thing, please point me at it.
+Note: I currently work for NVIDIA. However, I am making this simple USD file as an independent, free test model. Having worked through the UsdPreviewSurface proposal myself for my free program Mineways, I hope this test file will save others time and effort, while also helping to independently push for a more fleshed-out specification of USD, to widen its appeal. I would be happy to see a UsdPreviewSurface conformance suite of USD files and images generated from some more knowledgeable source. If there is such a thing, please point me at it.
 
 I was inspired to take a bit of time to make this project due to hearing at SIGGRAPH 2022 about the pickup of USD in [open metaverse initiatives](https://cesium.com/building-the-open-metaverse-siggraph-2022/) and [ASWF's USD efforts](https://www.aswf.io/news/academy-software-foundation-launches-digital-production-example-library-as-newest-project-to-house-production-grade-content/). More important, the [USD Working Group](https://github.com/AcademySoftwareFoundation/wg-usd) is open to participation by all. Their openness inspired this effort. In particular, I'm told that the [Assets working group](https://github.com/usd-wg/assets/) is best placed to discuss these issues.
 
