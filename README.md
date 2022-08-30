@@ -224,7 +224,7 @@ There is some auto-exposure system in place that I have not figured out how to t
 
 ![Unreal Editor lava path tracing](/images/ue_lava.png "Unreal Editor lava path tracing")
 
-No intensity adjustments were needed for the lava emission values or scaling (I can't say whether texture scaling is actually used; I did not see it in the user interface for the lava materials).
+No intensity adjustments were needed for the lava emission values or scaling (I can't say whether texture scaling is actually used; I did not see it in the user interface for the lava materials). Auto-exposure is occurring, as the lava itself is brighter than above.
 
 ### TODO
 
