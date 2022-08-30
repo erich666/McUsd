@@ -166,25 +166,30 @@ Sketchfab lets you download different translations of your model. I downloaded t
 
 On Safari and Chrome (and perhaps other browsers), if you click on a ".usdz" extension file on the web, the file displays in an AR browser. [Some examples are here](https://developer.apple.com/augmented-reality/quick-look/). If in AR (Augmented Reality) mode, you made need to move your phone around so that it understands your environment before placing the model.
 
-The [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) mentioned above can also be viewed. One finger rotates, two finger pinch dollies (zooms, but not really) in and out. There appears to be no way to change the center of focus.
+The [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) mentioned above can also be viewed.
 
-The viewer has two modes: AR and Object. "Object" lets you view the model in isolation. Here's an example:
+The viewer has two modes: AR and Object. "Object" lets you view the model in isolation. In this mode, one finger rotates, two finger pinch dollies (aka "zooms", but not really) the camera in and out. There appears to be no way to change the center of focus. Here's an example:
 
 ![iPhone Object view](/images/iphone_object.png "iPhone Object view")
 
-Understandably, the camera setting in the Sketchfab usdz file is not translated.
+Understandably, the camera setting in the Sketchfab usdz file is not used in either mode. If you look closely, there is some "ghosting" around the sunflower, an area around it where the cut-away parts of the texture should have no effect, but instead leave a faint white trace.
 
-Because this model is actually to scale, the blocks are each 1 meter across by default. By using a two-finger pinch gesture, you can make the model fit your environment. Here is the scene shrunk to about 10% and viewed in place, using "AR":
+Because this model is actually to scale, the blocks are each 1 meter across by default. Try AR mode. By using a two-finger pinch gesture, you can make the model fit your environment, and one finger lets you place the model horizontally. Here is the scene shrunk to about 10% and viewed in place, using "AR":
 
 ![iPhone AR view](/images/iphone_ar.png "iPhone AR view")
 
-In both views you can see that the cutout sunflower head has rendering problems. If you rotate the view, various parts of the sunflower disappear and appear. My guess is that this artifact is likely caused by cutouts being rendered by z-sorting them with other objects in the scene, but I can't say I understand. Also, if you look closely, there is some "ghosting" around the sunflower, an area around it where the cut-away parts of the texture should have no effect, but instead leave a faint white trace.
+In both views you can see that the cutout sunflower head has rendering problems. If you rotate the view, various parts of the sunflower disappear and appear. My guess is that this artifact is likely caused by cutouts being rendered by z-sorting them with other objects in the scene, but I can't say I understand. The "ghosting" visible in Object mode is not present in AR mode.
 
 ### TODO
 
 Some of the many viewers, alphabetically:
+* 3DS MAX
 * [Activision](https://github.com/Activision/USDShellExtension)
-* [Apple](https://developer.apple.com/augmented-reality/quick-look/) - [no Windows version](https://support.apple.com/en-us/HT204416). The [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) works to some extent on the Mac in Viewer (problems with the grass's shading, normals on prismarine are reversed); TODO
+* [Autodesk open-source web-based viewer](https://autodesk-forks.github.io/USD/) - [background info](https://www.keanw.com/2022/02/autodesk-open-sources-web-based-usd-viewing-implementation.html)
+* Blender 3.2 alpha USD branch - downloadable through the [Omniverse Launcher](https://www.nvidia.com/en-us/omniverse/). There is also a [Blender 3.3 beta](https://builder.blender.org/download/daily/) that [reads USDs much faster](https://aras-p.info/blog/2022/07/20/Swallowing-the-elephant-into-Blender/). Also, [Blender 3.4 alpha](https://builder.blender.org/download/daily/).
+* Cinema 4D
+* Houdini
+* Maya
 * [Unity](https://docs.unity3d.com/2020.1/Documentation/Manual/com.unity.formats.usd.html)
 * [Unreal Editor](https://docs.unrealengine.com/4.26/en-US/WorkingWithContent/USDinUE4); also [Omniverse connector](https://docs.omniverse.nvidia.com/con_connect/con_connect/ue4.html)
 
