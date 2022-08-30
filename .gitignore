@@ -1,1 +1,4 @@
-model.zip
+*.zip
+*.usdz
+*.usdc
+model/.thumbs
