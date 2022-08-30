@@ -5,7 +5,7 @@ Download this repository and then load the McUsd.usda file in the models directo
 
 The "Mc" is for Minecraft, not McDonalds. Though that's fine if you think the latter. I'd be happy if this file was served billions of times to help others.
 
-![McUsd rendered by Omniverse](/images/ov_interactive.png "McUsd rendered by Omniverse")
+![McUsd: JG-RTX textures, rendered in Omniverse](/images/ov_interactive.png "McUsd: JG-RTX textures, rendered in Omniverse")
 
 ## Goals
 
