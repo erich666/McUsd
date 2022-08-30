@@ -1,9 +1,9 @@
 # McUsd
-Simple [USD](https://graphics.pixar.com/usd/release/index.html) scene geometry with a variety of [UsdPreviewSurface](https://graphics.pixar.com/usd/release/spec_usdpreviewsurface.html) materials applied.
+Simple [USD](https://graphics.pixar.com/usd/release/index.html) scene geometry with a variety of [UsdPreviewSurface](https://graphics.pixar.com/usd/release/spec_usdpreviewsurface.html) materials applied, for casual material and light testing.
 
-Download this repository and then load the McUsd.usda file in the models directory into your favorite USD file viewer. Or, [view the model](https://skfb.ly/oxyUE) in your browser through Sketchfab. Or, have an phone? Try out the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz). You'll have to shrink it down in AR mode (pinch, on an iPhone) - each block is a meter in size!
+Download this repository and then load the McUsd.usda file in the models directory into your favorite USD file viewer. Or, [view the model in your browser](https://skfb.ly/oxyUE) through Sketchfab. Or, have an phone? Try out [Sketchfab's USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz). You'll have to shrink it down in AR mode (pinch, on an iPhone) - each block is a meter in size!
 
-The "Mc" is for Minecraft, not McDonalds. Though that's fine if you think the latter. I'd be happy if this file was served billions of times to help others. Well, maybe tens - billions means something's going wrong.
+The "Mc" is for Minecraft, not McDonalds. Though that's fine if you think the latter. I'd be happy if this file was served billions of times to help others. Well, maybe tens of times - billions means something's going wrong somewhere.
 
 ![McUsd: JG-RTX textures, rendered in Omniverse](/images/ov_interactive.png "McUsd: JG-RTX textures, rendered in Omniverse")
 
