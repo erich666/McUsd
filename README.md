@@ -3,23 +3,25 @@ Simple [USD](https://graphics.pixar.com/usd/release/index.html) scene geometry w
 
 Download this repository and then load the McUsd.usda file in the models directory into your favorite USD file viewer.
 
-The "Mc" is for Minecraft, not McDonalds. Though that's fine if you think the latter. I'd be happy if this file was served billions of times to help others. Well, maybe tens, at least.
+The "Mc" is for Minecraft, not McDonalds. Though that's fine if you think the latter. I'd be happy if this file was served billions of times to help others. Well, maybe tens - billions means something's going wrong.
 
 ![McUsd: JG-RTX textures, rendered in Omniverse](/images/ov_interactive.png "McUsd: JG-RTX textures, rendered in Omniverse")
 
-Clockwise from "noon": diamond block, iron block, gold block, fern, prismarine, sunflower, purple stained glass, rails, chiseled quartz block atop quartz pillar, piston, and in the middle is lava.
+Clockwise from "12 o'clock": diamond block, iron block, gold block, fern, prismarine, sunflower, purple stained glass, rails, chiseled quartz block atop quartz pillar, piston, and in the middle is lava.
 
 ## Goals
 
 The overarching goal is to help the community strive to give similar or the same renderings, as possible. Consistent interpretation of [the UsdPreviewSurface material description](https://graphics.pixar.com/usd/release/spec_usdpreviewsurface.html) benefits us all. While, as of August 2022, this description is still a "proposal," numerous companies have implemented it in their systems.
 
 This material test file has a few purposes:
-* Help people implementing UsdPreviewSurface material viewers, providing some reasonably complex surfaces that can highlight common bugs.
+* Help people implementing UsdPreviewSurface material viewers, providing a simple model with some reasonably complex surfaces that can test for common bugs.
 * Give examples in the human-readable USDA format to help understanding.
 * Note loose areas of the current specification, to help encourage these becoming fully specified.
 * Show the state of various implementations of UsdPreviewSurface, in order to determine areas where the specification is not yet followed.
 
-You're encouraged to move around the model and render from different viewpoints, to change the lights to suit you (an area where USD will someday have more physical lighting units, making interchange cleaner), and in general modify what you need. The model is first and foremost meant as a aid in testing and debugging UsdPreviewSurfaces.
+There are [more serious efforts at compatibility test suites](https://developer.nvidia.com/blog/universal-scene-description-as-the-language-of-the-metaverse/) happening in the USD community, e.g., see [this video](https://www.nvidia.com/en-us/on-demand/session/siggraph2022-sigg22-s-20/) at 23:09 on. My small effort here is to give a _simple_ test scene, now, with some interesting materials, and note some problems I've seen in testing with it.
+
+You're encouraged to move around the model and render it from different viewpoints, to change the lights or other attributes to suit you (an area where USD will someday have more physical lighting units, making interchange cleaner), and in general modify what you need. The model is first and foremost meant as a aid in testing and debugging UsdPreviewSurfaces.
 
 You're also very much encouraged to [_send me your own results_](mailto:erich@acm.org), or submit as a pull request. I am happy to add to the gallery any test images you generate and notes on them you might have.
 
