@@ -3,9 +3,11 @@ Simple [USD](https://graphics.pixar.com/usd/release/index.html) scene geometry w
 
 Download this repository and then load the McUsd.usda file in the models directory into your favorite USD file viewer.
 
-The "Mc" is for Minecraft, not McDonalds. Though that's fine if you think the latter. I'd be happy if this file was served billions of times to help others.
+The "Mc" is for Minecraft, not McDonalds. Though that's fine if you think the latter. I'd be happy if this file was served billions of times to help others. Well, maybe tens, at least.
 
 ![McUsd: JG-RTX textures, rendered in Omniverse](/images/ov_interactive.png "McUsd: JG-RTX textures, rendered in Omniverse")
+
+Clockwise from "noon": diamond block, iron block, gold block, fern, prismarine, sunflower, purple stained glass, rails, chiseled quartz block atop quartz pillar, piston, and in the middle is lava.
 
 ## Goals
 
@@ -41,13 +43,13 @@ I was inspired to take a bit of time to make this project due to hearing at SIGG
 
 I'm putting a summary of my observations first, since what follows is an extensive set of tests for a variety of applications.
 
-One notable problem with UsdPreviewSurface as of August 2022 is that the "emissiveColor" is minimally specified as "Emissive component." It is unclear whether the color is meant to be specified as the material's on-screen appearance, or meant to be specified in, say, nits. These are actually two questions: 1) how does an object with an emissive color appear when directly viewed? and 2) how does this emission color work with other lights? For the first question, it is simple to say that the emissiveColor should be treated as a fixed color for the surface, the color that is always shown. However, USD has [an elaborate camera model](https://graphics.pixar.com/usd/dev/api/class_usd_geom_camera.html), including an exposure attribute, which implies that the appearance of the light should change as the exposure changes.
+One notable problem with [UsdPreviewSurface](https://graphics.pixar.com/usd/release/spec_usdpreviewsurface.html) as of August 2022 is that the "emissiveColor" is minimally specified as "Emissive component." It is unclear whether the color is meant to be specified as the material's on-screen appearance, or meant to be specified in, say, nits. These are actually two questions: 1) how does an object with an emissive color appear when directly viewed? and 2) how does this emission color work with other lights? For the first question, it is simple to say that the emissiveColor should be treated as a fixed color for the surface, the color that is always shown. However, USD has [an elaborate camera model](https://graphics.pixar.com/usd/dev/api/class_usd_geom_camera.html), including an exposure attribute, which implies that the appearance of the light should change as the exposure changes.
 
-In McUsd I use a [nits interpretation](http://www.realtimerendering.com/blog/physical-units-for-lights/), since that is what worked well with Omniverse. The emissive texture is scaled up by 1000 (nits) by using the "scale" input so that it gives off a reasonable amount of light to surrounding objects. This is unlikely to be the standard way in the future, though currently there is no standard way.
+In McUsd I use a [nits interpretation](http://www.realtimerendering.com/blog/physical-units-for-lights/), since that is what worked well with Omniverse. The emissive texture is scaled up by 1000 (nits) by using the "scale" input so that it gives off a reasonable amount of light to surrounding objects. This is unlikely to be the standard way in the future, as can be seen in the tests that follow, though currently the feature is not specified.
 
 This question of magnitude for lighting is part of a larger question, how physical lights are specified in USD. Currently [UsdLux](https://graphics.pixar.com/usd/release/api/usd_lux_page_front.html) and related light specifications use a film-related relative pair of values, ["exponent and intensity"](https://rmanwiki.pixar.com/display/REN23/PxrMeshLight), not tied to any physical units.
 
-The "roughness" input is loosely specified as of August 2022. It says "This value is usually squared before use with a GGX or Beckmann lobe." Choosing the square of the roughness, which is the common usage in the Burley model (see [page 14](https://disneyanimation.com/publications/physically-based-shading-at-disney/)), is the common way to go. GGX is also the common choice, from my experience. The standard setters need to choose, for better consistency among applications. As an example, [glTF has chosen roughness-squared and GGX](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#material-structure) - see that section for their reasons.
+The "roughness" input is loosely specified as of August 2022. It says "This value is usually squared before use with a GGX or Beckmann lobe." Choosing the square of the roughness, which is the common usage in the Burley model (see [page 14](https://disneyanimation.com/publications/physically-based-shading-at-disney/)), is the common way to go. GGX is also the common choice, from my experience. The standard setters need to choose, for better consistency among applications. As an example, [glTF has chosen roughness-squared and GGX](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#material-structure) - see that section for their reasons. I would suggest simply lifting glTF's equations and descriptions of their implementation, saving work and also making USD and glTF more compatible.
 
 I would appreciate some recommendations about how opacityThreshold should be set for cutouts. A value of 0.0 means that the alpha (transparency) value is indeed treated as semitransparency. An opacityThreshold greater than 0.0 gives a level where the alpha is compared and judged to be fully transparent (if below this value) or fully opaque (if above or equal to this value). This is clear enough, but I suggest that the specification note an opacityThreshold of 0.5 is a common cutoff value. As an example, using an RGBA texture authored for use as a billboard, here is it rendered with an opacityThreshold of 0.01, 0.5, and 0.99. The 0.5 value is, in my opinion, the best render of the three.
 
@@ -55,9 +57,16 @@ I would appreciate some recommendations about how opacityThreshold should be set
 ![opacityThreshold 0.5](/images/opacity_0.5.png "opacityThreshold 0.5")
 ![opacityThreshold 0.99](/images/opacity_0.99.png "opacityThreshold 0.99")
 
+The application of normal textures to surfaces seems a little off by default. Some guidance from the proposal would be helpful. For example, the McUsd.usda model needs to set the bias and scale for every normal texture as follows:
+
+    float4 inputs:bias = (-1, 1, -1, -1)
+    float4 inputs:scale = (2, -2, 2, 2)
+
+Having to negate the second, Y, value in each is confusing. The normal textures used (created by someone else, and used in Minecraft RTX as-is) seem fairly standard to me, but I am not an expert. Some warning about this possible negation would be useful.
+
 ## Application Test Results
 
-What follows are images generated by various rendering systems, for comparison. I have tried to use the newest version of the software for each package.
+What follows are images generated by various rendering systems, for comparison. I have tried to use the newest version of the software for each package. My focus is running applications on Windows 10.
 
 Note that few images will match perfectly from system to system. Reasons include:
 * Lighting is not translated in a compatible manner, or not at all, so is added manually.
@@ -70,6 +79,28 @@ Note that few images will match perfectly from system to system. Reasons include
 These various conditions and others will be noted after each rendering, as best as I can determine them. The last problem, emissive material definition, is explained in detail in the "Observations" section above.
 
 Please note that the purpose of this project is not to show problems in a particular application, but rather for me to see what features there might be confusion on (due to the specification or implementation) and to understand and snapshot the level of progress at this time. In my perfect world all applications would get almost the same results, within rendering algorithm limitations.
+
+### USDView
+
+The usdview program from the [USD Toolset](https://graphics.pixar.com/usd/release/toolset.html) includes a basic hydra GL rasterizing renderer. It's about as basic a render you can make, but it's also the standard, in that it's the renderer Pixar provides. As such, it properly renders semitransparency, cutouts, roughness, metalness, etc.
+
+It is possible to build usdview from scratch, but in that way lies madness (at least for me). Happily, [NVIDIA's Omniverse Launcher](https://www.nvidia.com/en-us/omniverse/) provides a pre-built USDView. I tested with version 0.22.8.
+
+Load procedure: File -> Open, then hold down Alt and use the mouse buttons to rotate, pan, and dolly.
+
+![UsdView](/images/usdview.png "UsdView")
+
+As expected from a basic rasterizer, shadows, reflections, and emitted light from surfaces are not rendered.
+
+By default, USDView adds a light "at the eye", which is shown in the rendering above. This additional light can be turned off via View -> Lights -> Camera Light.
+
+Without shadows, it is a little difficult to tell if the DistantLight in McUsd.usda is being used. By pressing "F11" (or View -> Toggle Viewer Mode), we can see that the DistantLight and DomeLight have been read in (the camera has not). These lights can be toggled off by right-clicking and selecting "Make Invisible". Doing so, the DomeLight appears to have no effect, neither to direct illumination nor as a background environment map.
+
+The lava light source seems oversaturated. As discussed in "Observations", the emissive texture is scaled up by a factor of 1000. Removing this scale factor, which is done in the file McUsd_unscaled_lava.usda, the lava looks more reasonable:
+
+![UsdView unscaled lava](/images/usdview_unscaled_lava.png "UsdView unscaled lava")
+
+From what I can see, the emissiveColor is used to shade the lava. More experimentation could be done here, e.g., removing the diffuseColor texture and setting the diffuseColor to white or black, to see the effect. I've done this experiment and get the same rendering, showing that the emissionColor, when present, is used instead of the diffuseColor. However, it seems better to have the emissiveColor's role in rendering specified, rather than needing to reverse engineer how the effect is implemented in USDView. I believe this program should not be held up as an oracle and final arbiter for how attributes are applied. Better, for me, would be the explicit set of equations used to compute local shading, such as how [glTF does it](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#appendix-b-brdf-implementation).
 
 ### Omniverse Create
 
@@ -86,6 +117,8 @@ Load procedure: Nothing further. By default, the "RTX - Interactive (Path Tracin
 This renderer is progressive, shooting more and more frames of rays and blending these results in. Here is the render after around 140 frames or so:
 
 ![Omniverse RTX - Interactive (Path Tracing)](/images/ov_interactive.png "Omniverse RTX - Interactive (Path Tracing)")
+
+One notable difference with USDView is that, in these Omniverse renderings, the prismarine block (the blue stone block) does not have as strong specular highlights in this and other Omniverse views. I think the USDView version looks more convincing, but do not know which is correct.
 
 #### Omniverse RTX - Real-Time
 
