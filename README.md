@@ -180,13 +180,28 @@ Because this model is actually to scale, the blocks are each 1 meter across by d
 
 In both views you can see that the cutout sunflower head has rendering problems. If you rotate the view, various parts of the sunflower disappear and appear. My guess is that this artifact is likely caused by cutouts being rendered by z-sorting them with other objects in the scene, but I can't say I understand. The "ghosting" visible in Object mode is not present in AR mode.
 
+### Blender
+
+Being free and open source, Blender is easy to test. I tried the Blender 3.3 beta and 3.4 alpha from [here](https://builder.blender.org/download/daily/), and also the Blender 3.2 alpha USD branch, installer downloadable through the [Omniverse Launcher](https://www.nvidia.com/en-us/omniverse/). These all gave the same renderings shown below.
+
+Load procedure: File -> Import -> Universal Scene Description. Choose Camera.001 in the hierarchy control in the upper right, click the green camera icon next to it, then type [Ctrl+Numpad 0](https://blender.stackexchange.com/questions/3502/how-can-i-make-a-camera-the-active-one) to set the view to this camera. Choose "viewport shading" in the upper right corner of the viewport. The result:
+
+![Blender initial view](/images/blender_initial.png "Blender initial view")
+
+Blender added a light on import, at the bottom of the hierarchy list in the upper right. Turn it off by clicking on the eye icon to the right of this "Light" object to turn it off. The Sun (DistantLight) is imported by Blender, but is too bright. Find it in the hierarchy and change its strength below to, say, 1.0. This at least gives a colorful image:
+
+![Blender adjusted view](/images/blender_adjusted.png "Blender adjusted view")
+
+Clearly, Blender is currently removing textures attached to surfaces. Interestingly, it appears to read the color textures applied and computes average colors to use in their stead. The DistantLight was mostly translated properly, with angles X=-125 and Y=-35, equivalent to the specified angles of 235 and 325. The Euler order for the angles was not changed to ZXY (though in this case it doesn't matter, since Z==0). A view showing the shadows produced confirms that the light's location is correct:
+
+![Blender shadow view](/images/blender_shadow.png "Blender shadow view")
+
 ### TODO
 
 Some of the many viewers, alphabetically:
 * 3DS MAX
 * [Activision](https://github.com/Activision/USDShellExtension)
 * [Autodesk open-source web-based viewer](https://autodesk-forks.github.io/USD/) - [background info](https://www.keanw.com/2022/02/autodesk-open-sources-web-based-usd-viewing-implementation.html)
-* Blender 3.2 alpha USD branch - downloadable through the [Omniverse Launcher](https://www.nvidia.com/en-us/omniverse/). There is also a [Blender 3.3 beta](https://builder.blender.org/download/daily/) that [reads USDs much faster](https://aras-p.info/blog/2022/07/20/Swallowing-the-elephant-into-Blender/). Also, [Blender 3.4 alpha](https://builder.blender.org/download/daily/).
 * Cinema 4D
 * Houdini
 * Maya
