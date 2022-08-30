@@ -53,7 +53,7 @@ This question of magnitude for lighting is part of a larger question, how physic
 
 The "roughness" input is loosely specified as of August 2022. It says "This value is usually squared before use with a GGX or Beckmann lobe." Choosing the square of the roughness, which is the common usage in the Burley model (see [page 14](https://disneyanimation.com/publications/physically-based-shading-at-disney/)), is the common way to go. GGX is also the common choice, from my experience. The standard setters need to choose, for better consistency among applications. As an example, [glTF has chosen roughness-squared and GGX](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#material-structure) - see that section for their reasons. I would suggest simply lifting glTF's equations and descriptions of their implementation, saving work and also making USD and glTF more compatible.
 
-I would appreciate some recommendations about how opacityThreshold should be set for cutouts. A value of 0.0 means that the alpha (transparency) value is indeed treated as semitransparency. An opacityThreshold greater than 0.0 gives a level where the alpha is compared and judged to be fully transparent (if below this value) or fully opaque (if above or equal to this value). This is clear enough, but I suggest that the specification note an opacityThreshold of 0.5 is a common cutoff value. As an example, using an RGBA texture authored for use as a billboard, here is it rendered with an opacityThreshold of 0.01, 0.5, and 0.99. The 0.5 value is, in my opinion, the best render of the three.
+Mentioning how opacityThreshold should normally be set for cutouts in the proposal would help new implementers and users. A value of 0.0 means that the alpha (transparency) value is indeed treated as semitransparency. An opacityThreshold greater than 0.0 gives a level where the alpha is compared and judged to be fully transparent (if below this value) or fully opaque (if above or equal to this value). This is clear enough, but I suggest that the specification note an opacityThreshold of 0.5 is a common cutoff value. As an example, using an RGBA texture authored for use as a billboard, here is it rendered with an opacityThreshold of 0.01, 0.5, and 0.99. The 0.5 value is, in my opinion, the best render of the three, and about the most logical.
 
 ![opacityThreshold 0.01](/images/opacity_0.01.png "opacityThreshold 0.01")
 ![opacityThreshold 0.5](/images/opacity_0.5.png "opacityThreshold 0.5")
@@ -196,12 +196,38 @@ Clearly, Blender is currently removing textures attached to surfaces. Interestin
 
 ![Blender shadow view](/images/blender_shadow.png "Blender shadow view")
 
+### Unreal Editor
+
+You can install the Unreal Editor by running the Epic Games Launcher and then selecting "Unreal" in the upper left column. Images here were generated with Unreal Engine 4.27.2, using the Beta Version 1.0 Usd Importer plugin.
+
+Load procedure: To install this plugin, do "Edit -> Plugins" in the menus at the top. Search "USD" and you'll find two (or four, if the Omniverse Connector is installed - both plugins evidently can co-exist, unlike Maya or Max). Pick the USD Importer and restart the editor, as directed. [See here](https://docs.unrealengine.com/4.26/en-US/WorkingWithContent/USDinUE4) for more help.
+
+In Unreal Editor create a New Project. Choose the Games template, Blank, and for Project Settings you could change Raytracing Disabled to Enabled.
+
+To add McUsd.usda: In the lower left is the green "Add/Import" button. Click and above it, near the very top, pick "Import Asset". When you import, it'll actually be a bunch of assets, shown below the viewport as a set of icons. You can select all these and drop them into the scene.
+
+For my tests I added a light source, angle Y=235 and Z=325, to match the McUsd.usda's lighting, which does not import. I also used a SkyLight. The result, after positioning the camera:
+
+![Unreal Editor lit mode](/images/ue_lit.png "Unreal Editor lit mode")
+
+The obvious mismatch is that the cutout objects cast solid shadows. I thought the rail cutouts' textures weren't loading, but they are; they're just a bit washed out.
+
+In the upper left area of the viewport is a "Lit" setting for the View Mode. Clicking and changing this to "Path Tracing" gives the following:
+
+![Unreal Editor path tracing mode](/images/ue_path_tracing.png "Unreal Editor path tracing mode")
+
+There is some auto-exposure system in place that I have not figured out how to turn off. The lava is actually emitting light in path tracing mode, which can be seen by turning off the other lights:
+
+![Unreal Editor lava path tracing](/images/ue_lava.png "Unreal Editor lava path tracing")
+
+No intensity adjustments were needed for the lava emission values or scaling (I can't say whether texture scaling is actually used; I did not see it in the user interface for the lava materials).
+
 ### TODO
 
 Some of the many viewers, alphabetically:
 * 3DS MAX
 * [Activision](https://github.com/Activision/USDShellExtension)
-* [Autodesk open-source web-based viewer](https://autodesk-forks.github.io/USD/) - [background info](https://www.keanw.com/2022/02/autodesk-open-sources-web-based-usd-viewing-implementation.html)
+* [Autodesk open-source web-based viewer](https://autodesk-forks.github.io/USD/) - [background info](https://www.keanw.com/2022/02/autodesk-open-sources-web-based-usd-viewing-implementation.html). My attempts to build this repo on Windows have failed.
 * Cinema 4D
 * Houdini
 * Maya
