@@ -122,6 +122,10 @@ This renderer is progressive, shooting more and more frames of rays and blending
 
 One notable difference with USDView is that, in these Omniverse renderings, the prismarine block (the blue stone block) does not have as strong specular highlights in this and other Omniverse views. I think the USDView version looks more convincing, but do not know which is correct.
 
+The lava is an emitter and affects how the other objects are illuminated. Here is a rendering with the sun and surrounding dome light off:
+
+![Omniverse RTX - path traced lava](/images/ov_interactive_lava.png "Omniverse RTX - path traced lava")
+
 #### Omniverse RTX - Real-Time
 
 This renderer includes some ray tracing elements.
