@@ -5,6 +5,8 @@ Download this repository and then load the McUsd.usda file in the models directo
 
 The "Mc" is for Minecraft, not McDonalds. Though that's fine if you think the latter. I'd be happy if this file was served billions of times to help others.
 
+![McUsd rendered by Omniverse](/images/ov_interactive.png "McUsd rendered by Omniverse")
+
 ## Goals
 
 The overarching goal is to help the community strive to give similar or the same renderings, as possible. Consistent interpretation of [the UsdPreviewSurface material description](https://graphics.pixar.com/usd/release/spec_usdpreviewsurface.html) benefits us all. While, as of August 2022, this description is still a "proposal," numerous companies have implemented it in their systems.
