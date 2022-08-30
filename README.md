@@ -1,7 +1,7 @@
 # McUsd
 Simple [USD](https://graphics.pixar.com/usd/release/index.html) scene geometry with a variety of [UsdPreviewSurface](https://graphics.pixar.com/usd/release/spec_usdpreviewsurface.html) materials applied.
 
-Download this repository and then load the McUsd.usda file in the models directory into your favorite USD file viewer.
+Download this repository and then load the McUsd.usda file in the models directory into your favorite USD file viewer. Or, have an phone? Try out the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) of this scene. You'll have to shrink it down (pinch, on an iPhone) - each block is a meter in size!
 
 The "Mc" is for Minecraft, not McDonalds. Though that's fine if you think the latter. I'd be happy if this file was served billions of times to help others. Well, maybe tens - billions means something's going wrong.
 
@@ -160,9 +160,25 @@ The Sketchfab rendering can be [directly examined on their site](https://skfb.ly
 
 Sketchfab does not translate the camera or lights. It uses rasterization and related techniques for interactive rendering, so giving typical limitations: the lava does not emit light, the glass block does not cast a shadow, true reflections are not generated for shiny surfaces. There are some interesting specular highlights on the glass block that are not visible in the Omniverse renderings.
 
-Sketchfab lets you download different translations of your model. I downloaded the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) - click that link on an iPhone to view it.
+Sketchfab lets you download different translations of your model. I downloaded the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) - click that link on an iPhone to view it. I will not swear this translation is perfect, but it works surprisingly well on the next app. The camera position set in Sketchfab is exported. The default Sketchfab light sources are not.
 
+### iPhone (and Android?)
 
+On Safari and Chrome (and perhaps other browsers), if you click on a ".usdz" extension file on the web, the file displays in an AR browser. [Some examples are here](https://developer.apple.com/augmented-reality/quick-look/). If in AR (Augmented Reality) mode, you made need to move your phone around so that it understands your environment before placing the model.
+
+The [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) mentioned above can also be viewed. One finger rotates, two finger pinch dollies (zooms, but not really) in and out. There appears to be no way to change the center of focus.
+
+The viewer has two modes: AR and Object. "Object" lets you view the model in isolation. Here's an example:
+
+![iPhone Object view](/images/iphone_object.png "iPhone Object view")
+
+Understandably, the camera setting in the Sketchfab usdz file is not translated.
+
+Because this model is actually to scale, the blocks are each 1 meter across by default. By using a two-finger pinch gesture, you can make the model fit your environment. Here is the scene shrunk to about 10% and viewed in place, using "AR":
+
+![iPhone AR view](/images/iphone_ar.png "iPhone AR view")
+
+In both views you can see that the cutout sunflower head has rendering problems. If you rotate the view, various parts of the sunflower disappear and appear. My guess is that this artifact is likely caused by cutouts being rendered by z-sorting them with other objects in the scene, but I can't say I understand. Also, if you look closely, there is some "ghosting" around the sunflower, an area around it where the cut-away parts of the texture should have no effect, but instead leave a faint white trace.
 
 ### TODO
 
