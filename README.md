@@ -80,9 +80,9 @@ Note that few images will match perfectly from system to system. Reasons include
 
 These various conditions and others will be noted after each rendering, as best as I can determine them. The last problem, emissive material definition, is explained in detail in the "Observations" section above.
 
-Please note that the purpose of this project is not to show problems in a particular application, but rather for me to see what features there might be confusion on (due to the specification or implementation) and to understand and snapshot the level of progress at this time. In my perfect world all applications would get almost the same results, within rendering algorithm limitations.
+Please note that the purpose of this project is not to show problems in a particular application, but rather for me to see what features there might be confusion on (due to the specification or implementation) and to understand and snapshot the level of progress at this time. Noting problems is not meant as criticism, but rather as things to be aware of if you use a package. Many of the applications have improved their import capabilities considerably in the past two years.
 
-### USDView
+## USDView
 
 The usdview program from the [USD Toolset](https://graphics.pixar.com/usd/release/toolset.html) includes a basic hydra GL rasterizing renderer. It's about as basic a render you can make, but it's also the standard, in that it's the renderer Pixar provides. As such, it properly renders semitransparency, cutouts, roughness, metalness, etc.
 
@@ -104,7 +104,7 @@ The lava light source seems oversaturated. As discussed in "Observations", the e
 
 From what I can see, the emissiveColor is used to shade the lava. More experimentation could be done here, e.g., removing the diffuseColor texture and setting the diffuseColor to white or black, to see the effect. I've done this experiment and get the same rendering, showing that the emissionColor, when present, is used instead of the diffuseColor. However, it seems better to have the emissiveColor's role in rendering specified, rather than needing to reverse engineer how the effect is implemented in USDView. I believe this program should not be held up as an oracle and final arbiter for how attributes are applied. Better, for me, would be the explicit set of equations used to compute local shading, such as how [glTF does it](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#appendix-b-brdf-implementation).
 
-### Omniverse Create
+## Omniverse Create
 
 I focused on [Omniverse Create](https://www.nvidia.com/en-us/omniverse/apps/create/) as the target for this USD test file, as Mineways is a "connector" for the Omniverse system, and [Omniverse is free](https://www.nvidia.com/en-us/omniverse/download/) and far along in its rendering of UsdPreviewSurface. This is important to understand: this McUsd test file is tailored to look particularly good in Omniverse. Some application had to be targeted, as a starting spot. Doing so helps point out the differences between its interpretation of materials and lights compared to other applications. No application is particularly "right" at this point.
 
@@ -112,7 +112,7 @@ Load procedure: drag and drop McUsd.usda file into the viewport of Omniverse Cre
 
 There are [a few renderers in Omniverse](https://docs.omniverse.nvidia.com/prod_kit/prod_materials-and-rendering/render-settings_overview.html), along with the hydra renderer Pixar Storm being included as an option. All results are from Omniverse Create 2022.3.0-beta.5.
 
-#### Omniverse RTX - Interactive (Path Tracing)
+### Omniverse RTX - Interactive (Path Tracing)
 
 Load procedure: Nothing further. By default, the "RTX - Interactive (Path Tracing)" is used.
 
@@ -126,7 +126,7 @@ The lava is an emitter and affects how the other objects are illuminated. Here i
 
 ![Omniverse RTX - path traced lava](/images/ov_interactive_lava.png "Omniverse RTX - path traced lava")
 
-#### Omniverse RTX - Real-Time
+### Omniverse RTX - Real-Time
 
 This renderer includes some ray tracing elements.
 
@@ -136,7 +136,7 @@ Load procedure: with the model loaded, in the upper left corner of the viewport 
 
 Note simplifications occur, such as opaque shadows for semitransparent objects.
 
-#### Omniverse RTX - Accurate (Iray)
+### Omniverse RTX - Accurate (Iray)
 
 Uses the Iray ray tracer. Here is the render after around 140 frames:
 
@@ -146,7 +146,7 @@ Load procedure: with the model loaded, in the upper left corner of the viewport 
 
 Differences with the interactive version include less color on the semitransparent glass block on the left. Though not obvious, the lava is a bit dimmer. In the "Accurate" render a bit of a noisy caustic can be seen on the grass to the right of the gold block.
 
-#### Omniverse Pixar Storm
+### Omniverse Pixar Storm
 
 Load procedure: with the model loaded, in the upper left corner of the viewport is a light-bulb icon with a renderer name. Choose the "Pixar Storm" renderer from this dropdown list.
 
@@ -154,7 +154,7 @@ Load procedure: with the model loaded, in the upper left corner of the viewport 
 
 Some clear problems: lights are ignored, opacityThreshold is not implemented for cutout objects, metallic seems to have no effect, etc.
 
-### Sketchfab
+## Sketchfab
 
 Load procedure: upload a zip file of the whole "model" directory to your account. Modifications: the directional light was set to 250 degrees, the camera FOV to 30, and the camera view itself manually adjusted to about match.
 
@@ -166,7 +166,7 @@ Sketchfab does not translate the camera or lights. It uses rasterization and rel
 
 Sketchfab lets you download different translations of your model. I downloaded the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) - click that link on an iPhone to view it. I will not swear this translation is perfect, but it works surprisingly well on the next app. The camera position set in Sketchfab is exported. The default Sketchfab light sources are not.
 
-### iPhone
+## iPhone
 
 On Safari and Chrome (and perhaps other browsers), if you are using an iPhone or iPad and click on a ".usdz" extension file, the file displays in an viewer called AR Quick Look. [Some examples are here](https://developer.apple.com/augmented-reality/quick-look/).
 
@@ -184,7 +184,7 @@ Try AR mode. Because this model is actually to scale, the blocks are each 1 mete
 
 In both views you can see that the cutout sunflower head has rendering problems. If you rotate the view, various parts of the sunflower disappear and appear. My guess is that this artifact is likely caused by cutouts being rendered by z-sorting them with other objects in the scene, but I can't say I understand. The "ghosting" visible in Object mode is not present in AR mode.
 
-### Blender
+## Blender
 
 Being free and open source, Blender is easy to test. I tried the Blender 3.3 beta and 3.4 alpha from [here](https://builder.blender.org/download/daily/), and also the Blender 3.2 alpha USD branch, installer downloadable through the [Omniverse Launcher](https://www.nvidia.com/en-us/omniverse/). These all gave the same renderings shown below.
 
@@ -200,7 +200,7 @@ Clearly, Blender is currently removing textures attached to surfaces. Interestin
 
 ![Blender shadow view](/images/blender_shadow.png "Blender shadow view")
 
-### Unreal Editor
+## Unreal Editor
 
 You can install the Unreal Editor by running the [Epic Games Launcher](https://store.epicgames.com/en-US/download) and then selecting "Unreal" in the upper left column, "Library" along the top, then the "+" to the right of "engine versions". Note that the installs are 123 GB or more. Images here were generated with Unreal Engine 4.27.2, using the Beta Version 1.0 Usd Importer plugin.
 
@@ -226,7 +226,7 @@ There is some auto-exposure system in place that I have not figured out how to t
 
 No intensity adjustments were needed for the lava emission values or scaling (I can't say whether texture scaling is actually used; I did not see it in the user interface for the lava materials). Auto-exposure is occurring, as the lava itself is brighter than above.
 
-### Cinema 4D
+## Cinema 4D
 
 [Maxon's Cinema 4D](https://www.maxon.net/en/cinema-4d) has a 14-day trial. Loading McUsd.usda is simple: drag and drop the file into the viewport. In the "USD Import Settings" change the "Lights" setting to "Legacy Intensity" (the default is "Nit", a physical unit, but this does not work properly with the Sun in McUsd). Once loaded, you can then pick the camera imported by clicking in the top middle of the viewport where it says "Default Camera" and choose "Camera". Doing so with C4D version R26.107, you get this:
 
@@ -250,7 +250,7 @@ The Render View render doesn't look as good - the DomeLight helps there:
 
 This render more strongly highlights the normal texture mismatches, especially on the prismarine.
 
-### TODO
+## TODO
 
 Some of the many viewers, alphabetically:
 * 3DS MAX
