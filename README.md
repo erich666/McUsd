@@ -18,12 +18,15 @@ This material test file has a few purposes:
 * Give examples in the human-readable USDA format to help understanding.
 * Note loose areas of the current specification, to help encourage these becoming fully specified.
 * Show the state of various implementations of UsdPreviewSurface, in order to determine areas where the specification is not yet followed.
+* Gather together at least some of the many efforts to read and render USD files.
 
-There are [more serious efforts at compatibility test suites](https://developer.nvidia.com/blog/universal-scene-description-as-the-language-of-the-metaverse/) happening in the USD community, e.g., see [this video](https://www.nvidia.com/en-us/on-demand/session/siggraph2022-sigg22-s-20/) at 23:09 on. My small effort here is to give a _simple_ test scene, now, with some interesting materials, and note some problems I've seen in testing with it.
+There are [more serious efforts at compatibility test suites](https://developer.nvidia.com/blog/universal-scene-description-as-the-language-of-the-metaverse/) happening in the long-term in the USD community, e.g., see [this video](https://www.nvidia.com/en-us/on-demand/session/siggraph2022-sigg22-s-20/) at 23:09 on. My small effort here is to give a _simple_ test scene, now, with some interesting materials, and note some problems seen testing with it. The model is first and foremost meant as an aid in testing and debugging UsdPreviewSurfaces.
 
-You're encouraged to move around the model and render it from different viewpoints, to change the lights or other attributes to suit you (an area where USD will someday have more physical lighting units, making interchange cleaner), and in general modify what you need. The model is first and foremost meant as a aid in testing and debugging UsdPreviewSurfaces.
+You're welcome to [_send me your own results_](mailto:erich@acm.org), or submit as a pull request. I am happy to add to the gallery any test images you generate and notes on them you might have, credited as you wish.
 
-You're also very much encouraged to [_send me your own results_](mailto:erich@acm.org), or submit as a pull request. I am happy to add to the gallery any test images you generate and notes on them you might have.
+### Notes on Data
+
+I believe the camera in McUsd has a field of view of 60 degrees horizontally, almost 36 degrees vertically (read from C4D). The reason I'm not entirely sure is that USD uses a more camera-like specification of focal length and aperture dimensions, not FOV that many are used to.
 
 The two lights included are a sun "DistantLight", Euler angle order ZXY, angles of rotation are X 235 degrees, Y 325 degrees, intensity 30, width angle 1 degree, and a light "DomeLight" with sRGB texture _domelight.png, Z rotate 270, intensity 6. As noted in "Observations", these lights are almost always interpreted differently in different applications, if translated at all.
 
