@@ -280,14 +280,35 @@ The Render View render doesn't look as good - the DomeLight helps there:
 
 This render more strongly highlights the normal texture mismatches, especially on the prismarine.
 
+## Houdini
+
+[Houdini Apprentice](https://www.sidefx.com/download/) has a trial, and is free for personal use.
+
+My instructions for loading a USD file are [here](http://www.realtimerendering.com/erich/minecraft/public/mineways/mineways.html#houdini). Following these, here is the basic Houdini GL render:
+
+![Houdini GL](/images/houdini.png "Houdini GL")
+
+Changing "Persp" in the upper right corner of the viewport to the Karma path tracer, we capture the lava emitter's effect:
+
+![Houdini Karma](/images/houdini_karma.png "Houdini Karma")
+
+A bit noisy by default, but the number of rays shot can always be increased. This view shows the Sun has been nicely translated, with no adjustment on my part. The DomeLight has also been translated, and affects the rendering if turned off:
+
+![Houdini Karma](/images/houdini_karma_no_domelight.png "Houdini Karma")
+
+Finally, the Hydra delegate Storm render:
+
+![Houdini Storm](/images/houdini_storm.png "Houdini Storm")
+
+
 ## TODO
 
 Some of the many viewers, alphabetically:
 * 3DS MAX
 * [Activision](https://github.com/Activision/USDShellExtension)
-* [Autodesk open-source web-based viewer](https://autodesk-forks.github.io/USD/) - [background info](https://www.keanw.com/2022/02/autodesk-open-sources-web-based-usd-viewing-implementation.html). My attempts to build this repo on Windows have failed.
 * Houdini
 * Maya
+* Safari USDZ viewer on Mac
 * [Unity](https://docs.unity3d.com/2020.1/Documentation/Manual/com.unity.formats.usd.html)
 * [Unreal Editor](https://docs.unrealengine.com/4.26/en-US/WorkingWithContent/USDinUE4): [Omniverse connector](https://docs.omniverse.nvidia.com/con_connect/con_connect/ue4.html)
 
