@@ -152,7 +152,7 @@ Load procedure: with the model loaded, in the upper left corner of the viewport 
 
 ![Omniverse Pixar Storm](/images/ov_pixar_storm.png "Omniverse Pixar Storm")
 
-Some clear problems: lights are ignored, opacityThreshold is not implemented for cutout objects, metallic seems to have no effect, etc.
+Some clear problems: lights are ignored, opacityThreshold is not implemented for cutout objects, metallic seems to have no effect, etc. This looks to be work in progress.
 
 ## Sketchfab
 
@@ -182,7 +182,29 @@ Try AR mode. Because this model is actually to scale, the blocks are each 1 mete
 
 ![iPhone AR view](/images/iphone_ar.png "iPhone AR view")
 
-In both views you can see that the cutout sunflower head has rendering problems. If you rotate the view, various parts of the sunflower disappear and appear. My guess is that this artifact is likely caused by cutouts being rendered by z-sorting them with other objects in the scene, but I can't say I understand. The "ghosting" visible in Object mode is not present in AR mode.
+In both views you can see that the cutout sunflower head has rendering problems. If you rotate the view, various parts of the sunflower disappear and appear. My guess is that this artifact is likely caused by cutouts being rendered by z-sorting them with other objects in the scene, but I can't say I fully understand. The "ghosting" visible in Object mode is not present in AR mode.
+
+## Autodesk USD Browser Viewer
+
+Autodesk [open-sourced their USD browser viewer](https://www.keanw.com/2022/02/autodesk-open-sources-web-based-usd-viewing-implementation.html). Demos and Github repository [here](https://autodesk-forks.github.io/USD/). It's a bit of a challenge to build (I failed; turns out the build doesn't quite work for Windows yet, as of 8/31/2022, but that should change soon). Happily there's a site where you can simply drag and drop a USDZ file onto the page and view it.
+
+Dropping the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) onto Autodesk's test page](https://autodesk-forks.github.io/USD/usd_for_web_demos/test.html) gives this result:
+
+![Autodesk web viewer](/images/autodesk_web.png "Autodesk web viewer")
+
+The camera is mostly translated, from what I can see, just a bit farther out (and recall the lights are not part of the file). The main artifact is that cutout billboards make parts of the sunflower and fern disappear. Rotate the view and the sunflower cutouts will make parts of the purple transparent glass block disappear. My guess is that opacityThreshold is not being used to help control whether the z-buffer is written to.
+
+There is a related [three.js demo repository](https://github.com/autodesk-forks/USD/tree/gh-pages/usd_for_web_demos), and their [material implementation](https://github.com/autodesk-forks/USD/blob/gh-pages/usd_for_web_demos/ThreeJsRenderDelegate.js#L217) is easy to examine.
+
+## Nahoum Three.js USDZ Loader
+
+Pierre-Olivier Nahoum has made [an open-source USDZ Loader](https://github.com/ponahoum/three-usdz-loader) for Three.js. Similar to Autodesk's, you drag and drop a USDZ file on to it.
+
+Dropping the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) onto Nahoum's test site](https://www.usdz-viewer.net/) gives this result:
+
+![Nahoum Three.js USDZ Loader](/images/nahoum.png "Nahoum Three.js USDZ Loader")
+
+The camera was not translated, and the render is a bit washed out compared to others, but that's simply a matter of adjusting the lighting (which is not specified in this USDZ file). Similar to the Autodesk web viewer, the cutouts hide parts of the plants and from a different view make the transparent block disappear.
 
 ## Blender
 
@@ -228,7 +250,7 @@ There is some auto-exposure system in place that I have not figured out how to t
 
 No intensity adjustments were needed for the lava emission values or scaling (I can't say whether texture scaling is actually used; I did not see it in the user interface for the lava materials). Auto-exposure is occurring, as the lava itself is brighter than above.
 
-Overall USD import has improved considerably in UE 5.0. The main problem I see with all these renders is with the semitransparent purple stained glass block. In Unreal Editor 4.27.2, for example, the path trace of this block looked like this:
+Overall USD import has improved considerably in UE 5.0. The main problem I see with the path trace is that the semitransparent purple stained glass block is not transparent, unlike the "Lit" version. This may be a regression. In Unreal Editor 4.27.2, for example, the path trace looks like this:
 
 ![Unreal Editor 4.27.2 path tracing mode](/images/ue_4_27_path_tracing.png "Unreal Editor 4.27.2 path tracing mode")
 
