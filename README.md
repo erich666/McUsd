@@ -202,7 +202,7 @@ Clearly, Blender is currently removing textures attached to surfaces. Interestin
 
 ### Unreal Editor
 
-You can install the Unreal Editor by running the [Epic Games Launcher](https://store.epicgames.com/en-US/download) and then selecting "Unreal" in the upper left column, "Library" along the top, then the "+" to the right of "engine versions". Note that the installs are 40 GB or more. Images here were generated with Unreal Engine 4.27.2, using the Beta Version 1.0 Usd Importer plugin.
+You can install the Unreal Editor by running the [Epic Games Launcher](https://store.epicgames.com/en-US/download) and then selecting "Unreal" in the upper left column, "Library" along the top, then the "+" to the right of "engine versions". Note that the installs are 123 GB or more. Images here were generated with Unreal Engine 4.27.2, using the Beta Version 1.0 Usd Importer plugin.
 
 Load procedure: To install this plugin, do "Edit -> Plugins" in the menus at the top. Search "USD" and you'll find two (or four, if the Omniverse Connector is installed - both plugins evidently can co-exist, unlike Maya or Max). Pick the USD Importer and restart the editor, as directed. [See here](https://docs.unrealengine.com/4.26/en-US/WorkingWithContent/USDinUE4) for more help.
 
@@ -228,17 +228,27 @@ No intensity adjustments were needed for the lava emission values or scaling (I 
 
 ### Cinema 4D
 
-[Maxon's Cinema 4D](https://www.maxon.net/en/cinema-4d) has a 14-day trial. Loading McUsd.usda is simple: drag and drop the file into the viewport. You can then pick the camera imported by click in the top middle of the viewport where it says "Default Camera" and instead choosing "Camera". Doing so with version 25.005, you get this:
+[Maxon's Cinema 4D](https://www.maxon.net/en/cinema-4d) has a 14-day trial. Loading McUsd.usda is simple: drag and drop the file into the viewport. In the "USD Import Settings" change the "Lights" setting to "Legacy Intensity" (the default is "Nit", a physical unit, but this does not work properly with the Sun in McUsd). Once loaded, you can then pick the camera imported by clicking in the top middle of the viewport where it says "Default Camera" and choose "Camera". Doing so with C4D version R26.107, you get this:
 
 ![Cinema 4D](/images/c4d.png "Cinema 4D")
 
-This looks worse than it is. The program gets parts of the camera correct, but there is an "R.B" angle problem. Selecting the camera in the upper right area of the screen, then "Coord." below and setting this value to 0.0, corrects this roll.
+The camera is properly translated. There are some texture mapping problems, but these are more easily seen in the next render.
 
-The intensity is also blown out. The Sun in McUsd has an intensity of 30, which C4D attempts to translate. This setting works well for the Omniverse renderers, but is too bright here (this will be a recurring theme). Selecting the Sun in C4D's upper right "Objects" hierarchy, then setting the Intensity below from 3000% to 100% and setting the Shadow to Raytraced (Hard), gives a more reasonable view:
+By default the Sun does not cast a shadow. Open up _Simple_Material_Test in the Objects hierarchy control in the upper right, then select the Sun, then under General at the bottom change Shadow to Area. Press Control-R to perform Render View:
 
-![Cinema 4D](/images/c4d_adjusted.png "Cinema 4D")
+![Cinema 4D render](/images/c4d_render.png "Cinema 4D render")
 
-This view shows the sun's direction is properly translated. The diamond block has a color texture mapping problem, with the faces of each block showing a thin gold band a quarter of the way across the face. There are normal mapping mismatches with the prismarine and chiseled quartz blocks.
+The diamond block has a color texture mapping problem, with the faces of each block showing a thin gold band a quarter of the way across the face - compare to other renderings here. There are normal mapping mismatches with the prismarine (wrong scale), and with the piston and chiseled quartz block (normals flipped upside down).
+
+On further investigation, the DomeLight in the scene washes out the effect of normal maps in the interactive renderer. I did not find a control to turn down its effect. You can delete the DomeLight, or toggle off its effect by clicking on the two dots, turning them red, in the Objects hierarchy menu. The interactive render is then:
+
+![Cinema 4D no domelight](/images/c4d_no_dome.png "Cinema 4D no domelight")
+
+The Render View render doesn't look as good - the DomeLight helps there:
+
+![Cinema 4D no domelight render](/images/c4d_no_dome_render.png "Cinema 4D no domelight render")
+
+This render more strongly highlights the normal texture mismatches, especially on the prismarine.
 
 ### TODO
 
