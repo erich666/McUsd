@@ -202,29 +202,37 @@ Clearly, Blender is currently removing textures attached to surfaces. Interestin
 
 ## Unreal Editor
 
-You can install the Unreal Editor by running the [Epic Games Launcher](https://store.epicgames.com/en-US/download) and then selecting "Unreal" in the upper left column, "Library" along the top, then the "+" to the right of "engine versions". Note that the installs are 123 GB or more. Images here were generated with Unreal Engine 4.27.2, using the Beta Version 1.0 Usd Importer plugin.
+You can install the Unreal Editor by running the [Epic Games Launcher](https://store.epicgames.com/en-US/download) and then selecting "Unreal" in the upper left column, "Library" along the top, then the "+" to the right of "engine versions". Note that the 5.0.3 editor needs 114 GB of disk space. Images here were generated with Unreal Engine 5.0.3, using the Beta Version 1.0 Usd Importer plugin.
 
-Load procedure: To install this plugin, do "Edit -> Plugins" in the menus at the top. Search "USD" and you'll find two (or four, if the Omniverse Connector is installed - both plugins evidently can co-exist, unlike Maya or Max). Pick the USD Importer and restart the editor, as directed. [See here](https://docs.unrealengine.com/4.26/en-US/WorkingWithContent/USDinUE4) for more help.
+Load procedure: To install [the native USD plugin](https://docs.unrealengine.com/5.0/en-US/universal-scene-description-in-unreal-engine/), choose "Edit -> Plugins" in the menus at the top. Search "USD" and you'll find two (or four, if the Omniverse Connector is installed - both plugins evidently can co-exist, unlike Maya or Max). Enable the USD Importer by checking its box and restart the editor, as directed. [See here](https://docs.unrealengine.com/5.0/en-US/universal-scene-description-in-unreal-engine/) for more help.
 
-In Unreal Editor create a New Project. Choose the Games template, Blank, and for Project Settings you could change Raytracing Disabled to Enabled.
+To load In Unreal Editor create a New Project. Choose the Games template on the left, Blank, and for Project Defaults in the lower right you could check the Raytracing box. After you click "Create" the editor may take a few minutes to compile shaders. You'll get a scene with some chairs, etc. I go to the Outliner in the upper right and delete all these StaticMeshes.
 
-To add McUsd.usda: In the lower left is the green "Add/Import" button. Click and above it, near the very top, pick "Import Asset". When you import, it'll actually be a bunch of assets, shown below the viewport as a set of icons. You can select all these and drop them into the scene.
+Use File -> Import Into Level... You should see "*.usd" in the lower right of the dialog that appears (if you don't, the USD plugin is not enabled). Choose wherever you like to put the imported USD assets. Hit "Import". Mouse scroll to dolly out of the scene.
 
-For my tests I added a light source, angle Y=235 and Z=325, to match the McUsd.usda's lighting, which does not import. I also used a SkyLight. The result, after positioning the camera:
+For my renders I deleted the given Light Source and added a distant light source, angle Y=235 and Z=325, to match the McUsd.usda's lighting, which does not import. I also used the default SkyLight and BP_Sky_Sphere in the scene, turning off much else. The imported camera has the right position, but I could not figure out how to set its field of view to be narrower (Focal Length and Aperture were not taken from the McUsd.usda file, forcing a FOV of 92.67 degrees), so I dollied in.
+
+The result, after positioning the camera view manually:
 
 ![Unreal Editor lit mode](/images/ue_lit.png "Unreal Editor lit mode")
 
-The obvious mismatch is that the cutout objects cast solid shadows. I thought the rail cutouts' textures weren't loading, but they are; they're just a bit washed out.
+One minor flaw is simply a rendering artifact, that cutouts appears to be sorted from back to front, leading the stem of the sunflower to be rendered in front of the sunflower's flower.
 
 In the upper left area of the viewport is a "Lit" setting for the View Mode. Clicking and changing this to "Path Tracing" gives the following:
 
 ![Unreal Editor path tracing mode](/images/ue_path_tracing.png "Unreal Editor path tracing mode")
 
-There is some auto-exposure system in place that I have not figured out how to turn off. The lava is actually emitting light in path tracing mode, which can be seen by turning off the other lights:
+There is some auto-exposure system in place that I have not figured out how to turn off. The lava is actually emitting light in path tracing mode, which can be seen by turning off the other lights in the scene:
 
 ![Unreal Editor lava path tracing](/images/ue_lava.png "Unreal Editor lava path tracing")
 
 No intensity adjustments were needed for the lava emission values or scaling (I can't say whether texture scaling is actually used; I did not see it in the user interface for the lava materials). Auto-exposure is occurring, as the lava itself is brighter than above.
+
+Overall USD import has improved considerably in UE 5.0. The main problem I see with all these renders is with the semitransparent purple stained glass block. In Unreal Editor 4.27.2, for example, the path trace of this block looked like this:
+
+![Unreal Editor 4.27.2 path tracing mode](/images/ue_4_27_path_tracing.png "Unreal Editor 4.27.2 path tracing mode")
+
+
 
 ## Cinema 4D
 
