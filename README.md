@@ -220,7 +220,7 @@ One minor flaw is simply a rendering artifact, that cutouts appears to be sorted
 
 In the upper left area of the viewport is a "Lit" setting for the View Mode. Clicking and changing this to "Path Tracing" gives the following:
 
-![Unreal Editor path tracing mode](/images/ue_path_tracing.png "Unreal Editor path tracing mode")
+![Unreal Editor path tracing mode](/images/ue_path_trace.png "Unreal Editor path tracing mode")
 
 There is some auto-exposure system in place that I have not figured out how to turn off. The lava is actually emitting light in path tracing mode, which can be seen by turning off the other lights in the scene:
 
