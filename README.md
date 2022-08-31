@@ -216,7 +216,7 @@ The result, after positioning the camera view manually:
 
 ![Unreal Editor lit mode](/images/ue_lit.png "Unreal Editor lit mode")
 
-One minor flaw is simply a rendering artifact, that cutouts appears to be sorted from back to front, leading the stem of the sunflower to be rendered in front of the sunflower's flower.
+One minor flaw is simply a rendering artifact, that cutouts appears to be sorted from back to front, leading the stem of the sunflower to be rendered in front of the sunflower's flower. Also, the cutouts do not cast shadows in this mode (they used to cast shadows for the whole billboard in 4.27, so this is an improvement, IMO).
 
 In the upper left area of the viewport is a "Lit" setting for the View Mode. Clicking and changing this to "Path Tracing" gives the following:
 
