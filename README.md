@@ -166,19 +166,19 @@ Sketchfab does not translate the camera or lights. It uses rasterization and rel
 
 Sketchfab lets you download different translations of your model. I downloaded the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) - click that link on an iPhone to view it. I will not swear this translation is perfect, but it works surprisingly well on the next app. The camera position set in Sketchfab is exported. The default Sketchfab light sources are not.
 
-### iPhone (and Android?)
+### iPhone
 
-On Safari and Chrome (and perhaps other browsers), if you click on a ".usdz" extension file on the web, the file displays in an AR browser. [Some examples are here](https://developer.apple.com/augmented-reality/quick-look/). If in AR (Augmented Reality) mode, you made need to move your phone around so that it understands your environment before placing the model.
+On Safari and Chrome (and perhaps other browsers), if you are using an iPhone or iPad and click on a ".usdz" extension file, the file displays in an viewer called AR Quick Look. [Some examples are here](https://developer.apple.com/augmented-reality/quick-look/).
 
-The [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) mentioned above can also be viewed.
+The [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) mentioned above can also be viewed - click the link to see it (other phones and non-Safari browsers will just download the file instead; if you know how to hook the usdz file to immediately view, let me know).
 
-The viewer has two modes: AR and Object. "Object" lets you view the model in isolation. In this mode, one finger rotates, two finger pinch dollies (aka "zooms", but not really) the camera in and out. There appears to be no way to change the center of focus. Here's an example:
+This viewer has two modes: AR and Object, shown at the top. "Object" lets you view the model in isolation. In this mode, one finger rotates, two finger pinch dollies (aka "zooms", but not really) the camera in and out. There appears to be no way to change the center of focus. Here's an example:
 
 ![iPhone Object view](/images/iphone_object.png "iPhone Object view")
 
 Understandably, the camera setting in the Sketchfab usdz file is not used in either mode. If you look closely, there is some "ghosting" around the sunflower, an area around it where the cut-away parts of the texture should have no effect, but instead leave a faint white trace.
 
-Because this model is actually to scale, the blocks are each 1 meter across by default. Try AR mode. By using a two-finger pinch gesture, you can make the model fit your environment, and one finger lets you place the model horizontally. Here is the scene shrunk to about 10% and viewed in place, using "AR":
+Try AR mode. Because this model is actually to scale, the blocks are each 1 meter across by default, so the model is likely much larger than where you are. You made need to first move your phone or tablet around so that it understands your environment before placing the model. After this, use a two-finger pinch gesture to shrink the model down and make it fit your environment. One finger lets you move the model horizontally. Here is the scene shrunk to about 10% and viewed in place, using "AR":
 
 ![iPhone AR view](/images/iphone_ar.png "iPhone AR view")
 
@@ -202,7 +202,7 @@ Clearly, Blender is currently removing textures attached to surfaces. Interestin
 
 ### Unreal Editor
 
-You can install the Unreal Editor by running the Epic Games Launcher and then selecting "Unreal" in the upper left column. Images here were generated with Unreal Engine 4.27.2, using the Beta Version 1.0 Usd Importer plugin.
+You can install the Unreal Editor by running the [Epic Games Launcher](https://store.epicgames.com/en-US/download) and then selecting "Unreal" in the upper left column, "Library" along the top, then the "+" to the right of "engine versions". Note that the installs are 40 GB or more. Images here were generated with Unreal Engine 4.27.2, using the Beta Version 1.0 Usd Importer plugin.
 
 Load procedure: To install this plugin, do "Edit -> Plugins" in the menus at the top. Search "USD" and you'll find two (or four, if the Omniverse Connector is installed - both plugins evidently can co-exist, unlike Maya or Max). Pick the USD Importer and restart the editor, as directed. [See here](https://docs.unrealengine.com/4.26/en-US/WorkingWithContent/USDinUE4) for more help.
 
@@ -226,17 +226,30 @@ There is some auto-exposure system in place that I have not figured out how to t
 
 No intensity adjustments were needed for the lava emission values or scaling (I can't say whether texture scaling is actually used; I did not see it in the user interface for the lava materials). Auto-exposure is occurring, as the lava itself is brighter than above.
 
+### Cinema 4D
+
+[Maxon's Cinema 4D](https://www.maxon.net/en/cinema-4d) has a 14-day trial. Loading McUsd.usda is simple: drag and drop the file into the viewport. You can then pick the camera imported by click in the top middle of the viewport where it says "Default Camera" and instead choosing "Camera". Doing so with version 25.005, you get this:
+
+![Cinema 4D](/images/c4d.png "Cinema 4D")
+
+This looks worse than it is. The program gets parts of the camera correct, but there is an "R.B" angle problem. Selecting the camera in the upper right area of the screen, then "Coord." below and setting this value to 0.0, corrects this roll.
+
+The intensity is also blown out. The Sun in McUsd has an intensity of 30, which C4D attempts to translate. This setting works well for the Omniverse renderers, but is too bright here (this will be a recurring theme). Selecting the Sun in C4D's upper right "Objects" hierarchy, then setting the Intensity below from 3000% to 100% and setting the Shadow to Raytraced (Hard), gives a more reasonable view:
+
+![Cinema 4D](/images/c4d_adjusted.png "Cinema 4D")
+
+This view shows the sun's direction is properly translated. The diamond block has a color texture mapping problem, with the faces of each block showing a thin gold band a quarter of the way across the face. There are normal mapping mismatches with the prismarine and chiseled quartz blocks.
+
 ### TODO
 
 Some of the many viewers, alphabetically:
 * 3DS MAX
 * [Activision](https://github.com/Activision/USDShellExtension)
 * [Autodesk open-source web-based viewer](https://autodesk-forks.github.io/USD/) - [background info](https://www.keanw.com/2022/02/autodesk-open-sources-web-based-usd-viewing-implementation.html). My attempts to build this repo on Windows have failed.
-* Cinema 4D
 * Houdini
 * Maya
 * [Unity](https://docs.unity3d.com/2020.1/Documentation/Manual/com.unity.formats.usd.html)
-* [Unreal Editor](https://docs.unrealengine.com/4.26/en-US/WorkingWithContent/USDinUE4); also [Omniverse connector](https://docs.omniverse.nvidia.com/con_connect/con_connect/ue4.html)
+* [Unreal Editor](https://docs.unrealengine.com/4.26/en-US/WorkingWithContent/USDinUE4): [Omniverse connector](https://docs.omniverse.nvidia.com/con_connect/con_connect/ue4.html)
 
 ---
 ## License
