@@ -320,7 +320,7 @@ This render more strongly highlights the normal texture mismatches, especially o
 
 Maya 2023 comes with a USD import plug-in built in: mayaUsdPlugin.mll. It is enabled by default. You can see it by going to Windows -> Settings/Preferences -> Plug-in Manager and searching on USD. Newer versions of the USD plug-in are [available for download](https://github.com/Autodesk/maya-usd/releases) and installation. Look carefully to make sure the one you are downloading is for your "year" of Maya, e.g., Maya2023 in my case. I am using Version 0.19.0 for the tests that follow.
 
-Another plug-in enabled is mtoh.mll, the Maya to Hydra plug-in that lets you access Arnold and other renderers as Hydra delegates (if that meant nothing to you, just ignore it). I stayed with Version 0.16.0, since I don't know if there's a newer version available.
+Another plug-in enabled is mtoh.mll, the Maya to Hydra plug-in that lets you access Arnold and other renderers as Hydra delegates (if that meant nothing to you, just ignore it). This updates along with the USD plug-in, so is also at 0.19.0 for these tests.
 
 Load procedure: To load McUsd.usda, use File -> Import..., and load McUsd.usda.
 
