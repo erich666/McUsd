@@ -198,11 +198,11 @@ In both views you can see that the cutout sunflower head has rendering problems.
 
 If you download the [Sketchfab USDZ file](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) and double-click it on a Mac, the Preview app will show it:
 
-![Mac Preview grass](/images/mac_preview_grass.png) "Mac Preview grass")
+![Mac Preview grass](/images/mac_preview_grass.png "Mac Preview grass")
 
 Lights and camera are not translated. There appears to be a problem with the texturing on the grassy plain. The content otherwise looks good:
 
-![Mac Preview](/images/mac_preview.png) "Mac Preview")
+![Mac Preview](/images/mac_preview.png "Mac Preview")
 
 ## Autodesk USD Browser Viewer
 
