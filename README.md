@@ -68,7 +68,7 @@ The "roughness" input is loosely specified as of August 2022. It says "This valu
 
 ### Opacity threshold
 
-Mentioning how opacityThreshold should normally be set for cutouts in the proposal would help new implementers and users. A value of 0.0 means that the alpha (transparency) value is indeed treated as semitransparency. An opacityThreshold greater than 0.0 gives a level where the alpha is compared and judged to be fully transparent (if below this value) or fully opaque (if above or equal to this value). This is clear enough, but I suggest that the specification note an opacityThreshold of 0.5 is a common cutoff value. As an example, using an RGBA texture authored for use as a billboard, here is it rendered with an opacityThreshold of 0.01, 0.5, and 0.99. The 0.5 value is, in my opinion, the best render of the three, and about the most logical.
+Mentioning how opacityThreshold should normally be set for cutouts in the proposal would help new implementers and users. A value of 0.0 means that the alpha (transparency) value is indeed treated as semitransparency. An opacityThreshold greater than 0.0 gives a level where the alpha is compared and judged to be fully transparent (if below this value) or fully opaque (if above or equal to this value). This is clear enough, but I suggest that the specification note an opacityThreshold of 0.5 is a common cutoff value. As an example, using an RGBA texture authored for use as a billboard, here is it rendered with an opacityThreshold of 0.01, 0.5, and 0.99. The 0.5 value is, in my opinion, the best render of the three, and about the most logical. A sentence saying so would have saved me hours, when I set it to 0.001 for export originally.
 
 ![opacityThreshold 0.01](/images/opacity_0.01.png "opacityThreshold 0.01")
 ![opacityThreshold 0.5](/images/opacity_0.5.png "opacityThreshold 0.5")
@@ -226,7 +226,7 @@ Dropping the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mc
 
 ![Autodesk web viewer](/images/autodesk_web.png "Autodesk web viewer")
 
-The camera and lights are not translate. The main artifact is that cutout billboards make parts of the sunflower and fern disappear. Rotate the view and the sunflower cutouts will make parts of the purple transparent glass block disappear. My guess is that opacityThreshold is not being used to help control whether the z-buffer is written to.
+The camera and lights are not translate. The main artifact is that cutout billboards make parts of the sunflower and fern disappear. Rotate the view and the sunflower cutouts will make parts of the purple transparent glass block disappear. My guess is that opacityThreshold is not being used to help control whether the z-buffer is written to for cutouts.
 
 There is a related [three.js demo repository](https://github.com/autodesk-forks/USD/tree/gh-pages/usd_for_web_demos), and their [material implementation](https://github.com/autodesk-forks/USD/blob/gh-pages/usd_for_web_demos/ThreeJsRenderDelegate.js#L217) is easy to examine.Pierre-Olivier Nahoum has made [an open-source USDZ Loader wrapper](https://github.com/ponahoum/three-usdz-loader) based on this viewer.
 
