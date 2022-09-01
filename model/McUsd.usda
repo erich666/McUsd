@@ -51,6 +51,7 @@
 # Full terrainExt.png path: C:\\Users\\ehaines\\Downloads\\minewaysV1001\\mineways\\terrainExt_JG-RTX256.png
 # Full current path: C:\\Users\\ehaines\\Downloads\\minewaysV1001\\mineways
 """
+    defaultPrim = "_Simple_Material_Test"
     customLayerData = {
         dictionary cameraSettings = {
             dictionary Front = {
@@ -2007,4 +2008,3 @@ def Camera "Camera" (
     double3 xformOp:translate = (5.515715139344211, 5.515726941808866, 5.515715139344282)
     uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateYXZ", "xformOp:scale"]
 }
-
