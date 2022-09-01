@@ -174,7 +174,7 @@ The Sketchfab rendering can be [directly examined on their site](https://skfb.ly
 
 Sketchfab does not translate the camera or lights. It uses rasterization and related techniques for interactive rendering, so giving typical limitations: the lava does not emit light, the glass block does not cast a shadow, true reflections are not generated for shiny surfaces. There are some interesting specular highlights on the glass block that are not visible in the Omniverse renderings.
 
-Sketchfab lets you download different translations of your model. I downloaded the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) - click that link on an iPhone to view it. I will not swear this translation is perfect, but it works surprisingly well on the next app. The camera position set in Sketchfab is exported. The default Sketchfab light sources are not.
+Sketchfab lets you download different translations of your model. I downloaded the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) - click that link on an iPhone to view it. The camera position set in Sketchfab is exported. The default Sketchfab light sources are not. The texture scaling on the lava (see "Observations" section) is removed, which usually improves its appearance in the apps that use it.
 
 ## Apple iPhone
 
@@ -198,25 +198,27 @@ In both views you can see that the cutout sunflower head has rendering problems.
 
 If you download the [Sketchfab USDZ file](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) and double-click it on a Mac, the Preview app will show it:
 
-![Mac Preview grass](/images/mac_preview_grass.png "Mac Preview grass")
-
-Lights and camera are not translated. There appears to be a problem with the texturing on the grassy plain. The content otherwise looks good:
-
 ![Mac Preview](/images/mac_preview.png "Mac Preview")
+
+Lights and camera are not translated. Overall the content looks good, with no z-buffer problems with cutouts.
+
+This view shows the problem with the texturing on the grassy plain:
+
+![Mac Preview grass](/images/mac_preview_grass.png "Mac Preview grass")
 
 ## Autodesk USD Browser Viewer
 
 Autodesk [open-sourced their USD browser viewer](https://www.keanw.com/2022/02/autodesk-open-sources-web-based-usd-viewing-implementation.html). Demos and Github repository [here](https://autodesk-forks.github.io/USD/). It's a bit of a challenge to build (I failed; turns out the build doesn't quite work for Windows yet, as of 8/31/2022, but that should change soon). Happily there's a site where you can simply drag and drop a USDZ file onto the page and view it.
 
-Dropping the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) onto [Autodesk's test page](https://autodesk-forks.github.io/USD/usd_for_web_demos/test.html) gives this result:
+Dropping the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) onto [**Autodesk's USDZ test page**](https://autodesk-forks.github.io/USD/usd_for_web_demos/test.html) gives this result:
 
 ![Autodesk web viewer](/images/autodesk_web.png "Autodesk web viewer")
 
 The camera and lights are not translate. The main artifact is that cutout billboards make parts of the sunflower and fern disappear. Rotate the view and the sunflower cutouts will make parts of the purple transparent glass block disappear. My guess is that opacityThreshold is not being used to help control whether the z-buffer is written to.
 
-There is a related [three.js demo repository](https://github.com/autodesk-forks/USD/tree/gh-pages/usd_for_web_demos), and their [material implementation](https://github.com/autodesk-forks/USD/blob/gh-pages/usd_for_web_demos/ThreeJsRenderDelegate.js#L217) is easy to examine.Pierre-Olivier Nahoum has made [an open-source USDZ Loader](https://github.com/ponahoum/three-usdz-loader) wrapper based on this viewer.
+There is a related [three.js demo repository](https://github.com/autodesk-forks/USD/tree/gh-pages/usd_for_web_demos), and their [material implementation](https://github.com/autodesk-forks/USD/blob/gh-pages/usd_for_web_demos/ThreeJsRenderDelegate.js#L217) is easy to examine.Pierre-Olivier Nahoum has made [an open-source USDZ Loader wrapper](https://github.com/ponahoum/three-usdz-loader) based on this viewer.
 
-Dropping the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) onto [Nahoum's test site](https://www.usdz-viewer.net/) gives this result:
+Dropping the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) onto [**Nahoum's USDZ test site**](https://www.usdz-viewer.net/) gives this result:
 
 ![Nahoum Three.js USDZ Loader](/images/nahoum.png "Nahoum Three.js USDZ Loader")
 
@@ -270,7 +272,25 @@ Overall USD import has improved considerably in UE 5.0. The main problem I see w
 
 ![Unreal Editor 4.27.2 path tracing mode](/images/ue_4_27_path_tracing.png "Unreal Editor 4.27.2 path tracing mode")
 
+## Houdini
 
+[Houdini Apprentice](https://www.sidefx.com/download/) has a trial, and is free for personal use.
+
+My instructions for loading a USD file are [here](http://www.realtimerendering.com/erich/minecraft/public/mineways/mineways.html#houdini). Following these, here is the basic Houdini GL render:
+
+![Houdini GL](/images/houdini.png "Houdini GL")
+
+Changing "Persp" in the upper right corner of the viewport to the Karma path tracer, we capture the lava emitter's effect:
+
+![Houdini Karma](/images/houdini_karma.png "Houdini Karma")
+
+A bit noisy by default, but the number of rays shot can always be increased. This view shows the Sun has been nicely translated, with no adjustment on my part. The DomeLight has also been translated, and affects the rendering if turned off:
+
+![Houdini Karma](/images/houdini_karma_no_domelight.png "Houdini Karma")
+
+Finally, the Hydra delegate Storm render:
+
+![Houdini Storm](/images/houdini_storm.png "Houdini Storm")
 
 ## Cinema 4D
 
@@ -296,33 +316,39 @@ The Render View render doesn't look as good - the DomeLight helps there:
 
 This render more strongly highlights the normal texture mismatches, especially on the prismarine.
 
-## Houdini
+## Maya
 
-[Houdini Apprentice](https://www.sidefx.com/download/) has a trial, and is free for personal use.
+Maya 2023 comes with a USD import plug-in built in: mayaUsdPlugin.mll. It is enabled by default. You can see it by going to Windows -> Settings/Preferences -> Plug-in Manager and searching on USD. Newer versions of the USD plug-in are [available for download](https://github.com/Autodesk/maya-usd/releases) and installation. Look carefully to make sure the one you are downloading is for your "year" of Maya, e.g., Maya2023 in my case. I am using Version 0.19.0 for the tests that follow.
 
-My instructions for loading a USD file are [here](http://www.realtimerendering.com/erich/minecraft/public/mineways/mineways.html#houdini). Following these, here is the basic Houdini GL render:
+Another plug-in enabled is mtoh.mll, the Maya to Hydra plug-in that lets you access Arnold and other renderers as Hydra delegates (if that meant nothing to you, just ignore it). I stayed with Version 0.16.0, since I don't know if there's a newer version available.
 
-![Houdini GL](/images/houdini.png "Houdini GL")
+Load procedure: To load McUsd.usda, use File -> Import..., and load McUsd.usda.
 
-Changing "Persp" in the upper right corner of the viewport to the Karma path tracer, we capture the lava emitter's effect:
+The camera imports. To use its view, in the list of viewport menus (those just above the viewport) choose Panels -> Perspective -> McUsd:Camera.
 
-![Houdini Karma](/images/houdini_karma.png "Houdini Karma")
+To see textures, click the "Textured" icon (a checkered sphere) in the long row of icons just above the viewport. It's about in the middle. You should now see textures, though dimly. Turn on lighting by clicking the icon just to the right, "Use all lights" (a light bulb). Things will be blown out to white. Best is to adjust the exposure. In the same row of icons, further to the right, is "Exposure" (a camera shutter), set to 0.0. Change this to -12.0. You should see this:
 
-A bit noisy by default, but the number of rays shot can always be increased. This view shows the Sun has been nicely translated, with no adjustment on my part. The DomeLight has also been translated, and affects the rendering if turned off:
+![Maya](/images/maya_exposure.png "Maya")
 
-![Houdini Karma](/images/houdini_karma_no_domelight.png "Houdini Karma")
+This is a simplified view in Viewport 2.0, so it is unclear whether the normal textures are missing or are just not rendered. The sunflower has a cutout ordering problem, with the stem in front of the sunflower's flower. There is a faint yellow square around the sunflower's flower.
 
-Finally, the Hydra delegate Storm render:
+Other renderers are available in the "Renderer" menu just above the viewport (not to be confused with the Rendering or Render menus above it). The experimental Hydra GL and experimental Hydra Arnold renderers gave black views, Arnold alone gave a dim purple view of the meshes.
 
-![Houdini Storm](/images/houdini_storm.png "Houdini Storm")
+I experimented with changing the Sun's intensity instead. Reset the exposure to 0. In the Outliner to the left, open the defaultLightSet and select McUsd:Sun. In the McUsd:SunShape tab dialog on the right, change the Intensity from 50000 (I don't know where this number came from, as the sun in the file is set to 30) to 10. This gives a different view, with the lava blocks overblown:
 
+![Maya](/images/maya_dim_sun.png "Maya")
+
+However, Hydra Arnold then gives this:
+
+![Maya experimental Hydra Arnold](/images/maya_exp_hydra_arnold.png "Maya experimental Hydra Arnold")
+
+It twitches among some various low-res views. Definitely experimental.
 
 ## TODO
 
 Some of the many viewers, alphabetically:
 * 3DS MAX
 * [Activision](https://github.com/Activision/USDShellExtension)
-* Maya
 * [Unity](https://docs.unity3d.com/2020.1/Documentation/Manual/com.unity.formats.usd.html)
 * [Unreal Editor](https://docs.unrealengine.com/4.26/en-US/WorkingWithContent/USDinUE4): [Omniverse connector](https://docs.omniverse.nvidia.com/con_connect/con_connect/ue4.html)
 
