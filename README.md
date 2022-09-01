@@ -137,7 +137,7 @@ I focused on [Omniverse Create](https://www.nvidia.com/en-us/omniverse/apps/crea
 
 Load procedure: drag and drop McUsd.usda file into the viewport of Omniverse Create.
 
-There are [a few renderers in Omniverse](https://docs.omniverse.nvidia.com/prod_kit/prod_materials-and-rendering/render-settings_overview.html), along with the hydra renderer Pixar Storm being included as an option. All results are from Omniverse Create 2022.3.0-beta.5.
+There are [a few renderers in Omniverse](https://docs.omniverse.nvidia.com/prod_kit/prod_materials-and-rendering/render-settings_overview.html). All results are from Omniverse Create 2022.
 
 By default, the "RTX - Interactive (Path Tracing)" is used. This renderer is progressive, shooting more and more frames of rays and blending these results in. Here is the render after around 140 frames or so:
 
