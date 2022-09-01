@@ -176,7 +176,7 @@ Sketchfab does not translate the camera or lights. It uses rasterization and rel
 
 Sketchfab lets you download different translations of your model. I downloaded the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) - click that link on an iPhone to view it. I will not swear this translation is perfect, but it works surprisingly well on the next app. The camera position set in Sketchfab is exported. The default Sketchfab light sources are not.
 
-## iPhone
+## Apple iPhone
 
 On Safari and Chrome (and perhaps other browsers), if you are using an iPhone or iPad and click on a ".usdz" extension file, the file displays in an viewer called AR Quick Look. [Some examples are here](https://developer.apple.com/augmented-reality/quick-look/).
 
@@ -194,11 +194,21 @@ Try AR mode. Because this model is actually to scale, the blocks are each 1 mete
 
 In both views you can see that the cutout sunflower head has rendering problems. If you rotate the view, various parts of the sunflower disappear and appear. My guess is that this artifact is likely caused by cutouts being rendered by z-sorting them with other objects in the scene, but I can't say I fully understand. The "ghosting" visible in Object mode is not present in AR mode.
 
+## Apple Mac
+
+If you download the [Sketchfab USDZ file](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) and double-click it on a Mac, the Preview app will show it:
+
+![Mac Preview grass](/images/mac_preview_grass.png) "Mac Preview grass")
+
+Lights and camera are not translated. There appears to be a problem with the texturing on the grassy plain. The content otherwise looks good:
+
+![Mac Preview](/images/mac_preview.png) "Mac Preview")
+
 ## Autodesk USD Browser Viewer
 
 Autodesk [open-sourced their USD browser viewer](https://www.keanw.com/2022/02/autodesk-open-sources-web-based-usd-viewing-implementation.html). Demos and Github repository [here](https://autodesk-forks.github.io/USD/). It's a bit of a challenge to build (I failed; turns out the build doesn't quite work for Windows yet, as of 8/31/2022, but that should change soon). Happily there's a site where you can simply drag and drop a USDZ file onto the page and view it.
 
-Dropping the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) onto Autodesk's test page](https://autodesk-forks.github.io/USD/usd_for_web_demos/test.html) gives this result:
+Dropping the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) onto [Autodesk's test page](https://autodesk-forks.github.io/USD/usd_for_web_demos/test.html) gives this result:
 
 ![Autodesk web viewer](/images/autodesk_web.png "Autodesk web viewer")
 
@@ -312,9 +322,7 @@ Finally, the Hydra delegate Storm render:
 Some of the many viewers, alphabetically:
 * 3DS MAX
 * [Activision](https://github.com/Activision/USDShellExtension)
-* Houdini
 * Maya
-* Safari USDZ viewer on Mac
 * [Unity](https://docs.unity3d.com/2020.1/Documentation/Manual/com.unity.formats.usd.html)
 * [Unreal Editor](https://docs.unrealengine.com/4.26/en-US/WorkingWithContent/USDinUE4): [Omniverse connector](https://docs.omniverse.nvidia.com/con_connect/con_connect/ue4.html)
 
