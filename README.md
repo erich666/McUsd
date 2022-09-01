@@ -18,7 +18,6 @@ This material test file has a few purposes:
 * Give examples in the human-readable USDA format to help understanding.
 * Note loose areas of the current specification, to help encourage these becoming fully specified.
 * Show the state of various implementations of UsdPreviewSurface, in order to determine areas where the specification is not yet followed.
-* Gather together at least some of the many efforts to read and render USD files.
 
 There are [more serious efforts at compatibility test suites](https://developer.nvidia.com/blog/universal-scene-description-as-the-language-of-the-metaverse/) happening in the long-term in the USD community, e.g., see [this video](https://www.nvidia.com/en-us/on-demand/session/siggraph2022-sigg22-s-20/) at 23:09 on. My small effort here is to give a _simple_ test scene, now, with some interesting materials, and note some problems seen testing with it. The model is first and foremost meant as an aid in testing and debugging UsdPreviewSurfaces.
 
@@ -45,9 +44,11 @@ Note: I currently work for NVIDIA. However, I am making this simple USD file as 
 
 I was inspired to take a bit of time to make this project due to hearing at SIGGRAPH 2022 about the pickup of USD in [open metaverse initiatives](https://cesium.com/building-the-open-metaverse-siggraph-2022/) and [ASWF's USD efforts](https://www.aswf.io/news/academy-software-foundation-launches-digital-production-example-library-as-newest-project-to-house-production-grade-content/). More important, the [USD Working Group](https://github.com/AcademySoftwareFoundation/wg-usd) is open to participation by all. Their openness inspired this effort. In particular, I'm told that the [Assets working group](https://github.com/usd-wg/assets/) is best placed to discuss these issues.
 
-## Observations on UsdPreviewSurface
+## Observations
 
-I'm putting a summary of my observations first, since what follows is an extensive set of tests for a variety of applications.
+First, a summary of my observations on the specification of UsdPreviewSurface and UsdLux, since what follows after is an extensive list of applications tests.
+
+### Physical units for lights
 
 One notable problem with [UsdPreviewSurface](https://graphics.pixar.com/usd/release/spec_usdpreviewsurface.html) as of August 2022 is that the "emissiveColor" is minimally specified as "Emissive component." It is unclear whether the color is meant to be specified as the material's on-screen appearance, or meant to be specified in, say, nits. These are actually two questions: 1) how does an object with an emissive color appear when directly viewed? and 2) how does this emission color work with other lights? For the first question, it is simple to say that the emissiveColor should be treated as a fixed color for the surface, the color that is always shown. However, USD has [an elaborate camera model](https://graphics.pixar.com/usd/dev/api/class_usd_geom_camera.html), including an exposure attribute, which implies that the appearance of the light should change as the exposure changes.
 
@@ -61,7 +62,11 @@ so that it gives off a reasonable amount of light to surrounding objects. This w
 
 This question of magnitude for lighting is part of a larger question, how physical lights are specified in USD. Currently [UsdLux](https://graphics.pixar.com/usd/release/api/usd_lux_page_front.html) and related light specifications use a film-related relative pair of values, ["exponent and intensity"](https://rmanwiki.pixar.com/display/REN23/PxrMeshLight), not tied to any physical units. Some applications appear to ignore the intensity setting for lights, I believe in part due to this lack of absolute measure.
 
+### Roughness
+
 The "roughness" input is loosely specified as of August 2022. It says "This value is usually squared before use with a GGX or Beckmann lobe." Choosing the square of the roughness, which is the common usage in the Burley model (see [page 14](https://disneyanimation.com/publications/physically-based-shading-at-disney/)), is the common way to go. GGX is also the common choice, from my experience. The standard setters need to choose, for better consistency among applications. As an example, [glTF has chosen roughness-squared and GGX](https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#material-structure) - see that section for their reasons. I would suggest simply lifting glTF's equations and descriptions of their implementation, saving work and also making USD and glTF more compatible. All this said, I don't have a great test object in McUsd for roughness, one with "midtone" grayscale values that would show any difference in implementations.
+
+### Opacity threshold
 
 Mentioning how opacityThreshold should normally be set for cutouts in the proposal would help new implementers and users. A value of 0.0 means that the alpha (transparency) value is indeed treated as semitransparency. An opacityThreshold greater than 0.0 gives a level where the alpha is compared and judged to be fully transparent (if below this value) or fully opaque (if above or equal to this value). This is clear enough, but I suggest that the specification note an opacityThreshold of 0.5 is a common cutoff value. As an example, using an RGBA texture authored for use as a billboard, here is it rendered with an opacityThreshold of 0.01, 0.5, and 0.99. The 0.5 value is, in my opinion, the best render of the three, and about the most logical.
 
@@ -69,12 +74,22 @@ Mentioning how opacityThreshold should normally be set for cutouts in the propos
 ![opacityThreshold 0.5](/images/opacity_0.5.png "opacityThreshold 0.5")
 ![opacityThreshold 0.99](/images/opacity_0.99.png "opacityThreshold 0.99")
 
-The application of normal textures to surfaces seems a little off by default. Some guidance from the proposal would be helpful. For example, the McUsd.usda model needs to set the bias and scale for every normal texture as follows:
+### Normal textures
+
+The application of normal textures to surfaces seems a little off by default. Some guidance from the proposal would be helpful; better still, a simple test suite of scenes.
+
+For example, the McUsd.usda model needs to set the bias and scale for every normal texture as follows:
 
     float4 inputs:bias = (-1, 1, -1, -1)
     float4 inputs:scale = (2, -2, 2, 2)
 
-Having to negate the second, Y, value in each is confusing. The normal textures used (created by someone else, and used in Minecraft RTX as-is) seem fairly standard to me, but I am not an expert. Some warning about this possible negation would be useful.
+Having to negate the second, Y, value in each is confusing. These odd Y values, in fact, get flagged by the [usdzip tool](https://graphics.pixar.com/usd/release/toolset.html) if the "-c", check compliance, flag is used (and non-negated Y values do not get flagged):
+
+    UsdUVTexture prim </Looks/grass_block_top/normal_texture> reads an 8 bit Normal Map, but has non-standard inputs:scale and inputs:bias values of (2, -2, 2, 2) and (-1, 1, -1, -1) (may violate 'NormalMapTextureChecker')
+
+The normal textures used (created by [Jason Gardner](https://github.com/jasonjgardner/jg-rtx) with Substance and other tools, and used in Minecraft RTX as-is) seem fairly standard to me, but I am not an expert. This could be a bug in NVIDIA Omniverse's renderers (which use these values), but I'm told it is working properly there. I believe that is correct. See the Sketchfab section for how the normals, without these negations of the Y values, seems to give upside-down normals. So, this could be an authoring mismatch, that the vertical normal channel Y (green) should have small green values when a slope points along +Y in texture space, large green values when a slope points down.
+
+Some warning about this possible negation would be useful. Better yet, a definitive model and image of "this is how this normal map texture on this square is supposed to look" would be great. If you - yes, you - make one, be sure the texture is marked so it's clear which end is up and which is right. I find something like the letter "R" on a texture an easy way to establish orientation. There should also be separate test cases where the bias and scale is negated for X (red) and Y (green), so that USD viewers can be tested to see if they support these texture values or not.
 
 ## Application Test Results
 
@@ -88,15 +103,17 @@ Note that few images will match perfectly from system to system. Reasons include
 * The renderer does not support emissive materials.
 * The renderer supports emissive materials, but the emissive values are too bright/dim.
 
-These various conditions and others will be noted after each rendering, as best as I can determine them. The last problem, emissive material definition, is explained in detail in the "Observations" section above.
+These various conditions and others will be noted after each rendering, as best as I can determine them. The last problem, emissive material definition, is explained in detail in the [Observations section](#observations) above.
 
-Please note that the purpose of this project is not to show problems in a particular application, but rather for me to see what features there might be confusion on (due to the specification or implementation) and to understand and snapshot the level of progress at this time. Noting problems is not meant as criticism, but rather as things to be aware of if you use a package. Many of the applications have improved their import capabilities considerably in the past two years.
+Please note that the purpose of this project is not to show problems in a particular application, but rather for me to see what features there might be confusion on (due to the specification or implementation) and to understand and snapshot the level of progress at this time. Noting problems is not meant as criticism, but rather as things to be aware of if you use a package. Many of the applications have improved their import capabilities considerably in the past two years that I've been sampling them.
+
+The following apps are a snapshot as of August 2022. If nothing else, you'll get a flavor of the wide range of support out there for USD.
 
 ## USDView
 
 The usdview program from the [USD Toolset](https://graphics.pixar.com/usd/release/toolset.html) includes a basic hydra GL rasterizing renderer. It's about as basic a render you can make, but it's also the standard, in that it's the renderer Pixar provides. As such, it properly renders semitransparency, cutouts, roughness, metalness, etc.
 
-It is possible to build usdview from scratch, but in that way lies madness (at least for me). Happily, [NVIDIA's Omniverse Launcher](https://www.nvidia.com/en-us/omniverse/) provides a pre-built USDView. I tested with version 0.22.8.
+It is possible to build [usdview from scratch](https://graphics.pixar.com/usd/release/toolset.html), but in that way lies madness (at least for me). Happily, [NVIDIA's Omniverse Launcher](https://www.nvidia.com/en-us/omniverse/) provides a pre-built USDView that I can simply install and run. I tested with version 0.22.8. (BTW, if you want other USD tools in the toolset, I found [NVIDIA's USD Pre-built Libraries](https://developer.nvidia.com/usd) pretty easy to get going; joining the developer network is free.)
 
 Load procedure: File -> Open, then hold down Alt and use the mouse buttons to rotate, pan, and dolly.
 
@@ -108,7 +125,7 @@ By default, USDView adds a light "at the eye", which is shown in the rendering a
 
 Without shadows, it is a little difficult to tell if the DistantLight in McUsd.usda is being used. By pressing "F11" (or View -> Toggle Viewer Mode), we can see that the DistantLight and DomeLight have been read in (the camera has not). These lights can be toggled off by right-clicking and selecting "Make Invisible". Doing so, the DomeLight appears to have no effect, neither to direct illumination nor as a background environment map.
 
-The lava light source seems oversaturated. As discussed in "Observations", the emissive texture is scaled up by a factor of 1000. Removing this scale factor, which is done in the file McUsd_unscaled_lava.usda, the lava looks more reasonable:
+The lava light source seems oversaturated. As discussed in ["Observations"](#observations) above, the emissive texture is scaled up by a factor of 1000. Removing this scale factor, which is done in the file McUsd_unscaled_lava.usda, the lava looks more reasonable:
 
 ![UsdView unscaled lava](/images/usdview_unscaled_lava.png "UsdView unscaled lava")
 
@@ -122,11 +139,7 @@ Load procedure: drag and drop McUsd.usda file into the viewport of Omniverse Cre
 
 There are [a few renderers in Omniverse](https://docs.omniverse.nvidia.com/prod_kit/prod_materials-and-rendering/render-settings_overview.html), along with the hydra renderer Pixar Storm being included as an option. All results are from Omniverse Create 2022.3.0-beta.5.
 
-### Omniverse RTX - Interactive (Path Tracing)
-
-Load procedure: Nothing further. By default, the "RTX - Interactive (Path Tracing)" is used.
-
-This renderer is progressive, shooting more and more frames of rays and blending these results in. Here is the render after around 140 frames or so:
+By default, the "RTX - Interactive (Path Tracing)" is used. This renderer is progressive, shooting more and more frames of rays and blending these results in. Here is the render after around 140 frames or so:
 
 ![Omniverse RTX - Interactive (Path Tracing)](/images/ov_interactive.png "Omniverse RTX - Interactive (Path Tracing)")
 
@@ -136,45 +149,42 @@ The lava is an emitter and affects how the other objects are illuminated. Here i
 
 ![Omniverse RTX - path traced lava](/images/ov_interactive_lava.png "Omniverse RTX - path traced lava")
 
-### Omniverse RTX - Real-Time
-
-This renderer includes some ray tracing elements.
-
-Load procedure: with the model loaded, in the upper left corner of the viewport is a light-bulb icon with a renderer name. Choose the "RTX - Real-Time" renderer from this dropdown list.
+To use a different renderer, in the upper left corner of the viewport is a light-bulb icon with a renderer name. Choose the renderer from this dropdown list. The next renderer I tested was the "Omniverse RTX - Real-Time" renderer, which includes some ray tracing elements:
 
 ![Omniverse RTX - Real-Time](/images/ov_real_time.png "Omniverse RTX - Real-Time")
 
 Note simplifications occur, such as opaque shadows for semitransparent objects.
 
-### Omniverse RTX - Accurate (Iray)
-
-Uses the Iray ray tracer. Here is the render after around 140 frames:
-
-Load procedure: with the model loaded, in the upper left corner of the viewport is a light-bulb icon with a renderer name. Choose the "RTX - Real-Time" renderer from this dropdown list.
+The "Omniverse RTX - Accurate (Iray)" renderer uses the Iray ray tracer. Here is the render after around 140 frames:
 
 ![Omniverse RTX - Accurate (Iray)](/images/ov_accurate.png "Omniverse RTX - Accurate (Iray)")
 
 Differences with the interactive version include less color on the semitransparent glass block on the left. Though not obvious, the lava is a bit dimmer. In the "Accurate" render a bit of a noisy caustic can be seen on the grass to the right of the gold block.
 
-### Omniverse Pixar Storm
-
-Load procedure: with the model loaded, in the upper left corner of the viewport is a light-bulb icon with a renderer name. Choose the "Pixar Storm" renderer from this dropdown list.
+The Pixar Storm hydra delegate is available in beta, but currently in development:
 
 ![Omniverse Pixar Storm](/images/ov_pixar_storm.png "Omniverse Pixar Storm")
 
-Some clear problems: lights are ignored, opacityThreshold is not implemented for cutout objects, metallic seems to have no effect, etc. This looks to be work in progress.
+I expect this renderer will improve; see Houdini's Storm renderer below.
 
 ## Sketchfab
 
-Load procedure: upload a zip file of the whole "model" directory to your account. Modifications: the directional light was set to 250 degrees, the camera FOV to 30, and the camera view itself manually adjusted to about match.
+Load procedure: make a zip file that consists of McUsd.usda and the McUsd_materials in the "models" directory and upload it to Sketchfab. Modifications: the directional light was set to 250 degrees, the camera FOV to 30, and the camera view itself manually adjusted to about match.
 
-The Sketchfab rendering can be [directly examined on their site](https://skfb.ly/oxyUE).
+The Sketchfab rendering can be [**directly examined in a browser**](https://skfb.ly/oxyUE).
 
 ![Sketchfab](/images/sketchfab.png "Sketchfab")
 
 Sketchfab does not translate the camera or lights. It uses rasterization and related techniques for interactive rendering, so giving typical limitations: the lava does not emit light, the glass block does not cast a shadow, true reflections are not generated for shiny surfaces. There are some interesting specular highlights on the glass block that are not visible in the Omniverse renderings.
 
-Sketchfab lets you download different translations of your model. I downloaded the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) - click that link on an iPhone to view it. The camera position set in Sketchfab is exported. The default Sketchfab light sources are not. The texture scaling on the lava (see "Observations" section) is removed, which usually improves its appearance in the apps that use it.
+I did notice that if I set the orientation of the light to about 126 degrees, I get upside down bumps on the left side of the prismarine block, which is wrong. The light is coming from above and should not illuminate the bottom edges of the stones:
+
+![Sketchfab flipped normals](/images/sketchfab_flip.png "Sketchfab flipped normals")
+
+However, I get the exact same flipped-vertically normals when I uploaded "McUsd_normal_normals.usda", [see it here](https://skfb.ly/oxD9r)
+, with the light angle set to 126 degrees and zoomed in on the prismarine. Since these are the same, I believe what is happening is that Sketchfab is ignoring the scale and bias values set for the normal maps. See the "[Observations section](#observations) earlier for more on (my) normal map texture scaling confusion.
+
+Sketchfab lets you download different translations of your model. I downloaded the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) - click that link on an iPhone to view it. The camera position set in Sketchfab is exported. The default Sketchfab light sources are not. From what I can tell, the texture scaling on the lava is removed, for good or ill.
 
 ## Apple iPhone
 
@@ -193,6 +203,8 @@ Try AR mode. Because this model is actually to scale, the blocks are each 1 mete
 ![iPhone AR view](/images/iphone_ar.png "iPhone AR view")
 
 In both views you can see that the cutout sunflower head has rendering problems. If you rotate the view, various parts of the sunflower disappear and appear. My guess is that this artifact is likely caused by cutouts being rendered by z-sorting them with other objects in the scene, but I can't say I fully understand. The "ghosting" visible in Object mode is not present in AR mode.
+
+It's also hard to tell, but it seems like the "light from below" reversed normal problem might be visible in the AR view. See the [Observations section](#observations).
 
 ## Apple Mac
 
@@ -314,7 +326,7 @@ The Render View render doesn't look as good - the DomeLight helps there:
 
 ![Cinema 4D no domelight render](/images/c4d_no_dome_render.png "Cinema 4D no domelight render")
 
-This render more strongly highlights the normal texture mismatches, especially on the prismarine.
+This render more strongly highlights the normal-map texture mismatches, especially on the prismarine.
 
 ## Maya
 
@@ -334,7 +346,7 @@ This is a simplified view in Viewport 2.0, so it is unclear whether the normal t
 
 Other renderers are available in the "Renderer" menu just above the viewport (not to be confused with the Rendering or Render menus above it). The experimental Hydra GL and experimental Hydra Arnold renderers gave black views, Arnold alone gave a dim purple view of the meshes.
 
-I experimented with changing the Sun's intensity instead. Reset the exposure to 0. In the Outliner to the left, open the defaultLightSet and select McUsd:Sun. In the McUsd:SunShape tab dialog on the right, change the Intensity from 50000 (I don't know where this number came from, as the sun in the file is set to 30) to 10. This gives a different view, with the lava blocks overblown:
+I experimented with changing the Sun's intensity instead. Reset the exposure to 0. In the Outliner to the left, open the defaultLightSet and select McUsd:Sun. In the McUsd:SunShape tab dialog on the right, change the Intensity from 50000 (I don't know where this number came from, as the sun in the file is set to 30; that said, if I examine this same light in usdview, it says 50000. Maybe it's a default?) to 10. This gives a different view, with the lava blocks overblown:
 
 ![Maya](/images/maya_dim_sun.png "Maya")
 
@@ -342,15 +354,13 @@ However, Hydra Arnold then gives this:
 
 ![Maya experimental Hydra Arnold](/images/maya_exp_hydra_arnold.png "Maya experimental Hydra Arnold")
 
-It twitches among some various low-res views. Definitely experimental.
+It flickers among some various low-res views. Definitely experimental, and I'm sure it will improve.
 
 ## TODO
 
 Some of the many viewers, alphabetically:
-* 3DS MAX
 * [Activision](https://github.com/Activision/USDShellExtension)
 * [Unity](https://docs.unity3d.com/2020.1/Documentation/Manual/com.unity.formats.usd.html)
-* [Unreal Editor](https://docs.unrealengine.com/4.26/en-US/WorkingWithContent/USDinUE4): [Omniverse connector](https://docs.omniverse.nvidia.com/con_connect/con_connect/ue4.html)
 
 ---
 ## License
