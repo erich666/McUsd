@@ -161,12 +161,6 @@ The "Omniverse RTX - Accurate (Iray)" renderer uses the Iray ray tracer. Here is
 
 Differences with the interactive version include less color on the semitransparent glass block on the left. Though not obvious, the lava is a bit dimmer. In the "Accurate" render a bit of a noisy caustic can be seen on the grass to the right of the gold block.
 
-The Pixar Storm hydra delegate is available in beta, but currently in development:
-
-![Omniverse Pixar Storm](/images/ov_pixar_storm.png "Omniverse Pixar Storm")
-
-I expect this renderer will improve; see Houdini's Storm renderer below.
-
 ## Sketchfab
 
 Load procedure: make a zip file that consists of McUsd.usda and the McUsd_materials in the "models" directory and upload it to Sketchfab. Modifications: the directional light was set to 250 degrees, the camera FOV to 30, and the camera view itself manually adjusted to about match.
