@@ -87,7 +87,7 @@ Having to negate the second, Y, value in each is confusing. These odd Y values, 
 
     UsdUVTexture prim </Looks/grass_block_top/normal_texture> reads an 8 bit Normal Map, but has non-standard inputs:scale and inputs:bias values of (2, -2, 2, 2) and (-1, 1, -1, -1) (may violate 'NormalMapTextureChecker')
 
-The normal textures used (created by [Jason Gardner](https://github.com/jasonjgardner/jg-rtx) with Substance and other tools, and used in Minecraft RTX as-is) seem fairly standard to me, but I am not an expert. This could be a bug in NVIDIA Omniverse's renderers (which use these values), but I'm told it is working properly there. I believe that is correct. See the Sketchfab section for how the normals, without these negations of the Y values, seems to give upside-down normals. So, this could be an authoring mismatch, that the vertical normal channel Y (green) should have small green values when a slope points along +Y in texture space, large green values when a slope points down.
+The normal textures used (created by [Jason Gardner](https://github.com/jasonjgardner/jg-rtx) with Substance and other tools, and used in Minecraft RTX as-is) seem fairly standard to me, but I am not an expert. This could be a bug in NVIDIA Omniverse's renderers (which use these values), but I'm told it is working properly there. I believe that is correct. See the [Sketchfab section](@sketchfab) for how the normals, without these negations of the Y values, seems to give upside-down normals. So, this could be an authoring mismatch, that the vertical normal channel Y (green) should have small green values when a slope points along +Y in texture space, large green values when a slope points down.
 
 Some warning about this possible negation would be useful. Better yet, a definitive model and image of "this is how this normal map texture on this square is supposed to look" would be great. If you - yes, you - make one, be sure the texture is marked so it's clear which end is up and which is right. I find something like the letter "R" on a texture an easy way to establish orientation. There should also be separate test cases where the bias and scale is negated for X (red) and Y (green), so that USD viewers can be tested to see if they support these texture values or not.
 
@@ -163,7 +163,7 @@ Differences with the interactive version include less color on the semitranspare
 
 ## Sketchfab
 
-Load procedure: make a zip file that consists of McUsd.usda and the McUsd_materials in the "models" directory and upload it to Sketchfab. Modifications: the directional light was set to 250 degrees, the camera FOV to 30, and the camera view itself manually adjusted to about match.
+Load procedure: make a zip file that consists of McUsd.usda and the McUsd_materials in the "models" directory and upload it to [Sketchfab](https://sketchfab.com). Modifications: the directional light was set to 250 degrees, the camera FOV to 30, and the camera view itself manually adjusted to about match.
 
 The Sketchfab rendering can be [**directly examined in a browser**](https://skfb.ly/oxyUE).
 
@@ -206,7 +206,7 @@ If you download the [Sketchfab USDZ file](https://erich.realtimerendering.com/mc
 
 ![Mac Preview](/images/mac_preview.png "Mac Preview")
 
-Lights and camera are not translated. Overall the content looks good, with no z-buffer problems with cutouts.
+Lights and camera are not translated. Overall the content looks good, with no z-buffer problems with cutouts. However, note that the bumps on the right side of the prismarine block look lit from below, probably because of the missing scale/bias on the normal map.
 
 This view shows the problem with the texturing on the grassy plain:
 
