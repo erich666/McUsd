@@ -290,7 +290,9 @@ Changing "Persp" in the upper right corner of the viewport to the Karma path tra
 
 ![Houdini Karma](/images/houdini_karma.png "Houdini Karma")
 
-A bit noisy by default, but the number of rays shot can always be increased. This view shows the Sun has been nicely translated, with no adjustment on my part. The DomeLight has also been translated, and affects the rendering if turned off:
+A bit noisy by default, but the number of rays shot can always be increased. This view shows the Sun has been nicely translated, with no adjustment on my part.
+
+The DomeLight has also been translated to some extent (it does not act as a surrounding environment), and affects the rendering if turned off:
 
 ![Houdini Karma](/images/houdini_karma_no_domelight.png "Houdini Karma")
 
