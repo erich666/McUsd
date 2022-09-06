@@ -3,3 +3,4 @@
 *.usdc
 model/.thumbs
 *.c4d
+unit_test/*

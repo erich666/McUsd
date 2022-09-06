@@ -87,9 +87,9 @@ Having to negate the second, Y, value in each is confusing. These odd Y values, 
 
     UsdUVTexture prim </Looks/grass_block_top/normal_texture> reads an 8 bit Normal Map, but has non-standard inputs:scale and inputs:bias values of (2, -2, 2, 2) and (-1, 1, -1, -1) (may violate 'NormalMapTextureChecker')
 
-The normal textures used (created by [Jason Gardner](https://github.com/jasonjgardner/jg-rtx) with Substance and other tools, and used in Minecraft RTX as-is) seem fairly standard to me, but I am not an expert. This could be a bug in NVIDIA Omniverse's renderers (which use these values), but I'm told it is working properly there. I believe that is correct. See the [Sketchfab section](@sketchfab) for how the normals, without these negations of the Y values, seems to give upside-down normals. So, this could be an authoring mismatch, that the vertical normal channel Y (green) should have small green values when a slope points along +Y in texture space, large green values when a slope points down.
+The normal textures used (created by [Jason Gardner](https://github.com/jasonjgardner/jg-rtx) with Substance and other tools, and used in Minecraft RTX as-is) seem fairly standard to me, but I am not an expert. However, which way the X and Y directions on the texture are set can be varied, such as with the [Normal Map Online tool]https://cpetry.github.io/NormalMap-Online/, where you can use "Invert" to reverse the direction of any axis. See the [Sketchfab section](@sketchfab) for how, without these negations of the Y values, seems to give upside-down normals. So, this could be an authoring mismatch, that the vertical normal channel Y (green) should have small green values when a slope points along +Y in texture space, large green values when a slope points down. Or, I could be making a mistake myself.
 
-Some warning about this possible negation would be useful. Better yet, a definitive model and image of "this is how this normal map texture on this square is supposed to look" would be great. If you - yes, you - make one, be sure the texture is marked so it's clear which end is up and which is right. I find something like the letter "R" on a texture an easy way to establish orientation. There should also be separate test cases where the bias and scale is negated for X (red) and Y (green), so that USD viewers can be tested to see if they support these texture values or not.
+Some warning in the specification about this possible negation would be useful. Better yet, a definitive model and image of "this is how this normal map texture on this square is supposed to look" would be great. There should also be separate test cases where the bias and scale is negated for X (red) and Y (green), so that USD viewers can be tested to see if they support these texture values or not. I look forward to a test asset, as [have started to appear](https://github.com/usd-wg/assets) for other attributes. If you - yes, you - make one, be sure the texture is marked so it's clear which end is up and which is right. I find something like the letter "R" on a texture an easy way to establish orientation.
 
 ## Application Test Results
 
@@ -119,7 +119,7 @@ Load procedure: File -> Open, then hold down Alt and use the mouse buttons to ro
 
 ![UsdView](/images/usdview.png "UsdView")
 
-As expected from a basic rasterizer, shadows, reflections, and emitted light from surfaces are not rendered.
+As expected from a basic rasterizer, shadows, reflections, and emitted light from surfaces are not rendered. Note: here and further on, you can click on the image to see the full resolution version, which is scaled down to fit on this README page.
 
 By default, USDView adds a light "at the eye", which is shown in the rendering above. This additional light can be turned off via View -> Lights -> Camera Light.
 
@@ -252,7 +252,7 @@ Using F12 to render the image, I get:
 
 ![Blender render](/images/blender_render.png "Blender render")
 
-This experimental work-in-progress looks good overall. The cutouts do not yet cast shadows. The normal map texture on the prismarine block appears to be reverse in both X and Y, with the bumps appearing to push in instead of out.
+This experimental work-in-progress looks good overall. The cutouts do not yet cast shadows. The normal map texture on the prismarine block appears to be reverse in both X and Y, with the bumps appearing to push in instead of out. This effect is more visible if you click on the image above, to see the original, higher resolution version. In further testing, Blender currently appears to ignore the bias and scale values set on the normal texture map.
 
 ## Unreal Editor
 
