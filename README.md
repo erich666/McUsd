@@ -232,19 +232,27 @@ The render is a bit washed out compared to Autodesk's original, but that's just 
 
 ## Blender
 
-Being free and open source, Blender is easy to test. I tried the Blender 3.3 beta and 3.4 alpha from [here](https://builder.blender.org/download/daily/), and also the Blender 3.2 alpha USD branch, installer downloadable through the [Omniverse Launcher](https://www.nvidia.com/en-us/omniverse/). These all gave the same renderings shown below.
+Being free and open source, Blender is easy to test. I tested the bleeding edge (as of today) [Blender 3.4.0 USD version](https://builder.blender.org/download/experimental/). 
 
-Load procedure: File -> Import -> Universal Scene Description. Choose Camera.001 in the hierarchy control in the upper right, click the green camera icon next to it, then type [Ctrl+Numpad 0](https://blender.stackexchange.com/questions/3502/how-can-i-make-a-camera-the-active-one) to set the view to this camera. Choose "viewport shading" in the upper right corner of the viewport. The result:
+Load procedure: Start Blender and delete the cube, as usual. File -> Import -> Universal Scene Description. If you use an older version, see [this issue](https://github.com/erich666/McUsd/issues/2) for the setting needed on the USD Importer dialog to properly build the shaders.
+
+Choose Camera.001 in the hierarchy control in the upper right, then right-click in the viewport and, from the Object Context Menu that appears, choose the topmost option, "Set Active Camera".
+
+Choose "Viewport Shading" in the upper right corner of the viewport. The result:
 
 ![Blender initial view](/images/blender_initial.png "Blender initial view")
 
-Blender added a light on import, at the bottom of the hierarchy list in the upper right. Turn it off by clicking on the eye icon to the right of this "Light" object to turn it off. The Sun (DistantLight) is imported by Blender, but is too bright. Find it in the hierarchy and change its strength below to, say, 1.0. This at least gives a colorful image:
+Blender added a light on import, at the bottom of the hierarchy list in the upper right. Turn it off by clicking on the eye icon to the right of this "Light" object to turn it off. The Sun in McUsd.usda is imported by Blender, but is too dim. Find it in the hierarchy, and below select the lightbulb icon "Object Data Properties" and change the Strength to 2.0. This gives:
 
 ![Blender adjusted view](/images/blender_adjusted.png "Blender adjusted view")
 
-Clearly, Blender is currently removing textures attached to surfaces. Interestingly, it appears to read the color textures applied and computes average colors to use in their stead. The DistantLight was mostly translated properly, with angles X=-125 and Y=-35, equivalent to the specified angles of 235 and 325. The Euler order for the angles was not changed to ZXY (though in this case it doesn't matter, since Z==0). A view showing the shadows produced confirms that the light's location is correct:
+The Shadow property for the Sun is checked in the properties, but it doesn't appear to cast a shadow, unlike the "Light" in the original image. This may be some error on my part.
 
-![Blender shadow view](/images/blender_shadow.png "Blender shadow view")
+Using F12 to render the image, I get:
+
+![Blender render](/images/blender_render.png "Blender render")
+
+This experimental work-in-progress looks good overall. The cutouts do not yet cast shadows. The normal map texture on the prismarine block appears to be reverse in both X and Y, with the bumps appearing to push in instead of out.
 
 ## Unreal Editor
 
