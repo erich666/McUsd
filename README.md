@@ -76,6 +76,8 @@ Mentioning how opacityThreshold should normally be set for cutouts in the propos
 ![opacityThreshold 0.5](/images/opacity_0.5.png "opacityThreshold 0.5")
 ![opacityThreshold 0.99](/images/opacity_0.99.png "opacityThreshold 0.99")
 
+The USD Working Group Assets repository has a nice [Alpha Blend Mode Test](https://github.com/usd-wg/assets/tree/main/test_assets/AlphaBlendModeTest) for UsdPreviewSurface. I am happy to see they point out that opacityThreshold == 0.5 is the "Default" cutout value. Noting this in the specification would help everyone else.
+
 ### Normal textures
 
 The application of normal textures to surfaces seems a little off by default. Some guidance from the proposal would be helpful; better still, a simple test suite of scenes.
