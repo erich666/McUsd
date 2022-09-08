@@ -71,7 +71,7 @@ Here's a sample conversion. This triplet turns into a normal by first changing i
 
 From testing in USDView (it's not specified in the specification), the +X axis of the texture is to the right, +Y up, +Z outward to the viewer. Our surface normal points quite far to the right, X=0.828. The +Z, the direction outward from the surface to the camera, is only 0.114. Note that the +Y is nearly zero (exactly zero would be 127.5 originally, a value we can't represent), meaning the normal doesn't (much) point up or down, relative to the surface.
 
-If you're really on top of it, you'll notice that the length of this normal is actually 0.838 - it should be 1.0, a normalized normal. I'm not sure why this is. My guess is that the tool does not properly normalize the normals.
+If you're really on top of it, you'll notice that the length of this normal is actually 0.838 - it should be 1.0, a normalized normal. I'm not sure why this is. My guess is that the tool does not properly normalize the normals. Shortened normals can cause the bumps rendered to dim, unless the renderer normalizes the texture's normal (unlikely, in my experience). TODO: to make this a "real" unit test, normal textures should be renormalized (also good: test for any negative Z values. These should never be 127 or lower).
 
  The colors of the normals in any normal map can tip you off. The rightward pointing normal was mostly red. Upward pointing normals, like along the top of the "R", are mostly green, such as (127,233,142). On the left edge of the "R", pointing to the left, you get a more dark greenish teal, (22,127,142), and bottom-pointing gives a dark bluish purple, (127,83,239).
 
