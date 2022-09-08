@@ -22,15 +22,15 @@ If the viewer doesn't import the lights, you are on your own. Whatever light you
 
 Lit from above:
 
-![UsdView 0.22.8, lit from above](/unit_tests/cubes_r_normals/images/crn_usdview_lit_from_above.png "UsdView 0.22.8, lit from above")
+![UsdView 0.22.8, lit from above](/unit_tests/cubes_r_normals/images/crn_usdview_light_from_above.png "UsdView 0.22.8, lit from above")
 
 Lit from left:
 
-![UsdView 0.22.8, lit from left](/unit_tests/cubes_r_normals/images/crn_usdview_lit_from_left.png "UsdView 0.22.8, lit from left")
+![UsdView 0.22.8, lit from left](/unit_tests/cubes_r_normals/images/crn_usdview_light_from_left.png "UsdView 0.22.8, lit from left")
 
 Lit from right:
 
-![UsdView 0.22.8, lit from right](/unit_tests/cubes_r_normals/images/crn_usdview_lit_from_right.png "UsdView 0.22.8, lit from right")
+![UsdView 0.22.8, lit from right](/unit_tests/cubes_r_normals/images/crn_usdview_light_from_right.png "UsdView 0.22.8, lit from right")
 
 ## Technical details
 
