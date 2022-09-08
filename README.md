@@ -91,11 +91,15 @@ Having to negate the second, Y, value in each is confusing. These odd Y values, 
 
     UsdUVTexture prim </Looks/grass_block_top/normal_texture> reads an 8 bit Normal Map, but has non-standard inputs:scale and inputs:bias values of (2, -2, 2, 2) and (-1, 1, -1, -1) (may violate 'NormalMapTextureChecker')
 
-The normal textures used (created by [Jason Gardner](https://github.com/jasonjgardner/jg-rtx) with Substance and other tools, and used in Minecraft RTX as-is) seem fairly standard to me, but I am not an expert. However, which way the X and Y directions on the texture are set can be varied, such as with the [Normal Map Online tool]https://cpetry.github.io/NormalMap-Online/, where you can use "Invert" to reverse the direction of any axis. I _believe_ normal maps generated there with "Invert R" then can be used without adjusting the default bias (all -1's) and scale (all 2's).
+The normal textures used (created by [Jason Gardner](https://github.com/jasonjgardner/jg-rtx) with Substance and other tools, and used in Minecraft RTX as-is) seem fairly standard to me, but I am not an expert. However, which way the X and Y directions on the texture are set can be varied, such as with the [NormalMap Online tool]https://cpetry.github.io/NormalMap-Online/, where you can use "Invert" to reverse the direction of any axis. I _believe_ normal maps generated there with "Invert R" then can be used without adjusting the default bias (all -1's) and scale (all 2's).
 
 See the [Sketchfab section](@sketchfab) for how, without these negations of the bias and scale Y values, seems to give upside-down normals. So, this could be an authoring mismatch, that the vertical normal channel Y (green) should have small green values when a slope points along +Y in texture space, large green values when a slope points down. Or, I could be making a mistake myself.
 
-A definitive model and image of "this is how this normal map texture on this square is supposed to look" would give great guidance. There should also be separate test cases where the bias and scale is negated for X (red) and Y (green), so that USD viewers can be tested to see if they support these texture values or not. I look forward to a test asset, as [have started to appear](https://github.com/usd-wg/assets) for other attributes. If you - yes, you - make one, be sure the texture is marked so it's clear which end is up and which is right. I find something like the letter "R" on a texture an easy way to establish orientation.
+So, I decided to make a simple test scene.
+
+#### "Cubes R Normal" Unit Test
+
+In the [unit_tests/cubes_r_normal subdirectory](/unit_tests/cubes_r_normal) you'll find a test file for checking whether bias and scale for normal map textures are treated properly.
 
 ## Application Test Results
 
