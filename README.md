@@ -99,7 +99,7 @@ So, I decided to make a simple test scene.
 
 #### "Cubes R Normal" Unit Test
 
-In the [unit_tests/cubes_r_normal subdirectory](/unit_tests/cubes_r_normal) you'll find a test file for checking whether bias and scale for normal map textures are treated properly.
+In the [unit_tests/cubes_r_normals subdirectory](/unit_tests/cubes_r_normals) you'll find a test file for checking whether bias and scale for normal map textures are treated properly.
 
 ## Application Test Results
 

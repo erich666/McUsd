@@ -1,4 +1,4 @@
-# Cubes R Normal test scene
+# Cubes R Normals test scene
 
 This test file, cubes_r_normal.usda, is for testing how well a USD display application interprets normal map textures. Each cube uses a different normal map texture, combined with different bias and scale values applied to that texture, to give what should be an identical result.
 
@@ -6,7 +6,7 @@ The usdview program from the [USD Toolset](https://graphics.pixar.com/usd/releas
 
 It is possible to build [usdview from scratch](https://graphics.pixar.com/usd/release/toolset.html), but in that way lies madness (at least for me). Happily, [NVIDIA's Omniverse Launcher](https://www.nvidia.com/en-us/omniverse/) provides a pre-built USDView that I can simply install and run. I tested with version 0.22.8.
 
-Load procedure: File -> Open and select cubes_r_normal.usda. Press F11 to toggle on the hierarchy view (if not already visible). Open up the "root" by double-clicking on it. Select the "Camera" and right-click, then pick (at the bottom) "Set As Active Camera". Widen the application a bit and you'll see:
+Load procedure: File -> Open and select cubes_r_normals.usda. Press F11 to toggle on the hierarchy view (if not already visible). Open up the "root" by double-clicking on it. Select the "Camera" and right-click, then pick (at the bottom) "Set As Active Camera". Widen the application a bit and you'll see:
 
 ![UsdView 0.22.8](/unit_tests/cubes_r_normals/images/crn_usdview.png "UsdView 0.22.8")
 
