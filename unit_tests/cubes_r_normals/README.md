@@ -12,7 +12,7 @@ Load procedure: File -> Open and select cubes_r_normals.usda. Press F11 to toggl
 
 The scene has four light sources in it, with just one, the "Angled_Light" coming roughly from the camera's direction, enabled. You can toggle these lights on and on in USDView by clicking on the V (visible) or I (invisible) values to the right of each. For example, here are the settings and where I clicked to make the "Light_from_above" visible and affect the scene:
 
-![UsdView 0.22.8, light toggle](/unit_tests/cubes_r_normals/images/crn_light_toggle "UsdView 0.22.8, light toggle")
+![UsdView 0.22.8, light toggle](/unit_tests/cubes_r_normals/images/crn_light_toggle.png "UsdView 0.22.8, light toggle")
 
 Toggling the various lights can show whether the three cubes respond to the light in the same way.
 
@@ -21,13 +21,16 @@ If the viewer being checked does not read in and use the camera, simply adjust t
 If the viewer doesn't import the lights, you are on your own. Whatever light you use, the three cubes should appear about the same. Pay particular attention to whether the left edge and the top of the R is light or dark.
 
 Lit from above:
-![UsdView 0.22.8, lit from above](/unit_tests/cubes_r_normals/images/crn_usdview_lit_above.png "UsdView 0.22.8, lit from above")
+
+![UsdView 0.22.8, lit from above](/unit_tests/cubes_r_normals/images/crn_usdview_lit_from_above.png "UsdView 0.22.8, lit from above")
 
 Lit from left:
-![UsdView 0.22.8, lit from left](/unit_tests/cubes_r_normals/images/crn_usdview_lit_left.png "UsdView 0.22.8, lit from left")
+
+![UsdView 0.22.8, lit from left](/unit_tests/cubes_r_normals/images/crn_usdview_lit_from_left.png "UsdView 0.22.8, lit from left")
 
 Lit from right:
-![UsdView 0.22.8, lit from right](/unit_tests/cubes_r_normals/images/crn_usdview_lit_right.png "UsdView 0.22.8, lit from right")
+
+![UsdView 0.22.8, lit from right](/unit_tests/cubes_r_normals/images/crn_usdview_lit_from_right.png "UsdView 0.22.8, lit from right")
 
 ## Technical details
 
@@ -72,21 +75,25 @@ If you're really on top of it, you'll notice that the length of this normal is a
 
  The colors of the normals in any normal map can tip you off. The rightward pointing normal was mostly red. Upward pointing normals, like along the top of the "R", are mostly green, such as (127,233,142). On the left edge of the "R", pointing to the left, you get a more dark greenish teal, (22,127,142), and bottom-pointing gives a dark bluish purple, (127,83,239).
 
- For the other two textures, r_normal_map_reversed_x.png and r_normal_map_reversed_y.png, they (should) appear pretty much the same as our left cube with the default bias and scale values. These are properly the same in the USDView images shown earlier. So it's clear, the bias and scale for the "reversed_x" cube, displayed in the middle, are:
+ For the other two textures, r_normal_map_reversed_x.png and r_normal_map_reversed_y.png, they (should) appear pretty much the same as our left cube with the default bias and scale values. These are properly the same in the USDView images shown earlier. 
+ 
+ So it's clear, for the r_normal_map_reversed_x.png normal map:
+
+![r_normal_map_reversed_x.png](/unit_tests/cubes_r_normals/r_normal_map_reversed_x.png "r_normal_map_reversed_x.png")
+
+the bias and scale for the "r_normals_reversed_x" cube, displayed in the middle, are:
 
     float4 inputs:bias = (1, -1, -1, -1)
     float4 inputs:scale = (-2, 2, 2, 2)
 
-for the r_normal_map_reversed_x.png normal map:
-![r_normal_map_reversed_x.png](/unit_tests/cubes_r_normals/r_normal_map_reversed_x.png "r_normal_map_reversed_x.png")
+And for the r_normal_map_reversed_y.png normal map:
 
-And for the "reversed_y" cube, displayed on the right:
+![r_normal_map_reversed_y.png](/unit_tests/cubes_r_normals/r_normal_map_reversed_y.png "r_normal_map_reversed_y.png")
+
+for the "r_normals_reversed_y" cube, displayed on the right:
 
     float4 inputs:bias = (-1, 1, -1, -1)
     float4 inputs:scale = (2, -2, 2, 2)
-
-for the r_normal_map_reversed_y.png normal map:
-![r_normal_map_reversed_y.png](/unit_tests/cubes_r_normals/r_normal_map_reversed_y.png "r_normal_map_reversed_y.png")
 
 Compare r_normal_map_reversed_x.png with r_normal_map.png and you'll see the "reddish" and "dark greenish teal" parts of the map are swapped. For r_normal_map_reversed_y.png the "greenish" parts are swapped with the "dark bluish purple" parts.
 
