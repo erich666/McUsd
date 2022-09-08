@@ -84,8 +84,8 @@ The application of normal textures to surfaces seems a little off by default. So
 
 For example, the McUsd.usda model needs to set the bias and scale for every normal texture as follows:
 
-    float4 inputs:bias = (-1, 1, -1, -1)
-    float4 inputs:scale = (2, -2, 2, 2)
+    float4 inputs:bias =  (-1,  1, -1, -1)
+    float4 inputs:scale = ( 2, -2,  2,  2)
 
 Having to negate the second, Y, value in each is confusing. These odd Y values, in fact, get flagged by the [usdzip tool](https://graphics.pixar.com/usd/release/toolset.html) if the "-c", check compliance, flag is used (and non-negated Y values do not get flagged):
 

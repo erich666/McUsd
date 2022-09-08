@@ -55,8 +55,8 @@ Here is the r_normal_map.png:
 
 The default type of normal map texture, i.e., the settings in the USDA file are:
 
-    float4 inputs:bias = (-1, -1, -1, -1)
-    float4 inputs:scale = (2, 2, 2, 2)
+    float4 inputs:bias =  (-1, -1, -1, -1)
+    float4 inputs:scale = ( 2,  2,  2,  2)
 
 which are the defaults in [UsdPreviewSurface specification](https://graphics.pixar.com/usd/release/spec_usdpreviewsurface.html). 
 
@@ -83,8 +83,8 @@ If you're really on top of it, you'll notice that the length of this normal is a
 
 the bias and scale for the "r_normals_reversed_x" cube, displayed in the middle, are:
 
-    float4 inputs:bias = (1, -1, -1, -1)
-    float4 inputs:scale = (-2, 2, 2, 2)
+    float4 inputs:bias =  ( 1, -1, -1, -1)
+    float4 inputs:scale = (-2,  2,  2,  2)
 
 And for the r_normal_map_reversed_y.png normal map:
 
@@ -92,8 +92,8 @@ And for the r_normal_map_reversed_y.png normal map:
 
 for the "r_normals_reversed_y" cube, displayed on the right:
 
-    float4 inputs:bias = (-1, 1, -1, -1)
-    float4 inputs:scale = (2, -2, 2, 2)
+    float4 inputs:bias =  (-1,  1, -1, -1)
+    float4 inputs:scale = ( 2, -2,  2,  2)
 
 Compare r_normal_map_reversed_x.png with r_normal_map.png and you'll see the "reddish" and "dark greenish teal" parts of the map are swapped. For r_normal_map_reversed_y.png the "greenish" parts are swapped with the "dark bluish purple" parts.
 
