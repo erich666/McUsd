@@ -295,7 +295,7 @@ def Camera "Camera" (
     float fStop = 0
     float horizontalAperture = 20.955
     float horizontalApertureOffset = 0
-    custom vector3d omni:kit:centerOfInterest = (0, 0, 0)
+    custom vector3d omni:kit:centerOfInterest = (0, 0, -9.2736)
     token projection = "perspective"
     uniform token purpose = "default"
     double shutter:close = 0
