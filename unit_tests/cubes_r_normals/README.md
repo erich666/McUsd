@@ -103,13 +103,13 @@ Compare r_normal_map_reversed_x.png with r_normal_map.png and you'll see the "re
 
 ## Omniverse Create
 
-I am not going to go through a thorough testing of as many viewers as I can find, as done with [McUsd](/).
+I am not going to go through a thorough testing of as many viewers as I can find, as done with [McUsd](https://github.com/erich666/McUsd).
 
-Omniverse Create looks about as I'd expect it. I did set one render setting in the test file cubes_r_normals.usda:
+Omniverse Create looks about as I'd expect it; I won't show it here. I did set one render setting in the test file cubes_r_normals.usda:
 
     double "rtx:sceneDb:ambientLightIntensity" = 0.0
 
-This turns off the fairly bright ambient light used in real-time rendering mode so that the bump effect has more contrast.
+This turns off the fairly bright ambient light used in Omniverse's RTX real-time renderer, so that the bump effect has more contrast.
 
 ---
 ## License
