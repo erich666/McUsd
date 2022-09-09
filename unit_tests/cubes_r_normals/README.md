@@ -111,6 +111,10 @@ Omniverse Create looks about as I'd expect it; I won't show it here. I did set o
 
 This turns off the fairly bright ambient light used in Omniverse's RTX real-time renderer, so that the bump effect has more contrast.
 
+## glTF
+
+There are two related (and more elaborate) glTF sample models that may be of interest, the [Normal-Tangent Test](https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/NormalTangentTest) and the [Normal-Tangent Mirror Test](https://github.com/KhronosGroup/glTF-Sample-Models/tree/master/2.0/NormalTangentMirrorTest). _(Thanks, Eric Chadwick, for the pointers.)_
+
 ---
 ## License
 
