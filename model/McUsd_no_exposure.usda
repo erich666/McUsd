@@ -74,8 +74,6 @@
         dictionary renderSettings = {
             token "rtx:rendermode" = "PathTracing"
             int "rtx:pathtracing:totalSpp" = 1000
-            double "rtx:post:tonemap:cameraShutter" = 10
-            double "rtx:post:tonemap:filmIso" = 1000
             bool "rtx:raytracing:fractionalCutoutOpacity" = 1
             double "rtx:sceneDb:ambientLightIntensity" = 0.0
         }
@@ -93,7 +91,7 @@ def Xform "_Simple_Material_Test"
     )
     {
         float angle = 1
-        float intensity = 30
+        float intensity = 1550
         float shaping:cone:angle = 180
         float shaping:cone:softness
         float shaping:focus
@@ -108,7 +106,7 @@ def Xform "_Simple_Material_Test"
         prepend apiSchemas = ["ShapingAPI"]
     )
     {
-        float intensity = 6
+        float intensity = 310
         float shaping:cone:angle = 180
         float shaping:cone:softness
         float shaping:focus
@@ -1269,7 +1267,7 @@ def Scope "Looks" (
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/lava_still_e.png@
-            float4 inputs:scale = (1, 1, 1, 1)
+            float4 inputs:scale = (53000, 53000, 53000, 1)
             float2 inputs:st.connect = </Looks/lava_still/uv_reader.outputs:result>
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
@@ -1933,7 +1931,7 @@ def Scope "Looks" (
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/lava_flow_e.png@
-            float4 inputs:scale = (1, 1, 1, 1)
+            float4 inputs:scale = (53000, 53000, 53000, 1)
             float2 inputs:st.connect = </Looks/lava_flow/uv_reader.outputs:result>
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
@@ -1968,4 +1966,3 @@ def Camera "Camera" (
     double3 xformOp:translate = (5.515715139344211, 5.515726941808866, 5.515715139344282)
     uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateYXZ", "xformOp:scale"]
 }
-

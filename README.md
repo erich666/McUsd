@@ -169,11 +169,34 @@ Note simplifications occur, such as opaque shadows for semitransparent objects. 
 
 which trades speed for better-quality semitransparent results, such as with the purple stained glass block.
 
-The "Omniverse RTX - Accurate (Iray)" renderer uses the Iray ray tracer. Here is the render after around 140 frames:
+The "Omniverse RTX - Accurate (Iray)" renderer uses the Iray ray tracer. Here is the render after about 270 frames:
 
 ![Omniverse RTX - Accurate (Iray)](/images/ov_accurate.png "Omniverse RTX - Accurate (Iray)")
 
 Differences with the interactive version include less color on the semitransparent glass block on the left. Though not obvious, the lava is a bit dimmer. In the "Accurate" render a bit of a noisy caustic can be seen on the grass to the right of the gold block.
+
+#### Omniverse adjustments
+
+In the McUsd.usda file are some render settings at the top that are specific to Omniverse:
+
+    token "rtx:rendermode" = "PathTracing"
+    int "rtx:pathtracing:totalSpp" = 1000
+    double "rtx:post:tonemap:cameraShutter" = 10
+    double "rtx:post:tonemap:filmIso" = 1000
+    bool "rtx:raytracing:fractionalCutoutOpacity" = 1
+    double "rtx:sceneDb:ambientLightIntensity" = 0.0
+
+The first two specify using an Omniverse path tracer by default and capping at 1000 samples per pixel. Turning on the fractionalCutoffOpacity favors quality over speed for the Omniverse real-time renderer, providing better semitransparency. The last turns off ambient lighting.
+
+This leave the two camera exposure settings. I wanted to have emissive surfaces' effects still be visible even with any scene being in full sun. The lighting I chose are 30 for the sun, 6 for the domeLight, with a somewhat more real-world 1000 (nits) for emissive surfaces. To compensate for the low sunlight and domeLight values, I give Omniverse higher exposure settings: 1/10th of a second shutter, 1000 ISO (and f-stop of 5.0, the default in Omniverse). If these two post:tonemap exposure settings are removed, the Sun should be set to an Intensity of about 1550, the DomeLight to 310, and the emissive surfaces (the two lava materials) should have inputs:scale to 53000 instead of 1000. I provide this file as McUsd_no_exposure.usda. This file tends to blow out the appearance of lava even more in other applications such as USDView.
+
+Please note that these settings are used as of September 2022, but their use and names may of course change over time.
+
+Note also the presence of:
+
+    metersPerUnit = 1
+
+By default USD uses centimeters as its units. Minecraft blocks are 1 meter "in real life", so this setting makes it so that all mesh descriptions are in meters. This looks cleaner and saves a lot of extraneous zeroes in the USDA file.
 
 ## Sketchfab
 

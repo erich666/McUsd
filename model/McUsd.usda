@@ -51,7 +51,6 @@
 # Full terrainExt.png path: C:\\Users\\ehaines\\Downloads\\minewaysV1001\\mineways\\terrainExt_JG-RTX256.png
 # Full current path: C:\\Users\\ehaines\\Downloads\\minewaysV1001\\mineways
 """
-    defaultPrim = "_Simple_Material_Test"
     customLayerData = {
         dictionary cameraSettings = {
             dictionary Front = {
@@ -59,8 +58,8 @@
                 double radius = 500
             }
             dictionary Perspective = {
-                double3 position = (5.515715139344211, 5.515726941808866, 5.515715139344282)
-                double3 target = (-0.000003978038356500235, 0.000007956076749415786, -0.000003978038285445962)
+                double3 position = (5.5157, 5.5157, 5.5157)
+                double3 target = (0, 0, 0)
             }
             dictionary Right = {
                 double3 position = (-500, 0, 0)
@@ -73,54 +72,15 @@
             string boundCamera = "/Camera"
         }
         dictionary renderSettings = {
-            float3 "rtx:debugView:pixelDebug:textColor" = (0, 1e18, 0)
-            float3 "rtx:dynamicDiffuseGI:probeCounts" = (6, 6, 6)
-            float3 "rtx:dynamicDiffuseGI:probeGridOrigin" = (-210, -250, -10)
-            float3 "rtx:dynamicDiffuseGI:volumeSize" = (600, 440, 300)
-            float3 "rtx:fog:fogColor" = (0.75, 0.75, 0.75)
-            int "rtx:hydra:curves:splits" = 2
-            double "rtx:hydra:points:defaultWidth" = 1
-            float3 "rtx:iray:environment_dome_ground_position" = (0, 0, 0)
-            float3 "rtx:iray:environment_dome_ground_reflectivity" = (0, 0, 0)
-            float3 "rtx:iray:environment_dome_rotation_axis" = (0, 1, 0)
-            float3 "rtx:lightspeed:material:overrideAlbedo" = (0.5, 0.5, 0.5)
-            float3 "rtx:lightspeed:material:overrideEmissiveColor" = (0.5, 0.5, 0.5)
+            token "rtx:rendermode" = "PathTracing"
             int "rtx:pathtracing:totalSpp" = 1000
-            float3 "rtx:post:backgroundZeroAlpha:backgroundDefaultColor" = (0, 0, 0)
-            float3 "rtx:post:colorcorr:contrast" = (1, 1, 1)
-            float3 "rtx:post:colorcorr:gain" = (1, 1, 1)
-            float3 "rtx:post:colorcorr:gamma" = (1, 1, 1)
-            float3 "rtx:post:colorcorr:offset" = (0, 0, 0)
-            float3 "rtx:post:colorcorr:saturation" = (1, 1, 1)
-            float3 "rtx:post:colorgrad:blackpoint" = (0, 0, 0)
-            float3 "rtx:post:colorgrad:contrast" = (1, 1, 1)
-            float3 "rtx:post:colorgrad:gain" = (1, 1, 1)
-            float3 "rtx:post:colorgrad:gamma" = (1, 1, 1)
-            float3 "rtx:post:colorgrad:lift" = (0, 0, 0)
-            float3 "rtx:post:colorgrad:multiply" = (1, 1, 1)
-            float3 "rtx:post:colorgrad:offset" = (0, 0, 0)
-            float3 "rtx:post:colorgrad:whitepoint" = (1, 1, 1)
-            float3 "rtx:post:lensDistortion:lensFocalLengthArray" = (10, 30, 50)
-            float3 "rtx:post:lensFlares:anisoFlareFalloffX" = (450, 475, 500)
-            float3 "rtx:post:lensFlares:anisoFlareFalloffY" = (10, 10, 10)
-            float3 "rtx:post:lensFlares:cutoffPoint" = (2, 2, 2)
-            bool "rtx:post:lensFlares:enabled" = 1
-            double "rtx:post:lensFlares:flareScale" = 0.1
-            double "rtx:post:lensFlares:focalLength" = 250
-            float3 "rtx:post:lensFlares:haloFlareFalloff" = (10, 10, 10)
-            float3 "rtx:post:lensFlares:haloFlareRadius" = (75, 75, 75)
-            float3 "rtx:post:lensFlares:isotropicFlareFalloff" = (50, 50, 50)
             double "rtx:post:tonemap:cameraShutter" = 10
             double "rtx:post:tonemap:filmIso" = 1000
-            float3 "rtx:post:tonemap:whitepoint" = (1, 1, 1)
             bool "rtx:raytracing:fractionalCutoutOpacity" = 1
-            float3 "rtx:raytracing:inscattering:singleScatteringAlbedo" = (0.9, 0.9, 0.9)
-            float3 "rtx:raytracing:inscattering:transmittanceColor" = (0.5, 0.5, 0.5)
-            token "rtx:rendermode" = "PathTracing"
-            float3 "rtx:sceneDb:ambientLightColor" = (0.1, 0.1, 0.1)
-            double "rtx:sceneDb:ambientLightIntensity" = 0.01
+            double "rtx:sceneDb:ambientLightIntensity" = 0.0
         }
     }
+    defaultPrim = "_Simple_Material_Test"
     metersPerUnit = 1
     upAxis = "Y"
 )
