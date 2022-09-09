@@ -73,7 +73,6 @@
         }
         dictionary renderSettings = {
             token "rtx:rendermode" = "PathTracing"
-            int "rtx:pathtracing:totalSpp" = 1000
             double "rtx:post:tonemap:cameraShutter" = 10
             double "rtx:post:tonemap:filmIso" = 1000
             bool "rtx:raytracing:fractionalCutoutOpacity" = 1

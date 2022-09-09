@@ -180,13 +180,12 @@ Differences with the interactive version include less color on the semitranspare
 In the McUsd.usda file are some render settings at the top that are specific to Omniverse:
 
     token "rtx:rendermode" = "PathTracing"
-    int "rtx:pathtracing:totalSpp" = 1000
     double "rtx:post:tonemap:cameraShutter" = 10
     double "rtx:post:tonemap:filmIso" = 1000
     bool "rtx:raytracing:fractionalCutoutOpacity" = 1
     double "rtx:sceneDb:ambientLightIntensity" = 0.0
 
-The first two specify using an Omniverse path tracer by default and capping at 1000 samples per pixel. Turning on the fractionalCutoffOpacity favors quality over speed for the Omniverse real-time renderer, providing better semitransparency. The last turns off ambient lighting.
+The first line specifies using an Omniverse path tracer on load. Turning on the fractionalCutoffOpacity favors quality over speed for the Omniverse real-time renderer, providing better semitransparency. The last line turns off ambient lighting.
 
 This leave the two camera exposure settings. I wanted to have emissive surfaces' effects still be visible even with any scene being in full sun. The lighting I chose are 30 for the sun, 6 for the domeLight, with a somewhat more real-world 1000 (nits) for emissive surfaces. To compensate for the low sunlight and domeLight values, I give Omniverse higher exposure settings: 1/10th of a second shutter, 1000 ISO (and f-stop of 5.0, the default in Omniverse). If these two post:tonemap exposure settings are removed, the Sun should be set to an Intensity of about 1550, the DomeLight to 310, and the emissive surfaces (the two lava materials) should have inputs:scale to 53000 instead of 1000. I provide this file as McUsd_no_exposure.usda. This file tends to blow out the appearance of lava even more in other applications such as USDView.
 

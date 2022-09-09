@@ -73,7 +73,6 @@
         }
         dictionary renderSettings = {
             token "rtx:rendermode" = "PathTracing"
-            int "rtx:pathtracing:totalSpp" = 1000
             bool "rtx:raytracing:fractionalCutoutOpacity" = 1
             double "rtx:sceneDb:ambientLightIntensity" = 0.0
         }
