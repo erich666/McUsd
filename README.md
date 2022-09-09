@@ -125,7 +125,7 @@ The usdview program from the [USD Toolset](https://graphics.pixar.com/usd/releas
 
 It is possible to build [usdview from scratch](https://graphics.pixar.com/usd/release/toolset.html), but in that way lies madness (at least for me). Happily, [NVIDIA's Omniverse Launcher](https://www.nvidia.com/en-us/omniverse/) provides a pre-built USDView that I can simply install and run. I tested with version 0.22.8. (BTW, if you want other USD tools in the toolset, I found [NVIDIA's USD Pre-built Libraries](https://developer.nvidia.com/usd) pretty easy to get going; joining the developer network is free.)
 
-Load procedure: File -> Open, then hold down Alt and use the mouse buttons to rotate, pan, and dolly.
+Load procedure: File -> Open. Press F11 to toggle on the hierarchy view (if not already visible). Open up the "root" by double-clicking on it. Select the "Camera" and right-click, then pick (at the bottom) "Set As Active Camera". You can hold down Alt and use the mouse buttons to rotate, pan, and dolly.
 
 ![UsdView](/images/usdview.png "UsdView")
 
