@@ -350,6 +350,8 @@ My instructions for loading a USD file are [here](http://www.realtimerendering.c
 
 ![Houdini GL](/images/houdini.png "Houdini GL")
 
+It's hard to tell with this model and view, but using the [cubes_r_normals test](/unit_tests/cubes_r_normals), it turns out this renderer (Karma and Storm are fine) has a left/right reversal of the normal map direction.
+
 Changing "Persp" in the upper right corner of the viewport to the Karma path tracer, we capture the lava emitter's effect:
 
 ![Houdini Karma](/images/houdini_karma.png "Houdini Karma")
@@ -358,7 +360,7 @@ A bit noisy by default, but the number of rays shot can always be increased. Thi
 
 The DomeLight has also been translated to some extent (it does not act as a surrounding environment), and affects the rendering if turned off:
 
-![Houdini Karma](/images/houdini_karma_no_domelight.png "Houdini Karma")
+![Houdini Karma no DomeLight](/images/houdini_karma_no_domelight.png "Houdini Karma no DomeLight")
 
 Finally, the Hydra delegate Storm render:
 
@@ -408,7 +410,7 @@ Other renderers are available in the "Renderer" menu just above the viewport (no
 
 I experimented with changing the Sun's intensity instead. Reset the exposure to 0. In the Outliner to the left, open the defaultLightSet and select McUsd:Sun. In the McUsd:SunShape tab dialog on the right, change the Intensity from 50000 (I don't know where this number came from, as the sun in the file is set to 30; that said, if I examine this same light in usdview, it says 50000. Maybe it's a default?) to 10. This gives a different view, with the lava blocks overblown:
 
-![Maya](/images/maya_dim_sun.png "Maya")
+![Maya dim sun](/images/maya_dim_sun.png "Maya dim sun")
 
 However, Hydra Arnold then gives this:
 
