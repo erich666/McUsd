@@ -34,7 +34,7 @@ Lit from right:
 
 ## Use in other packages
 
-The rendering of the right view can be fixed in [Sketchfab](https://sketchfab.com/), for example, by selecting the right cube and then changing its material's normal map by checking the "Flip green (-y)" checkbox beneath it. You will get [this result](https://skfb.ly/oxQtt).
+The rendering of the right view can be fixed in [Sketchfab](https://sketchfab.com/), for example, by selecting the right cube and then changing its material's normal map by checking the "Flip green (-y)" checkbox beneath it. You will get [this result](https://skfb.ly/oxQtt). The middle cube, where the normal map's X is reversed, cannot be fixed by the toggle, so this cube's rendering does not match the other two (look at the stem of the "R" on the right face of each cube and noticed it's reversed in shading; the left edge is dark, not light).
 
 Flipping the Y axis of the normal map in this way is sometimes called the DirectX format, vs. the unflipped (Y up) OpenGL format. So, Pixar USD appears to use the OpenGL (Y up) format by default.
 
