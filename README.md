@@ -388,7 +388,7 @@ The Render View render doesn't look as good - the DomeLight helps there:
 
 ![Cinema 4D no domelight render](/images/c4d_no_dome_render.png "Cinema 4D no domelight render")
 
-This render more strongly highlights the normal-map texture mismatches, especially on the prismarine.
+This render more strongly highlights the normal-map texture mismatches, especially on the prismarine. I think what might be happening is that they are interpreting the bias and scale factors for these textures as [UsdTransform2d values](https://github.com/usd-wg/assets/tree/main/test_assets/TextureTransformTest), not as values that change the normal values themselves. It would explain the reversals and rescalings. But, that’s just a guess.
 
 ## Maya
 
