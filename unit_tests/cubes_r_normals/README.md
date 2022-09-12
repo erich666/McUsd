@@ -32,6 +32,12 @@ Lit from right:
 
 ![UsdView 0.22.8, lit from right](/unit_tests/cubes_r_normals/images/crn_usdview_light_from_right.png "UsdView 0.22.8, lit from right")
 
+## Use in other packages
+
+The rendering of the right view can be fixed in [Sketchfab](https://sketchfab.com/), for example, by selecting the right cube and then changing its material's normal map by checking the "Flip green (-y)" checkbox beneath it. You will get [this result](https://skfb.ly/oxQtt).
+
+Flipping the Y axis of the normal map in this way is sometimes called the DirectX format, vs. the unflipped (Y up) OpenGL format. So, Pixar USD appears to use the OpenGL (Y up) format by default.
+
 ## Technical details
 
 Normal map textures use the raw RGB values in an image to generate a local surface normal. I generated the three normal map textures from the same heightfield texture:
@@ -43,9 +49,9 @@ Black is low, white is high.
 Using the [NormalMap Online page](https://cpetry.github.io/NormalMap-Online/), I dropped this texture into the leftmost area and then set the "Strength" to 1.5. From experimentation, I found that if I used the default strength of 2.5, normals would be generated that point into the surface, away from the camera. (I don't think this should ever happen with the data input, but hey it's a quick and dirty converter.)
 
 I converted this bump map into three normal map textures:
-* r_normal_map.png - created by using the "Invert R" setting in the NormalMap Online tool. USD's default normal map.
-* r_normal_map_reversed_x.png - created by unchecking all "Invert" settings. This reverses the X direction for the texture.
-* r_normal_map_reversed_y.png - created by checking "R" and "G" in the "Invert" settings. This reverses the Y direction.for the texture.
+* r_normal_map.png - created by using the "Invert R" setting in the NormalMap Online tool. USD's default normal map, the "OpenGL" format.
+* r_normal_map_reversed_x.png - created by unchecking all "Invert" settings. This reverses the X direction for the texture. Not commonly seen, but possible.
+* r_normal_map_reversed_y.png - created by checking "R" and "G" in the "Invert" settings. This reverses the Y direction, giving the "DirectX" format.
 
 These are the textures applied to the cubes. The left cube has r_normal_map.png applied to all faces, middle has r_normal_map_reversed_x.png, right has r_normal_map_reversed_y.png. If you look at each, the "no bump here" color is always (127,127,255), a distinctive light blue that converts (as expected) to (just about - more on that below) the normal (0,0,1), pointing outward from the surface.
 

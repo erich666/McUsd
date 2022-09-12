@@ -1,7 +1,7 @@
 # McUsd
 Simple [USD](https://graphics.pixar.com/usd/release/index.html) scene geometry with a variety of [UsdPreviewSurface](https://graphics.pixar.com/usd/release/spec_usdpreviewsurface.html) materials applied, for casual material and light testing.
 
-Download this repository and then load the McUsd.usda file in the models directory into your favorite USD file viewer. Or, [**view the model in your browser**](https://skfb.ly/oxyUE) through Sketchfab. Or, have an iPhone or iPad? Try out [**Sketchfab's USDZ translation**](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz). You'll have to shrink it down in AR mode (pinch, on an iPhone) - each block is a meter in size!
+Download this repository and then load the McUsd.usda file in the models directory into your favorite USD file viewer. Or, [**view the model in your browser**](https://skfb.ly/oxyUE) through Sketchfab. Or, have an iPhone or iPad? Try out [**Sketchfab's USDZ translation**](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz). You'll have to shrink it down in AR mode (pinch, on an iPhone) - each block is a meter in size!
 
 The "Mc" is for Minecraft, not McDonalds. Short URL for this page: http://bit.ly/gitmcusd
 
@@ -214,57 +214,75 @@ I did notice that if I set the orientation of the light to about 126 degrees, I 
 However, I get the exact same flipped-vertically normals when I uploaded "McUsd_normal_normals.usda", [see it here](https://skfb.ly/oxD9r)
 , with the light angle set to 126 degrees and zoomed in on the prismarine. Since these are the same, I believe what is happening is that Sketchfab is ignoring the scale and bias values set for the normal maps. See the "[Observations section](#observations) earlier for more on (my) normal map texture scaling confusion.
 
-Sketchfab lets you download different translations of your model. I downloaded the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) - click that link on an iPhone to view it. The camera position set in Sketchfab is exported. The default Sketchfab light sources are not. From what I can tell, the texture scaling on the lava is removed, for good or ill.
+I manually edited [my original, uploaded file](https://skfb.ly/oxyUE), (tediously) setting the material for every block to use the "Flip green (-Y)" property for the normal map. This fixed the normals for this model:
+
+![Sketchfab Y flip](/images/sketchfab_y_flip.png "Sketchfab Y flip")
+
+Sketchfab lets you download different translations of your model. I downloaded the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) - click that link on an iPhone to view it. The camera position set in Sketchfab is exported. The default Sketchfab light sources are not. From what I can tell, the emittance texture scaling on the lava is removed, for good or ill.
 
 ## Apple iPhone
 
 On Safari and Chrome (and perhaps other browsers), if you are using an iPhone or iPad and click on a ".usdz" extension file, the file displays in an viewer called AR Quick Look. [Some examples are here](https://developer.apple.com/augmented-reality/quick-look/).
 
-The [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) mentioned above can also be viewed - click the link to see it (other phones and non-Safari browsers will just download the file instead; if you know how to hook the usdz file to immediately view, let me know).
+The [Sketchfab USDZ translation with Y flip](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) mentioned above can also be viewed - click the link to see it (other phones and non-Safari browsers will just download the file instead; if you know how to hook the usdz file to immediately view, let me know).
 
 This viewer has two modes: AR and Object, shown at the top. "Object" lets you view the model in isolation. In this mode, one finger rotates, two finger pinch dollies (aka "zooms", but not really) the camera in and out. There appears to be no way to change the center of focus. Here's an example:
 
 ![iPhone Object view](/images/iphone_object.png "iPhone Object view")
 
-Understandably, the camera setting in the Sketchfab usdz file is not used in either mode. If you look closely, there is some "ghosting" around the sunflower, an area around it where the cut-away parts of the texture should have no effect, but instead leave a faint white trace.
+Understandably, the camera setting in the Sketchfab usdz file is not used in either mode. If you look very closely, there is some "ghosting" around the sunflower, an area around it where the cut-away parts of the texture should have no effect, but instead leave an extremely faint white trace.
 
 Try AR mode. Because this model is actually to scale, the blocks are each 1 meter across by default, so the model is likely much larger than where you are. You made need to first move your phone or tablet around so that it understands your environment before placing the model. After this, use a two-finger pinch gesture to shrink the model down and make it fit your environment. One finger lets you move the model horizontally. Here is the scene shrunk to about 10% and viewed in place, using "AR":
 
 ![iPhone AR view](/images/iphone_ar.png "iPhone AR view")
 
-In both views you can see that the cutout sunflower head has rendering problems. If you rotate the view, various parts of the sunflower disappear and appear. My guess is that this artifact is likely caused by cutouts being rendered by z-sorting them with other objects in the scene, but I can't say I fully understand. The "ghosting" visible in Object mode is not present in AR mode.
+In both views you can see that the cutout sunflower head has rendering problems. If you rotate the view, various parts of the sunflower disappear and appear. My guess is that this artifact is likely caused by cutouts being rendered as always replacing the z-buffer value (even if fully transparent) and by z-sorting them with other objects in the scene, but I can't say I fully understand. The "ghosting" visible in Object mode is not present in AR mode.
 
-It's also hard to tell, but it seems like the "light from below" reversed normal problem might be visible in the AR view. See the [Observations section](#observations).
+It's also a little hard to tell, but the "light from below" reversed normal problem is visible in the AR view if you use the unaltered [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz):
+
+![iPhone AR view, no Y flip](/images/iphone_ar_no_y_flip.png "iPhone AR view, no Y flip")
+
+Also for comparison, here's the object view of the Sketchfab model without Y flipping:
+
+![iPhone Object view, no Y flip](/images/iphone_object_no_y_flip.png "iPhone object view, no Y flip")
+
+What this means is that the Quick Look viewer appears to properly pay attention to scale and bias values in the model file.
+
+See the [Observations section](#observations) for more about this problem.
 
 ## Apple Mac
 
-If you download the [Sketchfab USDZ file](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) and double-click it on a Mac, the Preview app will show it:
+If you download the [Sketchfab USDZ file with Y flip](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) and double-click it on a Mac, the Preview app will show it:
 
 ![Mac Preview](/images/mac_preview.png "Mac Preview")
 
-Lights and camera are not translated. Overall the content looks good, with no z-buffer problems with cutouts. However, note that the bumps on the right side of the prismarine block look lit from below, probably because of the missing scale/bias on the normal map.
+Lights and camera are not translated. There is some problem with some grass triangles; my guess is that it had to do with the normal map texture, but I haven't explored the problem. Otherwise, the content looks good, with no z-buffer problems with cutouts.
 
-This view shows the problem with the texturing on the grassy plain:
+The "no Y flip" version looks like this:
 
-![Mac Preview grass](/images/mac_preview_grass.png "Mac Preview grass")
+![Mac Preview, no Y flip](/images/mac_preview_no_y_flip.png "Mac Preview, no Y flip")
+
+Here the prismarine and iron blocks' bumps look reversed, showing that this viewer properly pays attention to bias and scale, at least on a limited basis.
 
 ## Autodesk USD Browser Viewer
 
 Autodesk [open-sourced their USD browser viewer](https://www.keanw.com/2022/02/autodesk-open-sources-web-based-usd-viewing-implementation.html). Demos and Github repository [here](https://autodesk-forks.github.io/USD/). It's a bit of a challenge to build (I failed; turns out the build doesn't quite work for Windows yet, as of 8/31/2022, but that should change soon). Happily there's a site where you can simply drag and drop a USDZ file onto the page and view it.
 
-Dropping the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) onto [**Autodesk's USDZ test page**](https://autodesk-forks.github.io/USD/usd_for_web_demos/test.html) gives this result:
+Dropping the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) onto [**Autodesk's USDZ test page**](https://autodesk-forks.github.io/USD/usd_for_web_demos/test.html) gives this result:
 
 ![Autodesk web viewer](/images/autodesk_web.png "Autodesk web viewer")
 
-The camera and lights are not translate. The main artifact is that cutout billboards make parts of the sunflower and fern disappear. Rotate the view and the sunflower cutouts will make parts of the purple transparent glass block disappear. My guess is that opacityThreshold is not being used to help control whether the z-buffer is written to for cutouts.
+The camera and lights are not translated. The main artifact is that cutout billboards make parts of the sunflower and fern disappear. Rotate the view and the sunflower cutouts will make parts of the purple transparent glass block disappear. My guess is that opacityThreshold is not being used to help control whether the z-buffer is written to for cutouts.
 
 There is a related [three.js demo repository](https://github.com/autodesk-forks/USD/tree/gh-pages/usd_for_web_demos), and their [material implementation](https://github.com/autodesk-forks/USD/blob/gh-pages/usd_for_web_demos/ThreeJsRenderDelegate.js#L217) is easy to examine.Pierre-Olivier Nahoum has made [an open-source USDZ Loader wrapper](https://github.com/ponahoum/three-usdz-loader) based on this viewer.
 
-Dropping the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz) onto [**Nahoum's USDZ test site**](https://www.usdz-viewer.net/) gives this result:
+Dropping the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) onto [**Nahoum's USDZ test site**](https://www.usdz-viewer.net/) gives this result:
 
 ![Nahoum Three.js USDZ Loader](/images/nahoum.png "Nahoum Three.js USDZ Loader")
 
-The render is a bit washed out compared to Autodesk's original, but that's just a matter of adjusting the lighting in the code. Again, the cutouts hide parts of the plants and from a different view make the transparent block disappear.
+The render is a bit washed out compared to Autodesk's original, but that's just a matter of adjusting the lighting in the code. Again, the cutouts hide parts of the plants and from a different view make the transparent block disappear. Also, the lighting on the (randomly rotated) grass tiles noticeably varies. My guess is that there might be some small normal map or other texture problem with the grass, though it's not clear to me whether it's a problem with the data (perhaps the texture contains unnormalized normals?) or the viewer itself. I've seen this sort of patterning before with the grass texture's random repetition (which is why I include grass in this scene), though usually the differences are more pronounced (and the buggy viewers are now fixed).
+
+In testing with the unaltered Sketchfab USDZ file, I found that these viewers appear to pay attention to the normal map bias and scale, at least for this one (simple Y flipped) test.
 
 ## Blender
 
