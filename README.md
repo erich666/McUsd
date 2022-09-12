@@ -378,7 +378,7 @@ By default the Sun does not cast a shadow. Open up _Simple_Material_Test in the 
 
 ![Cinema 4D render](/images/c4d_render.png "Cinema 4D render")
 
-The diamond block has a color texture mapping problem, with the faces of each block showing a thin gold band a quarter of the way across the face - compare to other renderings here. There are normal mapping mismatches with the prismarine (wrong scale), and with the piston and chiseled quartz block (normals flipped upside down).
+The diamond block has a color texture mapping problem, with the faces of each block showing a thin gold band a quarter of the way across the face - compare to other renderings here. There are normal mapping mismatches with the prismarine (wrong scale), and with the piston and chiseled quartz block (normals flipped upside down). The quartz pillar shows only 2 "vertical pillars" instead of 6.
 
 On further investigation, the DomeLight in the scene washes out the effect of normal maps in the interactive renderer. I did not find a control to turn down its effect. You can delete the DomeLight, or toggle off its effect by clicking on the two dots, turning them red, in the Objects hierarchy menu. The interactive render is then:
 
