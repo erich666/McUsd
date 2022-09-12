@@ -207,16 +207,18 @@ The Sketchfab rendering can be [**directly examined in a browser**](https://skfb
 
 Sketchfab does not translate the camera or lights. It uses rasterization and related techniques for interactive rendering, so giving typical limitations: the lava does not emit light, the glass block does not cast a shadow, true reflections are not generated for shiny surfaces. There are some interesting specular highlights on the glass block that are not visible in the Omniverse renderings.
 
-I did notice that if I set the orientation of the light to about 126 degrees, I get upside down bumps on the left side of the prismarine block, which is wrong. The light is coming from above and should not illuminate the bottom edges of the stones:
+Initially, I noticed that if I set the orientation of the light to about 126 degrees, I get upside down bumps on the left side of the prismarine block, which is wrong. The light is coming from above and should not illuminate the bottom edges of the stones:
 
 ![Sketchfab flipped normals](/images/sketchfab_flip.png "Sketchfab flipped normals")
 
 However, I get the exact same flipped-vertically normals when I uploaded "McUsd_normal_normals.usda", [see it here](https://skfb.ly/oxD9r)
-, with the light angle set to 126 degrees and zoomed in on the prismarine. Since these are the same, I believe what is happening is that Sketchfab is ignoring the scale and bias values set for the normal maps. See the "[Observations section](#observations) earlier for more on (my) normal map texture scaling confusion.
+, with the light angle set to 126 degrees and zoomed in on the prismarine. Since these are the same, I believe what is happening is that Sketchfab is ignoring the scale and bias values set for the normal maps.
 
-I manually edited [my original, uploaded file](https://skfb.ly/oxyUE), (tediously) setting the material for every block to use the "Flip green (-Y)" property for the normal map. This fixed the normals for this model:
+I manually edited [my original, uploaded file](https://skfb.ly/oxyUE), in Sketchfab (tediously) setting the material for every block to use the ["Flip green (-Y)" property](https://help.sketchfab.com/hc/en-us/articles/4402392923409) for the normal map. This fixed the normals for this model:
 
 ![Sketchfab Y flip](/images/sketchfab_y_flip.png "Sketchfab Y flip")
+
+See the "[Observations section](#observations) earlier for more on normal map texture scaling.
 
 Sketchfab lets you download different translations of your model. I downloaded the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) - click that link on an iPhone to view it. The camera position set in Sketchfab is exported. The default Sketchfab light sources are not. From what I can tell, the emittance texture scaling on the lava is removed, for good or ill.
 
@@ -238,7 +240,7 @@ Try AR mode. Because this model is actually to scale, the blocks are each 1 mete
 
 In both views you can see that the cutout sunflower head has rendering problems. If you rotate the view, various parts of the sunflower disappear and appear. My guess is that this artifact is likely caused by cutouts being rendered as always replacing the z-buffer value (even if fully transparent) and by z-sorting them with other objects in the scene, but I can't say I fully understand. The "ghosting" visible in Object mode is not present in AR mode.
 
-It's also a little hard to tell, but the "light from below" reversed normal problem is visible in the AR view if you use the unaltered [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab.usdz):
+It's also a little hard to tell, but the "light from below" reversed normal problem is visible in the AR view if you use the unaltered [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_no_y_flip.usdz):
 
 ![iPhone AR view, no Y flip](/images/iphone_ar_no_y_flip.png "iPhone AR view, no Y flip")
 
