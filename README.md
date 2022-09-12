@@ -344,7 +344,7 @@ Overall USD import has improved considerably in UE 5.0. The main problem I see w
 
 ## Houdini
 
-[Houdini Apprentice](https://www.sidefx.com/download/) has a trial, and is free for personal use.
+[Houdini Apprentice](https://www.sidefx.com/download/) has a trial, and is free for personal use. I tested with Houdini 19.5.303.
 
 My instructions for loading a USD file are [here](http://www.realtimerendering.com/erich/minecraft/public/mineways/mineways.html#houdini). Following these, here is the basic Houdini GL render:
 
