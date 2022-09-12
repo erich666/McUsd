@@ -207,12 +207,12 @@ The Sketchfab rendering can be [**directly examined in a browser**](https://skfb
 
 Sketchfab does not translate the camera or lights. It uses rasterization and related techniques for interactive rendering, so giving typical limitations: the lava does not emit light, the glass block does not cast a shadow, true reflections are not generated for shiny surfaces. There are some interesting specular highlights on the glass block that are not visible in the Omniverse renderings.
 
-Initially, I noticed that if I set the orientation of the light to about 126 degrees, I get upside down bumps on the left side of the prismarine block, which is wrong. The light is coming from above and should not illuminate the bottom edges of the stones:
+Initially, I noticed that if I set the orientation of the light to about 126 degrees, I got upside down bumps on the left side of the prismarine block, which is wrong. The light is coming from above and should not illuminate the bottom edges of the stones:
 
 ![Sketchfab flipped normals](/images/sketchfab_flip.png "Sketchfab flipped normals")
 
-However, I get the exact same flipped-vertically normals when I uploaded "McUsd_normal_normals.usda", [see it here](https://skfb.ly/oxD9r)
-, with the light angle set to 126 degrees and zoomed in on the prismarine. Since these are the same, I believe what is happening is that Sketchfab is ignoring the scale and bias values set for the normal maps.
+However, I got the exact same flipped-vertically normals when I uploaded "McUsd_normal_normals.usda", [see it here](https://skfb.ly/oxD9r)
+, with the light angle set to 126 degrees and zoomed in on the prismarine. Since these are the same, what is happening is that currently Sketchfab is ignoring the scale and bias values set for the normal maps.
 
 I manually edited [my original, uploaded file](https://skfb.ly/oxyUE), in Sketchfab (tediously) setting the material for every block to use the ["Flip green (-Y)" property](https://help.sketchfab.com/hc/en-us/articles/4402392923409) for the normal map. This fixed the normals for this model:
 
