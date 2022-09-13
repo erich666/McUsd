@@ -1,6 +1,6 @@
 # Cubes R Normals test scene
 
-This test file, cubes_r_normal.usda, is for testing how well a USD display application interprets normal map textures. Each cube uses a different normal map texture, combined with different bias and scale values applied to that texture, to give what should be an identical result. The USDZ version of the file is included in this directory, also [directly accessible here](https://www.realtimerendering.com/erich/mcusd/cubes_r_normals.usdz).
+This test file, cubes_r_normal.usda, is for testing how well a USD display application interprets normal map textures. Each cube uses a different normal map texture, combined with different bias and scale values applied to that texture, to give what should be an identical result. The USDZ version of the file is included in this directory, also [directly accessible here](https://github.com/erich666/McUsd/raw/main/unit_tests/cubes_r_normals/cubes_r_normals.usdz).
 
 The usdview program from the [USD Toolset](https://graphics.pixar.com/usd/release/toolset.html) includes a basic hydra GL rasterizing renderer. It's about as basic a render you can make, but it's also the standard, in that it's the renderer Pixar provides.
 
