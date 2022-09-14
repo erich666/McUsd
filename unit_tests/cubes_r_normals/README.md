@@ -34,7 +34,7 @@ Lit from right:
 
 ## Use in other packages
 
-The rendering of the right view can be fixed in [Sketchfab](https://sketchfab.com/), for example, by selecting the right cube and then changing its material's normal map by checking the "Flip green (-y)" checkbox beneath it. You will get [this result](https://skfb.ly/oxQtt). The middle cube, where the normal map's X is reversed, cannot be fixed by the toggle, so this cube's rendering does not match the other two (look at the stem of the "R" on the right face of each cube and noticed it's reversed in shading; the left edge is dark, not light).
+The rendering of the right view can be fixed in [Sketchfab](https://sketchfab.com/), for example, by selecting the right cube and then changing its material's normal map by checking the "Flip green (-y)" checkbox beneath it. You will get [this result](https://skfb.ly/oxQtt). The middle cube, where the normal map's X is reversed, cannot be fixed by the toggle, so this cube's rendering does not match the other two (look at the stem of the "R" on the right face of each cube and noticed it's reversed in shading; the left edge is dark, not light). *NOTE*: this Sketchfab model is a bit dated - it does not have the corrected normals yet; see below. *TODO*
 
 Flipping the Y axis of the normal map in this way is sometimes called the DirectX format, vs. the unflipped (Y up) OpenGL format. So, Pixar USD appears to use the OpenGL (Y up) format by default.
 
@@ -46,7 +46,7 @@ Normal map textures use the raw RGB values in an image to generate a local surfa
 
 Black is low, white is high.
 
-Using the [NormalMap Online page](https://cpetry.github.io/NormalMap-Online/), I dropped this texture into the leftmost area and then set the "Strength" to 1.5. From experimentation, I found that if I used the default strength of 2.5, normals would be generated that point into the surface, away from the camera. (I don't think this should ever happen with the data input, but hey it's a quick and dirty converter.)
+Using the [NormalMap Online page](https://cpetry.github.io/NormalMap-Online/), I dropped this texture into the leftmost area and then set the "Strength" to 1.5. From experimentation, I found that if I used the default strength of 2.5, normals would be generated that point into the surface, away from the camera. Or so I thought... from experimenting, I found that it was a matter of bias and scale being different for the Z axis than what USD expects. More on that below.
 
 I converted this bump map into three normal map textures:
 * r_normal_map.png - created by using the "Invert R" setting in the NormalMap Online tool. USD's default normal map, the "OpenGL" format.
@@ -79,7 +79,9 @@ From testing in USDView (it's not specified in the specification), the +X axis o
 
 If you're really on top of it, you'll notice that the length of this normal is actually 0.838 - it should be 1.0, a normalized normal. I'm not sure why this is. My guess is that the tool does not properly normalize the normals. Shortened normals can cause the bumps rendered to dim, unless the renderer normalizes the texture's normal (unlikely, in my experience). TODO: to make this a "real" unit test, normal textures should be renormalized (also good: test for any negative Z values. These should never be 127 or lower).
 
-Update: Aha! The problem is that there are two ways to scale the Z value, (-1 to +1) to keep it similar to X and Y, and (0 to 1), to maximize the Z precision. Tools such as the [NVIDIA Texture Tools Exporter](https://developer.nvidia.com/nvidia-texture-tools-exporter) use the latter. If you go through the conversion with Z ranging from 0 to 1:
+Update: Aha! The problem is that there are two ways to scale the Z value, (-1 to +1) to keep it similar to X and Y, and (0 to 1), to maximize the Z precision. (Note: Tools such as the [NVIDIA Texture Tools Exporter](https://developer.nvidia.com/nvidia-texture-tools-exporter) use the latter - this turns out to be a bug that will be fixed. If you use this tool, set the Image Type to "Normal Map : Object Space" and the normals will then be -1 to 1 on all axes.)
+
+If you go through the conversion with Z ranging from 0 to 1:
 
     (233,127,142); divide that by 255 to get to the range 0.0 to 1.0:
     (0.914,0.498,0.557); multiply by scale (2,2,1) - don't scale Z:
