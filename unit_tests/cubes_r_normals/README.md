@@ -59,7 +59,7 @@ Here is the r_normal_map.png:
 
 ![r_normal_map.png](/unit_tests/cubes_r_normals/r_normal_map.png "r_normal_map.png")
 
-The default type of normal map texture, i.e., the settings in the USDA file are:
+The default type of normal map texture, i.e., the settings in the USDA file are (incorrectly - see the discussion):
 
     float4 inputs:bias =  (-1, -1, -1, -1)
     float4 inputs:scale = ( 2,  2,  2,  2)
@@ -79,6 +79,20 @@ From testing in USDView (it's not specified in the specification), the +X axis o
 
 If you're really on top of it, you'll notice that the length of this normal is actually 0.838 - it should be 1.0, a normalized normal. I'm not sure why this is. My guess is that the tool does not properly normalize the normals. Shortened normals can cause the bumps rendered to dim, unless the renderer normalizes the texture's normal (unlikely, in my experience). TODO: to make this a "real" unit test, normal textures should be renormalized (also good: test for any negative Z values. These should never be 127 or lower).
 
+Update: Aha! The problem is that there are two ways to scale the Z value, (-1 to +1) to keep it similar to X and Y, and (0 to 1), to maximize the Z precision. Tools such as the [NVIDIA Texture Tools Exporter](https://developer.nvidia.com/nvidia-texture-tools-exporter) use the latter. If you go through the conversion with Z ranging from 0 to 1:
+
+    (233,127,142); divide that by 255 to get to the range 0.0 to 1.0:
+    (0.914,0.498,0.557); multiply by scale (2,2,1) - don't scale Z:
+    (1.828,0.996,0.557); add bias (-1,-1,0) - don't bias Z:
+    (0.828,-0.004,0.557) is the resulting local normal, which has a length of 0.995
+
+So, the takeaway here is that for the default map the attributes should actually be:
+
+    float4 inputs:bias =  (-1, -1, 0, -1)
+    float4 inputs:scale = ( 2,  2, 1,  2)
+
+with the fourth values being ignored, as usual.
+
  The colors of the normals in any normal map can tip you off. The rightward pointing normal was mostly red. Upward pointing normals, like along the top of the "R", are mostly green, such as (127,233,142). On the left edge of the "R", pointing to the left, you get a more dark greenish teal, (22,127,142), and bottom-pointing gives a dark bluish purple, (127,83,239).
 
  For the other two textures, r_normal_map_reversed_x.png and r_normal_map_reversed_y.png, they (should) appear pretty much the same as our left cube with the default bias and scale values. These are properly the same in the USDView images shown earlier. 
@@ -89,10 +103,12 @@ If you're really on top of it, you'll notice that the length of this normal is a
 
 the bias and scale for the "r_normals_reversed_x" cube, displayed in the middle, are:
 
-    float4 inputs:bias =  ( 1, -1, -1, -1)
-    float4 inputs:scale = (-2,  2,  2,  2)
+    float4 inputs:bias =  ( 1, -1, 0, -1)
+    float4 inputs:scale = (-2,  2, 1,  2)
 
-Note how the X (red) component is negated in both bias and scale.
+Note how the X (red) component is negated in both bias and scale. These are not what usdzip expects, for example; you'll get the warning:
+
+    UsdUVTexture prim </Looks/r_normals/normal_texture> reads an 8 bit Normal Map, but has non-standard inputs:scale and inputs:bias values of (2, 2, 1, 2) and (-1, -1, 0, -1) (may violate 'NormalMapTextureChecker')
 
 For the r_normal_map_reversed_y.png normal map:
 
@@ -100,8 +116,8 @@ For the r_normal_map_reversed_y.png normal map:
 
 for the "r_normals_reversed_y" cube, displayed on the right:
 
-    float4 inputs:bias =  (-1,  1, -1, -1)
-    float4 inputs:scale = ( 2, -2,  2,  2)
+    float4 inputs:bias =  (-1,  1, 0, -1)
+    float4 inputs:scale = ( 2, -2, 1,  2)
 
 Here the green (Y) component is negated in both bias and scale. This type of adjustment is used in the McUsd.usda test file, in fact, testing the feature.
 

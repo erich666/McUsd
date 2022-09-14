@@ -185,9 +185,9 @@ def Scope "Looks" (
         def Shader "normal_texture"
         {
             uniform token info:id = "UsdUVTexture"
-            float4 inputs:bias = (-1, -1, -1, -1)
+            float4 inputs:bias = (-1, -1, 0, -1)
             asset inputs:file = @./r_normal_map.png@
-            float4 inputs:scale = (2, 2, 2, 2)
+            float4 inputs:scale = (2, 2, 1, 2)
             token inputs:sourceColorSpace = "raw" (
                 allowedTokens = ["auto", "raw", "sRGB"]
             )
@@ -227,9 +227,9 @@ def Scope "Looks" (
         def Shader "normal_texture"
         {
             uniform token info:id = "UsdUVTexture"
-            float4 inputs:bias = (1, -1, -1, -1)
+            float4 inputs:bias = (1, -1, 0, -1)
             asset inputs:file = @./r_normal_map_reversed_x.png@
-            float4 inputs:scale = (-2, 2, 2, 2)
+            float4 inputs:scale = (-2, 2, 1, 2)
             token inputs:sourceColorSpace = "raw" (
                 allowedTokens = ["auto", "raw", "sRGB"]
             )
@@ -269,9 +269,9 @@ def Scope "Looks" (
         def Shader "normal_texture"
         {
             uniform token info:id = "UsdUVTexture"
-            float4 inputs:bias = (-1, 1, -1, -1)
+            float4 inputs:bias = (-1, 1, 0, -1)
             asset inputs:file = @./r_normal_map_reversed_y.png@
-            float4 inputs:scale = (2, -2, 2, 2)
+            float4 inputs:scale = (2, -2, 1, 2)
             token inputs:sourceColorSpace = "raw" (
                 allowedTokens = ["auto", "raw", "sRGB"]
             )
