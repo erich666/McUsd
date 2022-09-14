@@ -88,7 +88,7 @@ If you go through the conversion with Z ranging from 0 to 1:
     (1.828,0.996,0.557); add bias (-1,-1,0) - don't bias Z:
     (0.828,-0.004,0.557) is the resulting local normal, which has a length of 0.995
 
-So, the takeaway here is that for the default map the attributes should actually be:
+So, the takeaway here is that for the normal map used on the left cube, the attributes should actually be:
 
     float4 inputs:bias =  (-1, -1, 0, -1)
     float4 inputs:scale = ( 2,  2, 1,  2)
@@ -97,7 +97,7 @@ with the fourth values being ignored, as usual.
 
  The colors of the normals in any normal map can tip you off. The rightward pointing normal was mostly red. Upward pointing normals, like along the top of the "R", are mostly green, such as (127,233,142). On the left edge of the "R", pointing to the left, you get a more dark greenish teal, (22,127,142), and bottom-pointing gives a dark bluish purple, (127,83,239).
 
- For the other two textures, r_normal_map_reversed_x.png and r_normal_map_reversed_y.png, they (should) appear pretty much the same as our left cube with the default bias and scale values. These are properly the same in the USDView images shown earlier. 
+ For the other two textures, r_normal_map_reversed_x.png and r_normal_map_reversed_y.png, they (should) appear pretty much the same as our left cube. These are properly the same in the USDView images shown earlier. 
  
  So it's clear, for the r_normal_map_reversed_x.png normal map:
 
