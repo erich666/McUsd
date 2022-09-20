@@ -1,7 +1,7 @@
 # McUsd
 Simple [USD](https://graphics.pixar.com/usd/release/index.html) scene geometry with a variety of [UsdPreviewSurface](https://graphics.pixar.com/usd/release/spec_usdpreviewsurface.html) materials applied, for casual material and light testing.
 
-Download this repository and then load the McUsd.usda file in the models directory into your favorite USD file viewer. Or, [**view the model in your browser**](https://skfb.ly/oxyUE) through Sketchfab. Or, have an iPhone or iPad? Try out [**Sketchfab's USDZ translation**](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz). You'll have to shrink it down in AR mode (pinch, on an iPhone) - each block is a meter in size!
+Download this repository and then load the McUsd.usda file in the models directory into your favorite USD file viewer. Or, [**view the model in your browser**](https://skfb.ly/oyps9) through Sketchfab. Or, have an iPhone or iPad? Try out [**Sketchfab's USDZ translation**](https://erich.realtimerendering.com/mcusd/McUsd.usdz). You'll have to shrink it down in AR mode (pinch, on an iPhone) - each block is a meter in size!
 
 The "Mc" is for Minecraft, not McDonalds. Short URL for this page: http://bit.ly/gitmcusd
 
@@ -131,7 +131,7 @@ Load procedure: File -> Open. Press F11 to toggle on the hierarchy view (if not 
 
 As expected from a basic rasterizer, shadows, reflections, and emitted light from surfaces are not rendered. Note: here and further on, you can click on the image to see the full resolution version, which is scaled down to fit on this README page.
 
-By default, USDView adds a light "at the eye", which is shown in the rendering above. This additional light can be turned off via View -> Lights -> Camera Light.
+By default, USDView adds a light "at the eye", which is shown in the rendering above. This additional light can be turned off via View -> Lights -> Camera Light. I have not figured out how to turn off the XYZ axis helper, which shows up here as the vertical green line along the edge of the diamond block at the back. Ignore that line...
 
 Without shadows, it is a little difficult to tell if the DistantLight in McUsd.usda is being used. By pressing "F11" (or View -> Toggle Viewer Mode), we can see that the DistantLight and DomeLight have been read in (the camera has not). These lights can be toggled off by right-clicking and selecting "Make Invisible". Doing so, the DomeLight appears to have no effect, neither to direct illumination nor as a background environment map.
 
@@ -149,7 +149,7 @@ Load procedure: drag and drop McUsd.usda file into the viewport of Omniverse Cre
 
 There are [a few renderers in Omniverse](https://docs.omniverse.nvidia.com/prod_kit/prod_materials-and-rendering/render-settings_overview.html). All results are from Omniverse Create 2022.
 
-By default, the "RTX - Interactive (Path Tracing)" is used. This renderer is progressive, shooting more and more frames of rays and blending these results in. Here is the render after around 140 frames or so:
+By default, the "RTX - Interactive (Path Tracing)" is used. This renderer is progressive, shooting more and more frames of rays and blending these results in. Here is the render after 512 accumulated frames (which is overkill):
 
 ![Omniverse RTX - Interactive (Path Tracing)](/images/ov_interactive.png "Omniverse RTX - Interactive (Path Tracing)")
 
@@ -169,7 +169,7 @@ Note simplifications occur, such as opaque shadows for semitransparent objects. 
 
 which trades speed for better-quality semitransparent results, such as with the purple stained glass block.
 
-The "Omniverse RTX - Accurate (Iray)" renderer uses the Iray ray tracer. Here is the render after about 270 frames:
+The "Omniverse RTX - Accurate (Iray)" renderer uses the Iray ray tracer. Here is the render after about 520 accumulated frames:
 
 ![Omniverse RTX - Accurate (Iray)](/images/ov_accurate.png "Omniverse RTX - Accurate (Iray)")
 
@@ -179,96 +179,89 @@ Differences with the interactive version include less color on the semitranspare
 
 In the McUsd.usda file are some render settings at the top that are specific to Omniverse:
 
-    token "rtx:rendermode" = "PathTracing"
-    double "rtx:post:tonemap:cameraShutter" = 10
-    double "rtx:post:tonemap:filmIso" = 1000
-    bool "rtx:raytracing:fractionalCutoutOpacity" = 1
-    double "rtx:sceneDb:ambientLightIntensity" = 0.0
+            double "rtx:post:tonemap:cameraShutter" = 10
+            double "rtx:post:tonemap:filmIso" = 1000
+            bool "rtx:raytracing:fractionalCutoutOpacity" = 1
+            token "rtx:rendermode" = "PathTracing"
+            double "rtx:sceneDb:ambientLightIntensity" = 0.0
 
-The first line specifies using an Omniverse path tracer on load. Turning on the fractionalCutoffOpacity favors quality over speed for the Omniverse real-time renderer, providing better semitransparency. The last line turns off ambient lighting.
+Turning on the fractionalCutoffOpacity favors quality over speed for the Omniverse real-time renderer, providing better semitransparency. The fourth line specifies using an Omniverse path tracer on load. The last line turns off ambient lighting.
 
 This leave the two camera exposure settings. I wanted to have emissive surfaces' effects still be visible even with any scene being in full sun. The lighting I chose are 30 for the sun, 6 for the domeLight, with a somewhat more real-world 1000 (nits) for emissive surfaces. To compensate for the low sunlight and domeLight values, I give Omniverse higher exposure settings: 1/10th of a second shutter, 1000 ISO (and f-stop of 5.0, the default in Omniverse). If these two post:tonemap exposure settings are removed, the Sun should be set to an Intensity of about 1550, the DomeLight to 310, and the emissive surfaces (the two lava materials) should have inputs:scale to 53000 instead of 1000. I provide this file as McUsd_no_exposure.usda. This file tends to blow out the appearance of lava even more in other applications such as USDView.
 
-Please note that these settings are used as of September 2022, but their use and names may of course change over time.
+Please note that these settings are used as of September 2022, but their use and names in Omniverse may change over time.
 
-Note also the presence of:
+Note also at the start of the file the line:
 
     metersPerUnit = 1
 
-By default USD uses centimeters as its units. Minecraft blocks are 1 meter "in real life", so this setting makes it so that all mesh descriptions are in meters. This looks cleaner and saves a lot of extraneous zeroes in the USDA file.
+By default USD uses centimeters as its units, i.e., the value is normally 0.01. Minecraft blocks are 1 meter "in real life", so this setting makes it so that all mesh descriptions are in meters. This looks cleaner and saves a lot of extraneous zeroes in the USDA file.
 
 ## Sketchfab
 
 Load procedure: make a zip file that consists of McUsd.usda and the McUsd_materials in the "models" directory and upload it to [Sketchfab](https://sketchfab.com). Modifications: the directional light was set to 250 degrees, the camera FOV to 30, and the camera view itself manually adjusted to about match.
 
-The Sketchfab rendering can be [**directly examined in a browser**](https://skfb.ly/oxyUE).
+The Sketchfab rendering can be [**directly examined in a browser**](https://skfb.ly/oyps9).
 
 ![Sketchfab](/images/sketchfab.png "Sketchfab")
 
-Sketchfab does not translate the camera or lights. It uses rasterization and related techniques for interactive rendering, so giving typical limitations: the lava does not emit light, the glass block does not cast a shadow, true reflections are not generated for shiny surfaces. There are some interesting specular highlights on the glass block that are not visible in the Omniverse renderings.
+Sketchfab does not translate the camera or lights; I repositioned the view to attempt to match the original camera's, though neglected to change the field of view from 45 degrees to 60 degrees in the original model.
 
-Initially, I noticed that if I set the orientation of the light to about 126 degrees, I got upside down bumps on the left side of the prismarine block, which is wrong. The light is coming from above and should not illuminate the bottom edges of the stones:
+It uses rasterization and related techniques for interactive rendering, so giving typical limitations: the lava does not emit light, the glass block does not cast a shadow, true reflections are not generated for shiny surfaces. There are some interesting specular highlights on the glass block that are not visible in the Omniverse renderings.
+
+Initially, I noticed that the prismarine block looks as if it is lit from below, which is wrong. The light is coming from above and should not illuminate the bottom edges of the stones:
 
 ![Sketchfab flipped normals](/images/sketchfab_flip.png "Sketchfab flipped normals")
 
-However, I got the exact same flipped-vertically normals when I uploaded "McUsd_yflip_normals.usda", [see it here](https://skfb.ly/oxD9r)
-, with the light angle set to 126 degrees and zoomed in on the prismarine. Since these are the same, what is happening is that currently Sketchfab is ignoring the scale and bias values set for the normal maps.
+However, I got the exact same flipped-vertically normals when I uploaded "McUsd_yflip_normals.usda", which should look different (and wrong). Since these are the same, what is happening is that currently Sketchfab is ignoring the scale and bias values set for the normal maps. It assumes the normal textures use a DirectX mapping, not an OpenGL mapping.
 
-I manually edited [my original, uploaded file](https://skfb.ly/oxyUE), in Sketchfab (tediously) setting the material for every block to use the ["Flip green (-Y)" property](https://help.sketchfab.com/hc/en-us/articles/4402392923409) for the normal map. This fixed the normals for this model:
+I manually edited [my original, uploaded file](https://skfb.ly/oypsY), in Sketchfab (tediously) setting the material for every block to use the ["Flip green (-Y)" property](https://help.sketchfab.com/hc/en-us/articles/4402392923409) for the normal map. This [corrected file](https://skfb.ly/oyps9) fixes the normals for the model:
 
 ![Sketchfab Y flip](/images/sketchfab_y_flip.png "Sketchfab Y flip")
 
 See the "[Observations section](#observations) earlier for more on normal map texture scaling.
 
-Sketchfab lets you download different translations of your model. I downloaded the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) - click that link on an iPhone to view it. The camera position set in Sketchfab is exported. The default Sketchfab light sources are not. From what I can tell, the emittance texture scaling on the lava is removed, for good or ill.
+Sketchfab lets you download different translations of your model (note: not all translated forms instantly appear in the download list when you first upload a version; be patient, as they compute the download USDZ form eventually). I downloaded the corrected [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) - click that link on an iPhone to view it. The camera position set in Sketchfab is exported. The default Sketchfab light sources are not. From what I can tell, the emittance texture scaling on the lava is removed, for good or ill.
 
 ## Apple iPhone
 
 On Safari and Chrome (and perhaps other browsers), if you are using an iPhone or iPad and click on a ".usdz" extension file, the file displays in an viewer called AR Quick Look. [Some examples are here](https://developer.apple.com/augmented-reality/quick-look/).
 
-The [Sketchfab USDZ translation with Y flip](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) mentioned above can also be viewed - click the link to see it (other phones and non-Safari browsers will just download the file instead; if you know how to hook the usdz file to immediately view, let me know).
+I made my own USDZ file with the usdtool. You can view or download this [McUsd.usdz]](https://erich.realtimerendering.com/mcusd/McUsd.usdz). Click that link on an iPhone and you'll be able to view it (other phones and non-Safari browsers will just download the file instead; if you know how to hook the usdz file to immediately view, let me know).
 
-This viewer has two modes: AR and Object, shown at the top. "Object" lets you view the model in isolation. In this mode, one finger rotates, two finger pinch dollies (aka "zooms", but not really) the camera in and out. There appears to be no way to change the center of focus. Here's an example:
+The iPhone viewer has two modes: AR and Object, shown at the top. "Object" lets you view the model in isolation. In this mode, one finger rotates, two finger pinch dollies (aka "zooms", but not really) the camera in and out. There appears to be no way to change the center of focus. Here's an example:
 
 ![iPhone Object view](/images/iphone_object.png "iPhone Object view")
 
 Understandably, the camera setting in the Sketchfab usdz file is not used in either mode. If you look very closely, there is some "ghosting" around the sunflower, an area around it where the cut-away parts of the texture should have no effect, but instead leave an extremely faint white trace.
 
-Try AR mode. Because this model is actually to scale, the blocks are each 1 meter across by default, so the model is likely much larger than where you are. You made need to first move your phone or tablet around so that it understands your environment before placing the model. After this, use a two-finger pinch gesture to shrink the model down and make it fit your environment. One finger lets you move the model horizontally. Here is the scene shrunk to about 10% and viewed in place, using "AR":
+Overall the fidelity is good. The lava's emission texture is scaled up, leading to the bloomed view seen. 
+
+I noticed with the [Sketchfab USDZ export](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) I see the upper right part of the sunflower drop out, and other parts disappear from different views, e.g.:
+
+![iPhone Sketchfab USDZ](/images/iphone_sketchfab.png "Sketchfab USDZ")
+
+This problem is not visible in the USDZ file I created, for some reason. The lava looks better because Sketchfab ignores the emission texture scaling in the McUsd file, so its translation does not have this scaling.
+
+Try AR mode (usually the default). Because this model is actually to scale, the blocks are each 1 meter across by default, so the model is likely much larger than where you are. You made need to first move your phone or tablet around so that it understands your environment before placing the model. After this, use a two-finger pinch gesture to shrink the model down and make it fit your environment. Two-finger twist lets you rotate it. One finger lets you move the model horizontally. Here is the scene shrunk to about 10% and viewed in place, using "AR":
 
 ![iPhone AR view](/images/iphone_ar.png "iPhone AR view")
 
-In both views you can see that the cutout sunflower head has rendering problems. If you rotate the view, various parts of the sunflower disappear and appear. My guess is that this artifact is likely caused by cutouts being rendered as always replacing the z-buffer value (even if fully transparent) and by z-sorting them with other objects in the scene, but I can't say I fully understand. The "ghosting" visible in Object mode is not present in AR mode.
-
-It's also a little hard to tell, but the "light from below" reversed normal problem is visible in the AR view if you use the unaltered [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_no_y_flip.usdz):
-
-![iPhone AR view, no Y flip](/images/iphone_ar_no_y_flip.png "iPhone AR view, no Y flip")
-
-Also for comparison, here's the object view of the Sketchfab model without Y flipping:
-
-![iPhone Object view, no Y flip](/images/iphone_object_no_y_flip.png "iPhone object view, no Y flip")
-
-What this means is that the Quick Look viewer appears to properly pay attention to scale and bias values in the model file.
-
-See the [Observations section](#observations) for more about this problem.
+(And, yes, socks with sandals rules.)
 
 ## Apple Mac
 
-If you download the [Sketchfab USDZ file with Y flip](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) and double-click it on a Mac, the Preview app will show it:
+If you download the [McUsd USDZ file](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) and double-click it on a Mac, the Preview app will show it:
 
 ![Mac Preview](/images/mac_preview.png "Mac Preview")
 
-Lights and camera are not translated. There is some problem with some grass triangles; my guess is that it had to do with the normal map texture, but I haven't explored the problem. Otherwise, the content looks good, with no z-buffer problems with cutouts.
-
-The "no Y flip" version looks like this:
-
-![Mac Preview, no Y flip](/images/mac_preview_no_y_flip.png "Mac Preview, no Y flip")
-
-Here the prismarine and iron blocks' bumps look reversed, showing that this viewer properly pays attention to bias and scale, at least on a limited basis.
+Lights and camera are not translated. The content looks good, with no z-buffer problems with cutouts. I did notice with the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) there was a problem with the display of some grass triangles, which looked dark. I didn't explore further.
 
 ## Autodesk USD Browser Viewer
 
 Autodesk [open-sourced their USD browser viewer](https://www.keanw.com/2022/02/autodesk-open-sources-web-based-usd-viewing-implementation.html). Demos and Github repository [here](https://autodesk-forks.github.io/USD/). It's a bit of a challenge to build (I failed; turns out the build doesn't quite work for Windows yet, as of 8/31/2022, but that should change soon). Happily there's a site where you can simply drag and drop a USDZ file onto the page and view it.
+
+Sadly, there is some bug in this viewer that makes it so that the [McUsd USDZ](https://erich.realtimerendering.com/mcusd/McUsd.usdz) does not display its textures. I did find this viewer displayed the (mostly-translated) Sketchfab USDZ file with textures, so used that for testing.
 
 Dropping the [Sketchfab USDZ translation](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) onto [**Autodesk's USDZ test page**](https://autodesk-forks.github.io/USD/usd_for_web_demos/test.html) gives this result:
 
@@ -287,6 +280,8 @@ The render is a bit washed out compared to Autodesk's original, but that's just 
 In testing with the unaltered Sketchfab USDZ file, I found that these viewers appear to pay attention to the normal map bias and scale, at least for this one (simple Y flipped) test.
 
 ## Blender
+
+**NOTE:** At this point, the testing for all the packages that follow are based on the McUsd files from early September, which had a small bug. In testing, I found that some of the normal maps were poorly translated by Mineways, which is fixed in the latest version of the McUsd model files. These renormalizations are not a huge deal (I think...), and I don't have infinite time to retest, so the images that follow may differ slightly from what you will see with the latest McUsd.usda file. Or, more likely if you retest, the vendor has improved their renderer - this happens pretty regularly.
 
 Being free and open source, Blender is easy to test. I tested the bleeding edge (as of today) [Blender 3.4.0 USD version](https://builder.blender.org/download/experimental/). 
 

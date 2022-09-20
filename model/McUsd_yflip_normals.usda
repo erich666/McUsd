@@ -1,11 +1,11 @@
 #usda 1.0
 (
     """
-# USDA 1.0 file made by Mineways version 10.01, http://mineways.com
+# USDA 1.0 file made by Mineways version 10.02, http://mineways.com
 # World: _Simple Material Test
-# Terrain file name: C:\\Users\\ehaines\\Downloads\\minewaysV1001\\mineways\\terrainExt_JG-RTX256.png
+# Terrain file name: C:\\Users\\ehaines\\Downloads\\minewaysV1002\\mineways\\terrainExt_JG-RTX256.png
 # Color scheme: Standard
-# Mon Aug 29 13:39:45 2022
+# Sun Sep 18 10:30:44 2022
 
 # Selection location min to max: 181, 3, -95 to 193, 319, -83
 #   Non-empty selection location min to max: 181, 3, -95 to 193, 5, -83
@@ -48,8 +48,8 @@
 #   Debug: show weld blocks in bright colors: no
 
 # Full world path: C:\\Users\\ehaines\\AppData\\Roaming\\.minecraft\\saves\\_Simple Material Test
-# Full terrainExt.png path: C:\\Users\\ehaines\\Downloads\\minewaysV1001\\mineways\\terrainExt_JG-RTX256.png
-# Full current path: C:\\Users\\ehaines\\Downloads\\minewaysV1001\\mineways
+# Full terrainExt.png path: C:\\Users\\ehaines\\Downloads\\minewaysV1002\\mineways\\terrainExt_JG-RTX256.png
+# Full current path: C:\\Users\\ehaines\\Downloads\\minewaysV1002\\mineways
 """
     customLayerData = {
         dictionary cameraSettings = {
@@ -72,10 +72,10 @@
             string boundCamera = "/Camera"
         }
         dictionary renderSettings = {
-            token "rtx:rendermode" = "PathTracing"
             double "rtx:post:tonemap:cameraShutter" = 10
             double "rtx:post:tonemap:filmIso" = 1000
             bool "rtx:raytracing:fractionalCutoutOpacity" = 1
+            token "rtx:rendermode" = "PathTracing"
             double "rtx:sceneDb:ambientLightIntensity" = 0.0
         }
     }
@@ -1890,7 +1890,7 @@ def Scope "Looks" (
             float inputs:metallic = 0
             normal3f inputs:normal.connect = </Looks/lava_flow/normal_texture.outputs:rgb>
             float inputs:opacity = 1
-            float inputs:roughness = 0.74902
+            float inputs:roughness.connect = </Looks/lava_flow/roughness_texture.outputs:r>
             int inputs:useSpecularWorkflow = 0
             token outputs:out
             token outputs:surface
@@ -1902,6 +1902,17 @@ def Scope "Looks" (
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
+        }
+
+        def Shader "roughness_texture"
+        {
+            uniform token info:id = "UsdUVTexture"
+            asset inputs:file = @./McUsd_materials/tex/lava_flow_r.png@
+            token inputs:sourceColorSpace = "raw"
+            float2 inputs:st.connect = </Looks/lava_flow/uv_reader.outputs:result>
+            token inputs:wrapS = "repeat"
+            token inputs:wrapT = "repeat"
+            float outputs:r
         }
 
         def Shader "normal_texture"
