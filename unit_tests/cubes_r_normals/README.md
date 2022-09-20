@@ -125,6 +125,11 @@ Here the green (Y) component is negated in both bias and scale. This type of adj
 
 Compare r_normal_map_reversed_x.png with r_normal_map.png and you'll see the "reddish" and "dark greenish teal" parts of the map are swapped. For r_normal_map_reversed_y.png the "greenish" parts are swapped with the "dark bluish purple" parts.
 
+One last thing worth noting is that some specialized formats use the Z (blue) channel for other data. Since it's given that the normal is normalized, and where the Z value is always greater than or equal to 0.0, you can then derive Z from X and Y, i.e.,
+
+    Z = sqrt(1 - X*X - Y*Y)
+
+For example, the Z channel is instead used to hold an ambient occlusion percentage in the Minecraft [LabPBR format](https://wiki.shaderlabs.org/wiki/LabPBR_Material_Standard).
 ## Omniverse Create
 
 I am not going to go through a thorough testing of as many viewers as I can find, as done with [McUsd](https://github.com/erich666/McUsd).
