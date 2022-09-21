@@ -1,5 +1,3 @@
 *.zip
-*.usdc
 model/.thumbs
-*.c4d
-model/McUsd_sketchfab.usdz
+unit_tests/cubes_r_normals/.thumbs/*

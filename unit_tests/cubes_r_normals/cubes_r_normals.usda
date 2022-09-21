@@ -21,7 +21,7 @@
             string boundCamera = "/Camera"
         }
         dictionary renderSettings = {
-            double "rtx:sceneDb:ambientLightIntensity" = 0.0
+            double "rtx:sceneDb:ambientLightIntensity" = 0
         }
     }
     defaultPrim = "Block_Test_World"
@@ -47,11 +47,11 @@ def Xform "Block_Test_World"
         uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
     }
 
-    def Mesh "r_normals_reversed_x"
+    def Mesh "r_normals_reversed_x_0_bias_z"
     {
         int[] faceVertexCounts = [4, 4, 4, 4, 4, 4]
         int[] faceVertexIndices = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23]
-        rel material:binding = </Looks/r_normals_reversed_x>
+        rel material:binding = </Looks/r_normals_reversed_x_0_bias_z>
         normal3f[] normals = [(-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (-1, 0, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, -1, 0), (0, 0, -1), (0, 0, -1), (0, 0, -1), (0, 0, -1), (1, 0, 0), (1, 0, 0), (1, 0, 0), (1, 0, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 1, 0), (0, 0, 1), (0, 0, 1), (0, 0, 1), (0, 0, 1)]
         point3f[] points = [(0, 0, 0), (0, 0, 1), (0, 1, 1), (0, 1, 0), (1, 0, 1), (0, 0, 1), (0, 0, 0), (1, 0, 0), (1, 0, 0), (0, 0, 0), (0, 1, 0), (1, 1, 0), (1, 0, 1), (1, 0, 0), (1, 1, 0), (1, 1, 1), (0, 1, 1), (1, 1, 1), (1, 1, 0), (0, 1, 0), (0, 0, 1), (1, 0, 1), (1, 1, 1), (0, 1, 1)]
         texCoord2f[] primvars:st = [(0, 0), (1, 0), (1, 1), (0, 1), (1, 0), (0, 0), (0, 1), (1, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1), (0, 0), (1, 0), (1, 1), (0, 1)] (
@@ -185,9 +185,9 @@ def Scope "Looks" (
         def Shader "normal_texture"
         {
             uniform token info:id = "UsdUVTexture"
-            float4 inputs:bias = (-1, -1, 0, -1)
+            float4 inputs:bias = (-1, -1, -1, -1)
             asset inputs:file = @./r_normal_map.png@
-            float4 inputs:scale = (2, 2, 1, 2)
+            float4 inputs:scale = (2, 2, 2, 2)
             token inputs:sourceColorSpace = "raw" (
                 allowedTokens = ["auto", "raw", "sRGB"]
             )
@@ -198,17 +198,17 @@ def Scope "Looks" (
         }
     }
 
-    def Material "r_normals_reversed_x"
+    def Material "r_normals_reversed_x_0_bias_z"
     {
-        token outputs:displacement.connect = </Looks/r_normals_reversed_x/PreviewSurface.outputs:displacement>
-        token outputs:surface.connect = </Looks/r_normals_reversed_x/PreviewSurface.outputs:surface>
+        token outputs:displacement.connect = </Looks/r_normals_reversed_x_0_bias_z/PreviewSurface.outputs:displacement>
+        token outputs:surface.connect = </Looks/r_normals_reversed_x_0_bias_z/PreviewSurface.outputs:surface>
 
         def Shader "PreviewSurface"
         {
             uniform token info:id = "UsdPreviewSurface"
             color3f inputs:diffuseColor = (0.486275, 0.486275, 0.486275)
             float inputs:metallic = 0
-            normal3f inputs:normal.connect = </Looks/r_normals_reversed_x/normal_texture.outputs:rgb>
+            normal3f inputs:normal.connect = </Looks/r_normals_reversed_x_0_bias_z/normal_texture.outputs:rgb>
             float inputs:opacity = 1
             float inputs:roughness = 1
             int inputs:useSpecularWorkflow = 0
@@ -228,12 +228,12 @@ def Scope "Looks" (
         {
             uniform token info:id = "UsdUVTexture"
             float4 inputs:bias = (1, -1, 0, -1)
-            asset inputs:file = @./r_normal_map_reversed_x.png@
+            asset inputs:file = @./r_normal_map_reversed_x_0_bias_z.png@
             float4 inputs:scale = (-2, 2, 1, 2)
             token inputs:sourceColorSpace = "raw" (
                 allowedTokens = ["auto", "raw", "sRGB"]
             )
-            float2 inputs:st.connect = </Looks/r_normals_reversed_x/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/r_normals_reversed_x_0_bias_z/uv_reader.outputs:result>
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             float3 outputs:rgb
@@ -269,9 +269,9 @@ def Scope "Looks" (
         def Shader "normal_texture"
         {
             uniform token info:id = "UsdUVTexture"
-            float4 inputs:bias = (-1, 1, 0, -1)
+            float4 inputs:bias = (-1, 1, -1, -1)
             asset inputs:file = @./r_normal_map_reversed_y.png@
-            float4 inputs:scale = (2, -2, 1, 2)
+            float4 inputs:scale = (2, -2, 2, 2)
             token inputs:sourceColorSpace = "raw" (
                 allowedTokens = ["auto", "raw", "sRGB"]
             )
@@ -290,12 +290,12 @@ def Camera "Camera" (
 {
     float4[] clippingPlanes = []
     float2 clippingRange = (1, 10000000)
-    float focalLength = 36
+    float focalLength = 100
     float focusDistance = 0
     float fStop = 0
     float horizontalAperture = 20.955
     float horizontalApertureOffset = 0
-    custom vector3d omni:kit:centerOfInterest = (0, 0, -9.2736)
+    custom vector3d omni:kit:centerOfInterest = (0, 0, -23.97)
     token projection = "perspective"
     uniform token purpose = "default"
     double shutter:close = 0
@@ -306,7 +306,7 @@ def Camera "Camera" (
     token visibility = "inherited"
     float3 xformOp:rotateYXZ = (25, -130, -25)
     float3 xformOp:scale = (1, 1, 1)
-    double3 xformOp:translate = (-4.5, 5.5, -4.5)
+    double3 xformOp:translate = (-13.5, 14.5, -13.5)
     uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateYXZ", "xformOp:scale"]
 }
 
