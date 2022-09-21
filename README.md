@@ -1,7 +1,7 @@
 # McUsd
 Simple [USD](https://graphics.pixar.com/usd/release/index.html) scene geometry with a variety of [UsdPreviewSurface](https://graphics.pixar.com/usd/release/spec_usdpreviewsurface.html) materials applied, for casual material and light testing.
 
-Download this repository and then load the McUsd.usda file in the models directory into your favorite USD file viewer. Or, [**view the model in your browser**](https://skfb.ly/oyps9) through Sketchfab. Or, have an iPhone or iPad? Try out [**Sketchfab's USDZ translation**](https://erich.realtimerendering.com/mcusd/McUsd.usdz). You'll have to shrink it down in AR mode (pinch, on an iPhone) - each block is a meter in size!
+Download this repository and then load the McUsd.usda file in the models directory into your favorite USD file viewer. Or, [**view the model in your browser**](https://skfb.ly/oyps9) through Sketchfab. Or, have an iPhone or iPad? Try out [**the McUSD USDZ**](https://erich.realtimerendering.com/mcusd/McUsd.usdz). You'll have to shrink the model down in AR mode (pinch, on an iPhone) - each block is a meter in size!
 
 The "Mc" is for Minecraft, not McDonalds. Short URL for this page: http://bit.ly/gitmcusd
 
