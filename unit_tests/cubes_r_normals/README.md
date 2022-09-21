@@ -107,6 +107,14 @@ Note how the X (red) component is negated in both bias and scale, and the Z (blu
 
 This reversed X and remapped Z example is not a normal map combination you'll likely ever see anywhere else. It is here purely for testing these two possibilities, each of which I've seen used in some normal maps.
 
+There are two sorts of normal map textures you'll see in practice: object space and tangent space. Object space normal map textures give a set of normals that can point in any direction. These directly replace the object's normals at various mapped locations, relative to the object's frame of reference. In my (limited) experience, object space normal maps are rarely used, as they're inflexible. Change the shape of the object and the normal map texture likely needs to be baked in again.
+
+In tangent space normal map textures, a triangle's normal points in the +Z direction, and there are X+ and Y+ directions defined for the triangle, so allowing texturing. A tangent space normal map contains XYZ normals that are relative to this surface's orientation. If the triangle's coordinates change to rotate it in space, the normal map does not need to be regenerated for this new set of coordinates.
+
+While object space normal textures can have values for X, Y, and Z that range between -1 and 1, this is not true for tangent space textures. It's already a bit weird to change the normal so that it is not the same as the geometric normal (e.g., rays reflecting off such normals could pass into the surface, not something that happens in real life). But one thing that is definitely not allowed is for the normals themselves to point into - below - the surface. This means that the Z value is in the range 0 to 1, which is why you will see normal textures with this range instead of -1 to 1. Such a mapping is a bit different for tangent vs. object space. Literally, a bit. You can get one more bit of precision for the Z coordinate if you use the range 0 to 1 instead of -1 to 1. In practical terms, I doubt this much matters.
+
+That said, the 0 to 1 Z range makes a bit more sense for these tangent surface normal maps (where the normal retrieved from the map replaces the triangle's geometric normal), vs. object surface
+
 For the r_normal_map_reversed_y.png normal map:
 
 ![r_normal_map_reversed_y.png](/unit_tests/cubes_r_normals/r_normal_map_reversed_y.png "r_normal_map_reversed_y.png")
