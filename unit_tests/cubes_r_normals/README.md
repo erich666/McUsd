@@ -102,7 +102,8 @@ the bias and scale for the "r_normals_reversed_x" cube, displayed in the middle,
 
 Note how the X (red) component is negated in both bias and scale, and the Z (blue) component is converted to the range 0 to 1. These are not what usdzip expects, for example. If you use usdzip's "-c", check compliance, option you'll get the warning:
 
-    UsdUVTexture prim </Looks/r_normals_reversed_x_0_bias_z/normal_texture> reads an 8 bit Normal Map, but has non-standard inputs:scale and inputs:bias values of (-2, 2, 1, 2) and (1, -1, 0, -1) (may violate 'NormalMapTextureChecker')
+    UsdUVTexture prim </Looks/r_normals_reversed_x_0_bias_z/normal_texture> reads an 8 bit Normal Map, but has non-standard
+    inputs:scale and inputs:bias values of (-2, 2, 1, 2) and (1, -1, 0, -1) (may violate 'NormalMapTextureChecker')
 
 This reversed X and remapped Z example is not a normal map combination you'll likely ever see anywhere else. It is here purely for testing these two possibilities, each of which I've seen used in some normal maps.
 
@@ -119,7 +120,8 @@ Here the green (Y) component is negated in both bias and scale. This type of adj
 
 This flip will also be flagged by usdtools with "-c":
 
-    UsdUVTexture prim </Looks/r_normals_reversed_y/normal_texture> reads an 8 bit Normal Map, but has non-standard inputs:scale and inputs:bias values of (2, -2, 2, 2) and (-1, 1, -1, -1) (may violate 'NormalMapTextureChecker')
+    UsdUVTexture prim </Looks/r_normals_reversed_y/normal_texture> reads an 8 bit Normal Map, but has non-standard
+    inputs:scale and inputs:bias values of (2, -2, 2, 2) and (-1, 1, -1, -1) (may violate 'NormalMapTextureChecker')
 
 Compare r_normal_map_reversed_x_0_bias_z.png with r_normal_map.png and you'll see the "reddish" and "dark greenish teal" parts of the map are swapped. For r_normal_map_reversed_y.png the "greenish" parts are swapped with the "dark bluish purple" parts.
 
