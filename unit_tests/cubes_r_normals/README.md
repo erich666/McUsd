@@ -122,7 +122,7 @@ for the "r_normals_reversed_y" cube, displayed on the right:
     float4 inputs:bias =  (-1,  1, -1, -1)
     float4 inputs:scale = ( 2, -2,  2,  2)
 
-Here the green (Y) component is negated in both bias and scale. This type of adjustment is used in the McUsd.usda test file for all normal maps, in fact, testing the feature. This is needed when converting from "DirectX style" Y is down along the surface normal map textures, often seen in games, to USD's "OpenGL style", Y is up standard.
+Here the green (Y) component is negated in both bias and scale. This type of adjustment is used in the McUsd.usda test file for all normal maps, in fact, testing the feature. This is needed when converting from "DirectX style" Y is down along the surface normal map textures, often seen in games, to USD's "OpenGL style", Y is up standard. Various digital content creation apps [use one or the other](http://wiki.polycount.com/wiki/Normal_Map_Technical_Details#Common_Swizzle_Coordinates).
 
 This flip will also be flagged by usdtools with "-c":
 
