@@ -133,7 +133,7 @@ Compare r_normal_map_reversed_x_0_bias_z.png with r_normal_map.png and you'll se
 
 ### Tools
 
-I use [my branch of the Normals Online tool](https://github.com/erich666/NormalMap-Online) - download and open index.html, drop a bump map into the left image, adjust as you wish. I typically check the Invert R and Z Range boxes for the default USD format, then download the resulting image.
+I use [my znorm branch of the Normals Online tool](https://github.com/erich666/NormalMap-Online/tree/znorm) - download and open index.html, drop a bump map into the left image, adjust as you wish. I typically check the Invert R and Z Range boxes for the default USD format, then download the resulting image.
 
 It's sometimes tough to tell if a normal map you encounter in the wild uses a Z range of 0 to 1 or -1 to 1. In the "misc" directory at the top of the McUsd tree is a program rgb_to_normal.pl (yes, I'm old, I use Perl). Examine a pixel from the normal map you're examining, the less bluish the better. Edit the $rgb values in rgb_to_normal.pl and run by "perl rgb_to_normal.pl". For our test pixel (246,127,175) you'll see the result:
 
