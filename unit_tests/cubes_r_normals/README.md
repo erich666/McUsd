@@ -56,7 +56,7 @@ Normal map textures use the raw RGB values in an image to generate a local surfa
 
 Black is low, white is high.
 
-Using the [NormalMap Online page](https://cpetry.github.io/NormalMap-Online/), I dropped this texture into the leftmost area. (Right now I'm actually using [a fork I made](https://github.com/erich666/NormalMap-Online), which adds the important feature "Z Range". I expect my pull request to be accepted sometime soon.)
+Using the [NormalMap Online page](https://cpetry.github.io/NormalMap-Online/), I dropped this texture into the leftmost area.
 
 I converted this bump map into three normal map textures, used in the three cubes, left to right:
 * r_normal_map.png - created by using the "Invert R" setting in the NormalMap Online tool and by checking the box next to "Z Range". This represents USD's default normal map, AKA the "OpenGL" format.
@@ -133,7 +133,7 @@ Compare r_normal_map_reversed_x_0_bias_z.png with r_normal_map.png and you'll se
 
 ### Tools
 
-I use [my znorm branch of the Normals Online tool](https://github.com/erich666/NormalMap-Online/tree/znorm) - download and open index.html, drop a bump map into the left image, adjust as you wish. I typically check the Invert R and Z Range boxes for the default USD format, then download the resulting image.
+I use [the Normals Online tool](https://cpetry.github.io/NormalMap-Online/) - download and open index.html, drop a bump map into the left image, adjust as you wish. I typically check the Invert R and Z Range boxes for the default USD format, then download the resulting image.
 
 It's sometimes tough to tell if a normal map you encounter in the wild uses a Z range of 0 to 1 or -1 to 1. In the "misc" directory at the top of the McUsd tree is a program rgb_to_normal.pl (yes, I'm old, I use Perl). Examine a pixel from the normal map you're examining, the less bluish the better. Edit the $rgb values in rgb_to_normal.pl and run by "perl rgb_to_normal.pl". For our test pixel (246,127,175) you'll see the result:
 
