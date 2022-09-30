@@ -6,44 +6,43 @@ The usdview program from the [USD Toolset](https://graphics.pixar.com/usd/releas
 
 It is possible to build [usdview from scratch](https://graphics.pixar.com/usd/release/toolset.html), but in that way lies madness (at least for me). Happily, [NVIDIA's Omniverse Launcher](https://www.nvidia.com/en-us/omniverse/) provides a pre-built USDView that I can simply install and run. I tested with version 0.22.8.
 
-Load procedure: File -> Open and select NormalsTextureBiasAndScales.usda. Press F11 to toggle on the hierarchy view (if not already visible). Open up the "root" by double-clicking on it. Select the "Camera" and right-click, then pick (at the bottom) "Set As Active Camera". Widen the application a bit and you'll see:
+Load procedure: File -> Open and select NormalsTextureBiasAndScales.usda. Press F11 to toggle on the hierarchy view (if not already visible). Open the "root" by double-clicking on it. Select the "Camera" and right-click, then pick (at the bottom) "Set As Active Camera". Widen the application a bit and you'll see:
 
-![UsdView 0.22.8](screenshots/crn_usdview.png "UsdView 0.22.8")
-_Default, rendered with UsdView 0.22.8_
+![USDView 0.22.8](screenshots/crn_usdview.png "USDView 0.22.8")
 
 The scene has four light sources in it, with just one, the "Angled_Light" coming roughly from the camera's direction, enabled. You can toggle these lights on and on in USDView by clicking on the V (visible) or I (invisible) values to the right of each. For example, here are the settings and where I clicked to make the "Light_from_above" visible and affect the scene:
 
-![UsdView 0.22.8, light toggle](screenshots/crn_light_toggle.png "UsdView 0.22.8, light toggle")
+![USDView 0.22.8, light toggle](screenshots/crn_light_toggle.png "USDView 0.22.8, light toggle")
 
 Toggling the various lights can show whether the three cubes respond to the light in the same way.
 
 If the viewer being checked does not read in and use the camera, simply adjust the view. In order to get a corresponding view, use the "R" orientation on the tops of the cubes to make sure you're looking at the fronts of the three cubes.
 
-If the viewer doesn't import the lights, you are on your own. Whatever light you use, the three cubes should appear about the same. Pay particular attention to whether the left edge and the top of the R is light or dark.
+If the viewer doesn't import the lights, you are on your own. Whatever light you use, the three cubes should appear nearly the same. Pay particular attention to whether the left edge and the top of the R is light or dark.
 
 Lit from above:
 
-![UsdView 0.22.8, lit from above](screenshots/crn_usdview_light_from_above.png "UsdView 0.22.8, lit from above")
+![USDView 0.22.8, lit from above](screenshots/crn_usdview_light_from_above.png "USDView 0.22.8, lit from above")
 
 Lit from left:
 
-![UsdView 0.22.8, lit from left](screenshots/crn_usdview_light_from_left.png "UsdView 0.22.8, lit from left")
+![USDView 0.22.8, lit from left](screenshots/crn_usdview_light_from_left.png "USDView 0.22.8, lit from left")
 
 Lit from right:
 
-![UsdView 0.22.8, lit from right](screenshots/crn_usdview_light_from_right.png "UsdView 0.22.8, lit from right")
+![USDView 0.22.8, lit from right](screenshots/crn_usdview_light_from_right.png "USDView 0.22.8, lit from right")
 
 ## Technical Details
-There are two sorts of normal map textures you'll see in practice: [object space and tangent space](http://wiki.polycount.com/wiki/Normal_Map_Technical_Details). Object space normal map textures give a set of normals that can point in any direction. These directly replace the object's normals at various mapped locations, relative to the object's frame of reference. In my (limited) experience, object space normal maps are rarely used, as they're inflexible. Change the shape of the object and the normal map texture likely needs to be baked in again.
+There are two sorts of normal map textures seen in practice: [object space and tangent space](http://wiki.polycount.com/wiki/Normal_Map_Technical_Details). Object space normal map textures give a set of normals that can point in any direction. These directly replace the object's normals at various mapped locations, relative to the object's frame of reference. Object space normal maps are rarely used in modern applications, because they are inflexible (baked in) and higher tessellation rates hide [tangent space discontinuities](https://docs.cryengine.com/display/SDKDOC4/Tangent+Space+Normal+Mapping#TangentSpaceNormalMapping-DrawbacksofTangentSpaceLighting).
 
-In tangent space normal map textures, a triangle's normal points in the +Z direction, and there are X+ and Y+ directions defined for the triangle, so allowing texturing. A tangent space normal map contains XYZ normals that are relative to this surface's orientation. If the triangle's coordinates change to rotate it in space, the normal map does not need to be regenerated for this new set of coordinates.
+In tangent space normal map textures, a triangle's normal points in the +Z direction, and there are X+ and Y+ directions defined for the triangle, so allowing texturing. A tangent space normal map contains XYZ normals that are relative to this surface's orientation. If the triangle's coordinates change to rotate it in space, for example, the normal map does not need to be regenerated for this new set of coordinates.
 
-While object space normal textures can have values for X, Y, and Z that range between -1 and 1, this is not true for tangent space textures. It's already a bit weird to change the normal so that it is not the same as the geometric normal (e.g., rays reflecting off such normals could pass into the surface, not something that happens in real life). But one thing that is definitely not allowed is for the normals themselves to point into - below - the surface. This means that the Z value is in the range 0 to 1, which is why you will see normal textures with this range instead of -1 to 1. Such a mapping is a bit different for tangent vs. object space. Literally, a single bit. You can get one more bit of precision for the Z coordinate if you use the range 0 to 1 instead of -1 to 1. In practical terms, I doubt this much matters.
+While object space normal textures can have values for X, Y, and Z that range between -1 and 1, this is not true for tangent space textures. It is already a bit weird to change the normal so that it is not the same as the geometric normal (e.g., rays reflecting off such normals could pass into the surface, not something that happens in real life). But one thing that is not allowed is for the normals themselves to point into - below - the surface. This constraint means that the Z value is in the range 0 to 1, which is why you will see normal textures with this range instead of -1 to 1. Such a mapping is a bit different for tangent vs. object space. Literally, a single bit. You can get one more bit of precision for the Z coordinate if you use the range 0 to 1 instead of -1 to 1. In practical terms, this extra precision usually does not matter.
 
 ### Normal Map Creation
 Normal map textures use the raw RGB values in an image to generate a local surface normal. The three normal map textures are generated from the same heightfield texture:
 
-![R bump map](/unit_tests/NormalsTextureBiasAndScales/r_bump_map.png "R bump map")
+![R bump map](screenshots/r_bump_map.png "R bump map")
 
 Black is low, white is high.
 
@@ -59,7 +58,7 @@ These are the textures applied to the cubes. The left cube has r_normal_map.png 
 ### Normals Conversions
 Here is the r_normal_map.png:
 
-![r_normal_map.png](/unit_tests/NormalsTextureBiasAndScales/r_normal_map.png "r_normal_map.png")
+![r_normal_map.png](screenshots/r_normal_map.png "r_normal_map.png")
 
 The default type of normal map texture, i.e., the settings in the USDA file are:
 
@@ -75,12 +74,10 @@ To convert an integer RGB triplet into a tangent space normal takes three steps:
 2. multiply by its scale factors; and
 3. add in the bias.
 
-For example, start with:
-
-    (246,127,175);
-    divide that by 255 to get to the range 0.0 to 1.0: (0.965, 0.498, 0.686);
-    multiply by scale (2,2,2) - the fourth "2" is not needed: (1.929, 0.996, 1.373);
-    add bias (-1,-1,-1): (0.929, -0.004, 0.373) is the resulting local normal, which has a length of 1.003
+For example, start with (246,127,175):
+* divide that by 255 to get to the range 0.0 to 1.0: (0.965, 0.498, 0.686);
+* multiply by scale (2,2,2) - the fourth "2" is not needed: (1.929, 0.996, 1.373);
+* add bias (-1,-1,-1): (0.929, -0.004, 0.373) is the resulting local normal, which has a length of 1.003
 
 From testing in USDView (it's not specified in the specification), the +X axis of the texture is to the right, +Y up, +Z outward to the viewer. The example surface normal points quite far to the right, X=0.929 and Z=0.373. The +Y is nearly zero (exactly zero would be 127.5 originally, a value we can't represent), meaning the normal doesn't (much) point up or down, relative to the Y axis tangent the surface.
 
@@ -88,9 +85,9 @@ The colors of the normals in any normal map can tip you off. The rightward point
 
  For the other two textures, r_normal_map_reversed_x_0_bias_z.png and r_normal_map_reversed_y.png, they (should) render pretty much the same as our left, default-mapping cube. These correctly look the same in the USDView images shown earlier. 
  
- So it's clear, for the r_normal_map_reversed_x_0_bias_z.png normal map:
+ Specifically, for the r_normal_map_reversed_x_0_bias_z.png normal map:
 
-![r_normal_map_reversed_x_0_bias_z.png](/unit_tests/NormalsTextureBiasAndScales/r_normal_map_reversed_x_0_bias_z.png "r_normal_map_reversed_x_0_bias_z.png")
+![r_normal_map_reversed_x_0_bias_z.png](screenshots/r_normal_map_reversed_x_0_bias_z.png "r_normal_map_reversed_x_0_bias_z.png")
 
 the bias and scale for the "r_normals_reversed_x" cube, displayed in the middle, are:
 
@@ -106,7 +103,7 @@ This reversed X and remapped Z example is not a normal map combination you'll li
 
 For the r_normal_map_reversed_y.png normal map:
 
-![r_normal_map_reversed_y.png](/unit_tests/NormalsTextureBiasAndScales/r_normal_map_reversed_y.png "r_normal_map_reversed_y.png")
+![r_normal_map_reversed_y.png](screenshots/r_normal_map_reversed_y.png "r_normal_map_reversed_y.png")
 
 for the "r_normals_reversed_y" cube, displayed on the right:
 
@@ -122,9 +119,7 @@ This flip will also be flagged by usdtools with "-c":
 
 Compare r_normal_map_reversed_x_0_bias_z.png with r_normal_map.png and you'll see the "reddish" and "dark greenish teal" parts of the map are swapped. For r_normal_map_reversed_y.png the "greenish" parts are swapped with the "dark bluish purple" parts.
 
-### Tools
-I use [the Normals Online tool](https://cpetry.github.io/NormalMap-Online/) - download and open index.html, drop a bump map into the left image, adjust as you wish. I typically check the Invert R and Z Range boxes for the default USD format, then download the resulting image.
-
+### Warning with Tools
 If you work with any tools, be careful about resizing normal map images. For example, if you take a 256x256 normal map image and scale it down to 64x64, you are averaging normals together to get the result. Doing so will make the normals stored no longer be normalized, of length 1.0. This can affect some renderers. Better is to scale down the original grayscale heightfield bump map and scale it down before converting to normals.
 
 ### Other Formats

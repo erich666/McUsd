@@ -2,9 +2,13 @@
 
 This repository has two models that may be submitted to the [USD Working Group Assets repository](https://github.com/usd-wg/assets).
 
-One is in the full_assets subdirectory, "McUsd," a simple [USD](https://graphics.pixar.com/usd/release/index.html) scene geometry with a variety of [UsdPreviewSurface](https://graphics.pixar.com/usd/release/spec_usdpreviewsurface.html) materials applied, for casual material and light testing.
+One is in the full_assets subdirectory "McUsd," a simple [USD](https://graphics.pixar.com/usd/release/index.html) scene geometry with a variety of [UsdPreviewSurface](https://graphics.pixar.com/usd/release/spec_usdpreviewsurface.html) materials applied, for casual material and light testing.
+
+![McUsd: JG-RTX textures, rendered in Omniverse](/full_assets/McUsd/screenshots/ov_accurate.png "McUsd: JG-RTX textures, rendered with Omniverse's Accurate (Iray) renderer")
 
 The other is in test_assets, "NormalsTextureBiasAndScale", which is focused on testing three normal map texture formats. Each needs a different bias and scale to be displayed correctly in USD, a feature that is sometimes not implemented by readers. Extensive background on these various formats is also provided.
+
+![UsdView 0.22.8](/test_assets/NormalsTextureBiasAndScale/screenshots/crn_usdview.png "UsdView 0.22.8")
 
 ## Related Assets and Working Groups
 
