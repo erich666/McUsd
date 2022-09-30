@@ -42,7 +42,7 @@ While object space normal textures can have values for X, Y, and Z that range be
 ### Normal Map Creation
 Normal map textures use the raw RGB values in an image to generate a local surface normal. The three normal map textures are generated from the same heightfield texture:
 
-![R bump map](screenshots/r_bump_map.png "R bump map")
+![R bump map](r_bump_map.png "R bump map")
 
 Black is low, white is high.
 
@@ -58,7 +58,7 @@ These are the textures applied to the cubes. The left cube has r_normal_map.png 
 ### Normals Conversions
 Here is the r_normal_map.png:
 
-![r_normal_map.png](screenshots/r_normal_map.png "r_normal_map.png")
+![r_normal_map.png](r_normal_map.png "r_normal_map.png")
 
 The default type of normal map texture, i.e., the settings in the USDA file are:
 
@@ -87,7 +87,7 @@ The colors of the normals in any normal map can tip you off. The rightward point
  
  Specifically, for the r_normal_map_reversed_x_0_bias_z.png normal map:
 
-![r_normal_map_reversed_x_0_bias_z.png](screenshots/r_normal_map_reversed_x_0_bias_z.png "r_normal_map_reversed_x_0_bias_z.png")
+![r_normal_map_reversed_x_0_bias_z.png](r_normal_map_reversed_x_0_bias_z.png "r_normal_map_reversed_x_0_bias_z.png")
 
 the bias and scale for the "r_normals_reversed_x" cube, displayed in the middle, are:
 
@@ -103,7 +103,7 @@ This reversed X and remapped Z example is not a normal map combination you'll li
 
 For the r_normal_map_reversed_y.png normal map:
 
-![r_normal_map_reversed_y.png](screenshots/r_normal_map_reversed_y.png "r_normal_map_reversed_y.png")
+![r_normal_map_reversed_y.png](r_normal_map_reversed_y.png "r_normal_map_reversed_y.png")
 
 for the "r_normals_reversed_y" cube, displayed on the right:
 
