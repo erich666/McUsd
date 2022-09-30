@@ -120,7 +120,7 @@ This flip will also be flagged by usdtools with "-c":
 Compare r_normal_map_reversed_x_0_bias_z.png with r_normal_map.png and you'll see the "reddish" and "dark greenish teal" parts of the map are swapped. For r_normal_map_reversed_y.png the "greenish" parts are swapped with the "dark bluish purple" parts.
 
 ### Warning with Tools
-If you work with any tools, be careful about resizing normal map images. For example, if you take a 256x256 normal map image and scale it down to 64x64, you are averaging normals together to get the result. Doing so will make the normals stored no longer be normalized, of length 1.0. This can affect some renderers. Better is to scale down the original grayscale heightfield bump map and scale it down before converting to normals.
+If you work with any tools, be careful about resizing normal map images. For example, if you take a 256x256 normal map image and scale it down to 64x64, you are averaging normals together to get the result. Doing so will make the normals stored no longer be normalized, of length 1.0. This can affect some renderers. Better is to use the original grayscale heightfield bump map and scale it down before converting to normals.
 
 ### Other Formats
 One last thing worth noting is that some specialized formats use the Z (blue) channel for other data. Since it's given that the normal stored is normalized, when the Z value is always greater than or equal to 0.0 you can then derive Z from X and Y, i.e.,
