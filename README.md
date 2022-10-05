@@ -227,21 +227,19 @@ Sketchfab lets you download different translations of your model (note: not all 
 
 On Safari and Chrome (and perhaps other browsers), if you are using an iPhone or iPad and click on a ".usdz" extension file, the file displays in an viewer called AR Quick Look. [Some examples are here](https://developer.apple.com/augmented-reality/quick-look/).
 
-I made my own USDZ file with the usdtool. You can view or download this [McUsd.usdz]](https://erich.realtimerendering.com/mcusd/McUsd.usdz). Click that link on an iPhone and you'll be able to view it (other phones and non-Safari browsers will just download the file instead; if you know how to hook the usdz file to immediately view, let me know).
+I made my own USDZ file with the usdtool. You can view or download this [McUsd.usdz](https://erich.realtimerendering.com/mcusd/McUsd.usdz). Click that link on an iPhone and you'll be able to view it (other phones and non-Safari browsers will just download the file instead; if you know how to hook the usdz file to immediately view, let me know).
 
 The iPhone viewer has two modes: AR and Object, shown at the top. "Object" lets you view the model in isolation. In this mode, one finger rotates, two finger pinch dollies (aka "zooms", but not really) the camera in and out. There appears to be no way to change the center of focus. Here's an example:
 
 ![iPhone Object view](/images/iphone_object.png "iPhone Object view")
 
-Understandably, the camera setting in the Sketchfab usdz file is not used in either mode. If you look very closely, there is some "ghosting" around the sunflower, an area around it where the cut-away parts of the texture should have no effect, but instead leave an extremely faint white trace.
-
-Overall the fidelity is good. The lava's emission texture is scaled up, leading to the bloomed view seen. 
-
-I noticed with the [Sketchfab USDZ export](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) I see the upper right part of the sunflower drop out, and other parts disappear from different views, e.g.:
+Understandably, the camera setting is not used in either mode. If you look very closely, in only the [the Sketchfab USDZ export](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz)there is some "ghosting" around the sunflower, an area around it where the cut-away parts of the texture should have no effect, but instead leave an extremely faint white trace. This ghosting is not visible in [my own McUsd.usdz file](https://erich.realtimerendering.com/mcusd/McUsd.usdz), so is some unknown interaction between Sketchfab's exported USDZ and the iPhone's viewer. Also with the [Sketchfab USDZ export](https://erich.realtimerendering.com/mcusd/McUsd_sketchfab_y_flip.usdz) the upper right part of the sunflower drops out, and other parts disappear from different views, e.g.:
 
 ![iPhone Sketchfab USDZ](/images/iphone_sketchfab.png "Sketchfab USDZ")
 
-This problem is not visible in the USDZ file I created, for some reason. The lava looks better because Sketchfab ignores the emission texture scaling in the McUsd file, so its translation does not have this scaling.
+Overall the fidelity is good when viewing my version of the USDZ file. The lava's emission texture is scaled up, leading to the bloomed view seen. 
+
+This problem is not visible in [the USDZ file I created](https://erich.realtimerendering.com/mcusd/McUsd.usdz), for some reason. The lava looks better in Sketchfab's because Sketchfab ignores the emission texture scaling in the McUsd file, so its translation does not have this scaling.
 
 Try AR mode (usually the default). Because this model is actually to scale, the blocks are each 1 meter across by default, so the model is likely much larger than where you are. You made need to first move your phone or tablet around so that it understands your environment before placing the model. After this, use a two-finger pinch gesture to shrink the model down and make it fit your environment. Two-finger twist lets you rotate it. One finger lets you move the model horizontally. Here is the scene shrunk to about 10% and viewed in place, using "AR":
 
