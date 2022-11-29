@@ -56,6 +56,8 @@ These render settings are used in Omniverse as of December 2022, but their use a
 
 ## USDView
 
+Load procedure: File -> Open and select McUsd.usda. Press F11 to toggle on the hierarchy view (if not already visible). Open the "root" by double-clicking on it. Select the "Camera" and right-click, then pick (at the bottom) "Set As Active Camera".
+
 Here is the rendering of McUsd inside USDView, using [NVIDIA's prebuilt version 0.23.2](https://www.nvidia.com/en-us/omniverse/):
 
 ![USDView version 0.23.2](screenshots/usdview.png "USDView version 0.23.2")
