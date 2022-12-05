@@ -8,7 +8,7 @@ One is in the full_assets subdirectory "McUsd," a simple [USD](https://graphics.
 
 The other is in test_assets, "NormalsTextureBiasAndScale", which is focused on testing three normal map texture formats. Each needs a different bias and scale to be displayed correctly in USD, a feature that is sometimes not implemented by readers. Extensive background on these various formats is also provided.
 
-![UsdView 0.22.8](/test_assets/NormalsTextureBiasAndScale/screenshots/crn_usdview.png "UsdView 0.22.8")
+![UsdView 0.23.2](/test_assets/NormalsTextureBiasAndScale/screenshots/crn_usdview.png "UsdView 0.23.2")
 
 ## Related Assets and Working Groups
 
