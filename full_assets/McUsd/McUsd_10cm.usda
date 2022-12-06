@@ -66,13 +66,40 @@
     upAxis = "Y"
 )
 
+def Camera "Camera" (
+    hide_in_stage_window = false
+    no_delete = false
+)
+{
+    float4[] clippingPlanes = []
+    float2 clippingRange = (1, 10000000)
+    float focalLength = 18.147562
+    float focusDistance = 0
+    float fStop = 0
+    float horizontalAperture = 20.955
+    float horizontalApertureOffset = 0
+    custom vector3d omni:kit:centerOfInterest = (0, 0, -85)
+    token projection = "perspective"
+    uniform token purpose = "default"
+    double shutter:close = 0
+    double shutter:open = 0
+    uniform token stereoRole = "mono"
+    float verticalAperture = 15.2908
+    float verticalApertureOffset = 0
+    token visibility = "inherited"
+    float3 xformOp:rotateXZY = (-35, 45, 0)
+    float3 xformOp:scale = (1, 1, 1)
+    double3 xformOp:translate = (53.5, 53.5, 53.5)
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXZY", "xformOp:scale"]
+}
+
 def DistantLight "Sun" (
     prepend apiSchemas = ["ShapingAPI"]
     kind = "model"
 )
 {
     float angle = 1
-    float intensity =  1560.000000
+    float intensity = 1560
     float shaping:cone:angle = 180
     float shaping:cone:softness
     float shaping:focus
@@ -87,7 +114,7 @@ def DomeLight "DomeLight" (
     prepend apiSchemas = ["ShapingAPI"]
 )
 {
-    float intensity =  312.000000
+    float intensity = 312
     float shaping:cone:angle = 180
     float shaping:cone:softness
     float shaping:focus
@@ -100,11 +127,10 @@ def DomeLight "DomeLight" (
     uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZXY"]
 }
 
-
 def Xform "McUsd"
 {
     double3 xformOp:rotateXYZ = (0, 0, 0)
-    double3 xformOp:scale = (10.000000, 10.000000, 10.000000)
+    double3 xformOp:scale = (10, 10, 10)
     double3 xformOp:translate = (0, 0, 0)
     uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXYZ", "xformOp:scale"]
 
@@ -408,32 +434,32 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.54902, 0.741176, 0.341176)
-            color3f inputs:diffuseColor.connect = </Looks/grass_block_top/diffuse_texture.outputs:rgb>
+            color3f inputs:diffuseColor.connect = </Looks/grass_block_top/DiffuseTexture.outputs:rgb>
             float inputs:opacity = 1
-            float inputs:roughness.connect = </Looks/grass_block_top/roughness_texture.outputs:r>
+            float inputs:roughness.connect = </Looks/grass_block_top/RoughnessTexture.outputs:r>
             float inputs:metallic = 0
-            normal3f inputs:normal.connect = </Looks/grass_block_top/normal_texture.outputs:rgb>
+            normal3f inputs:normal.connect = </Looks/grass_block_top/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/grass_block_top_r.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/grass_block_top/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/grass_block_top/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/grass_block_top_n.png@
@@ -442,17 +468,17 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/grass_block_top/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/grass_block_top/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/grass_block_top_y.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/grass_block_top/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/grass_block_top/UVReader.outputs:result>
             color3f outputs:rgb
         }
     }
@@ -467,32 +493,32 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.54902, 0.741176, 0.341176)
-            color3f inputs:diffuseColor.connect = </Looks/dirt/diffuse_texture.outputs:rgb>
+            color3f inputs:diffuseColor.connect = </Looks/dirt/DiffuseTexture.outputs:rgb>
             float inputs:opacity = 1
-            float inputs:roughness.connect = </Looks/dirt/roughness_texture.outputs:r>
+            float inputs:roughness.connect = </Looks/dirt/RoughnessTexture.outputs:r>
             float inputs:metallic = 0
-            normal3f inputs:normal.connect = </Looks/dirt/normal_texture.outputs:rgb>
+            normal3f inputs:normal.connect = </Looks/dirt/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/dirt_r.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/dirt/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/dirt/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/dirt_n.png@
@@ -501,17 +527,17 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/dirt/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/dirt/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/dirt.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/dirt/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/dirt/UVReader.outputs:result>
             color3f outputs:rgb
         }
     }
@@ -526,38 +552,38 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.54902, 0.741176, 0.341176)
-            color3f inputs:diffuseColor.connect = </Looks/grass_block_side/diffuse_texture.outputs:rgb>
+            color3f inputs:diffuseColor.connect = </Looks/grass_block_side/DiffuseTexture.outputs:rgb>
             float inputs:opacity = 1
-            float inputs:roughness.connect = </Looks/grass_block_side/roughness_texture.outputs:r>
+            float inputs:roughness.connect = </Looks/grass_block_side/RoughnessTexture.outputs:r>
             float inputs:metallic = 0
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/grass_block_side_r.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "clamp"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/grass_block_side/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/grass_block_side/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/grass_block_side_y.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "clamp"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/grass_block_side/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/grass_block_side/UVReader.outputs:result>
             color3f outputs:rgb
         }
     }
@@ -572,32 +598,32 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.933333, 0.933333, 0.933333)
-            color3f inputs:diffuseColor.connect = </Looks/iron_block/diffuse_texture.outputs:rgb>
+            color3f inputs:diffuseColor.connect = </Looks/iron_block/DiffuseTexture.outputs:rgb>
             float inputs:opacity = 1
-            float inputs:roughness.connect = </Looks/iron_block/roughness_texture.outputs:r>
-            float inputs:metallic.connect = </Looks/iron_block/metallic_texture.outputs:r>
-            normal3f inputs:normal.connect = </Looks/iron_block/normal_texture.outputs:rgb>
+            float inputs:roughness.connect = </Looks/iron_block/RoughnessTexture.outputs:r>
+            float inputs:metallic.connect = </Looks/iron_block/MetallicTexture.outputs:r>
+            normal3f inputs:normal.connect = </Looks/iron_block/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/iron_block_r.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/iron_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/iron_block/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/iron_block_n.png@
@@ -606,27 +632,27 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/iron_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/iron_block/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "metallic_texture"
+        def Shader "MetallicTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/iron_block_m.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/iron_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/iron_block/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/iron_block.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/iron_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/iron_block/UVReader.outputs:result>
             color3f outputs:rgb
         }
     }
@@ -641,32 +667,32 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.996078, 0.968627, 0.305882)
-            color3f inputs:diffuseColor.connect = </Looks/gold_block/diffuse_texture.outputs:rgb>
+            color3f inputs:diffuseColor.connect = </Looks/gold_block/DiffuseTexture.outputs:rgb>
             float inputs:opacity = 1
-            float inputs:roughness.connect = </Looks/gold_block/roughness_texture.outputs:r>
-            float inputs:metallic.connect = </Looks/gold_block/metallic_texture.outputs:r>
-            normal3f inputs:normal.connect = </Looks/gold_block/normal_texture.outputs:rgb>
+            float inputs:roughness.connect = </Looks/gold_block/RoughnessTexture.outputs:r>
+            float inputs:metallic.connect = </Looks/gold_block/MetallicTexture.outputs:r>
+            normal3f inputs:normal.connect = </Looks/gold_block/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/gold_block_r.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/gold_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/gold_block/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/gold_block_n.png@
@@ -675,27 +701,27 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/gold_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/gold_block/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "metallic_texture"
+        def Shader "MetallicTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/gold_block_m.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/gold_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/gold_block/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/gold_block.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/gold_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/gold_block/UVReader.outputs:result>
             color3f outputs:rgb
         }
     }
@@ -710,32 +736,32 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.498039, 0.890196, 0.87451)
-            color3f inputs:diffuseColor.connect = </Looks/diamond_block/diffuse_texture.outputs:rgb>
+            color3f inputs:diffuseColor.connect = </Looks/diamond_block/DiffuseTexture.outputs:rgb>
             float inputs:opacity = 1
-            float inputs:roughness.connect = </Looks/diamond_block/roughness_texture.outputs:r>
-            float inputs:metallic.connect = </Looks/diamond_block/metallic_texture.outputs:r>
-            normal3f inputs:normal.connect = </Looks/diamond_block/normal_texture.outputs:rgb>
+            float inputs:roughness.connect = </Looks/diamond_block/RoughnessTexture.outputs:r>
+            float inputs:metallic.connect = </Looks/diamond_block/MetallicTexture.outputs:r>
+            normal3f inputs:normal.connect = </Looks/diamond_block/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/diamond_block_r.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/diamond_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/diamond_block/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/diamond_block_n.png@
@@ -744,27 +770,27 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/diamond_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/diamond_block/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "metallic_texture"
+        def Shader "MetallicTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/diamond_block_m.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/diamond_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/diamond_block/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/diamond_block.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/diamond_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/diamond_block/UVReader.outputs:result>
             color3f outputs:rgb
         }
     }
@@ -779,29 +805,29 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.54902, 0.741176, 0.341176)
-            color3f inputs:diffuseColor.connect = </Looks/fern/diffuse_texture.outputs:rgb>
-            float inputs:opacity.connect = </Looks/fern/diffuse_texture.outputs:a>
+            color3f inputs:diffuseColor.connect = </Looks/fern/DiffuseTexture.outputs:rgb>
+            float inputs:opacity.connect = </Looks/fern/DiffuseTexture.outputs:a>
             float inputs:opacityThreshold = 0.500000
             float inputs:roughness = 1
             float inputs:metallic = 0
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/fern_y.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "clamp"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/fern/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/fern/UVReader.outputs:result>
             float outputs:a
             color3f outputs:rgb
         }
@@ -817,32 +843,32 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.584314, 0.466667, 0.294118)
-            color3f inputs:diffuseColor.connect = </Looks/piston_top/diffuse_texture.outputs:rgb>
+            color3f inputs:diffuseColor.connect = </Looks/piston_top/DiffuseTexture.outputs:rgb>
             float inputs:opacity = 1
-            float inputs:roughness.connect = </Looks/piston_top/roughness_texture.outputs:r>
-            float inputs:metallic.connect = </Looks/piston_top/metallic_texture.outputs:r>
-            normal3f inputs:normal.connect = </Looks/piston_top/normal_texture.outputs:rgb>
+            float inputs:roughness.connect = </Looks/piston_top/RoughnessTexture.outputs:r>
+            float inputs:metallic.connect = </Looks/piston_top/MetallicTexture.outputs:r>
+            normal3f inputs:normal.connect = </Looks/piston_top/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/piston_top_r.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/piston_top/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/piston_top/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/piston_top_n.png@
@@ -851,27 +877,27 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/piston_top/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/piston_top/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "metallic_texture"
+        def Shader "MetallicTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/piston_top_m.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/piston_top/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/piston_top/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/piston_top.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/piston_top/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/piston_top/UVReader.outputs:result>
             color3f outputs:rgb
         }
     }
@@ -886,32 +912,32 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.584314, 0.466667, 0.294118)
-            color3f inputs:diffuseColor.connect = </Looks/piston_side/diffuse_texture.outputs:rgb>
+            color3f inputs:diffuseColor.connect = </Looks/piston_side/DiffuseTexture.outputs:rgb>
             float inputs:opacity = 1
-            float inputs:roughness.connect = </Looks/piston_side/roughness_texture.outputs:r>
+            float inputs:roughness.connect = </Looks/piston_side/RoughnessTexture.outputs:r>
             float inputs:metallic = 0
-            normal3f inputs:normal.connect = </Looks/piston_side/normal_texture.outputs:rgb>
+            normal3f inputs:normal.connect = </Looks/piston_side/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/piston_side_r.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/piston_side/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/piston_side/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/piston_side_n.png@
@@ -920,17 +946,17 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/piston_side/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/piston_side/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/piston_side.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/piston_side/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/piston_side/UVReader.outputs:result>
             color3f outputs:rgb
         }
     }
@@ -945,33 +971,33 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.407843, 0.407843, 0.407843)
-            color3f inputs:diffuseColor.connect = </Looks/rail_corner/diffuse_texture.outputs:rgb>
-            float inputs:opacity.connect = </Looks/rail_corner/diffuse_texture.outputs:a>
+            color3f inputs:diffuseColor.connect = </Looks/rail_corner/DiffuseTexture.outputs:rgb>
+            float inputs:opacity.connect = </Looks/rail_corner/DiffuseTexture.outputs:a>
             float inputs:opacityThreshold = 0.500000
-            float inputs:roughness.connect = </Looks/rail_corner/roughness_texture.outputs:r>
-            float inputs:metallic.connect = </Looks/rail_corner/metallic_texture.outputs:r>
-            normal3f inputs:normal.connect = </Looks/rail_corner/normal_texture.outputs:rgb>
+            float inputs:roughness.connect = </Looks/rail_corner/RoughnessTexture.outputs:r>
+            float inputs:metallic.connect = </Looks/rail_corner/MetallicTexture.outputs:r>
+            normal3f inputs:normal.connect = </Looks/rail_corner/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/rail_corner_r.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "clamp"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/rail_corner/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/rail_corner/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/rail_corner_n.png@
@@ -980,27 +1006,27 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/rail_corner/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/rail_corner/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "metallic_texture"
+        def Shader "MetallicTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/rail_corner_m.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "clamp"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/rail_corner/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/rail_corner/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/rail_corner.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "clamp"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/rail_corner/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/rail_corner/UVReader.outputs:result>
             float outputs:a
             color3f outputs:rgb
         }
@@ -1016,33 +1042,33 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.407843, 0.407843, 0.407843)
-            color3f inputs:diffuseColor.connect = </Looks/rail/diffuse_texture.outputs:rgb>
-            float inputs:opacity.connect = </Looks/rail/diffuse_texture.outputs:a>
+            color3f inputs:diffuseColor.connect = </Looks/rail/DiffuseTexture.outputs:rgb>
+            float inputs:opacity.connect = </Looks/rail/DiffuseTexture.outputs:a>
             float inputs:opacityThreshold = 0.500000
-            float inputs:roughness.connect = </Looks/rail/roughness_texture.outputs:r>
-            float inputs:metallic.connect = </Looks/rail/metallic_texture.outputs:r>
-            normal3f inputs:normal.connect = </Looks/rail/normal_texture.outputs:rgb>
+            float inputs:roughness.connect = </Looks/rail/RoughnessTexture.outputs:r>
+            float inputs:metallic.connect = </Looks/rail/MetallicTexture.outputs:r>
+            normal3f inputs:normal.connect = </Looks/rail/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/rail_r.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/rail/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/rail/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/rail_n.png@
@@ -1051,27 +1077,27 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/rail/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/rail/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "metallic_texture"
+        def Shader "MetallicTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/rail_m.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/rail/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/rail/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/rail.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/rail/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/rail/UVReader.outputs:result>
             float outputs:a
             color3f outputs:rgb
         }
@@ -1087,33 +1113,33 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.670588, 0.0117647, 0.00392157)
-            color3f inputs:diffuseColor.connect = </Looks/powered_rail/diffuse_texture.outputs:rgb>
-            float inputs:opacity.connect = </Looks/powered_rail/diffuse_texture.outputs:a>
+            color3f inputs:diffuseColor.connect = </Looks/powered_rail/DiffuseTexture.outputs:rgb>
+            float inputs:opacity.connect = </Looks/powered_rail/DiffuseTexture.outputs:a>
             float inputs:opacityThreshold = 0.500000
-            float inputs:roughness.connect = </Looks/powered_rail/roughness_texture.outputs:r>
-            float inputs:metallic.connect = </Looks/powered_rail/metallic_texture.outputs:r>
-            normal3f inputs:normal.connect = </Looks/powered_rail/normal_texture.outputs:rgb>
+            float inputs:roughness.connect = </Looks/powered_rail/RoughnessTexture.outputs:r>
+            float inputs:metallic.connect = </Looks/powered_rail/MetallicTexture.outputs:r>
+            normal3f inputs:normal.connect = </Looks/powered_rail/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/powered_rail_r.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/powered_rail/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/powered_rail/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/powered_rail_n.png@
@@ -1122,27 +1148,27 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/powered_rail/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/powered_rail/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "metallic_texture"
+        def Shader "MetallicTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/powered_rail_m.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/powered_rail/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/powered_rail/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/powered_rail.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/powered_rail/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/powered_rail/UVReader.outputs:result>
             float outputs:a
             color3f outputs:rgb
         }
@@ -1158,38 +1184,38 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.960784, 0.427451, 0)
-            color3f inputs:diffuseColor.connect = </Looks/lava_still/diffuse_texture.outputs:rgb>
+            color3f inputs:diffuseColor.connect = </Looks/lava_still/DiffuseTexture.outputs:rgb>
             float inputs:opacity = 1
             float inputs:roughness = 1
             float inputs:metallic = 0
-            color3f inputs:emissiveColor.connect = </Looks/lava_still/emissive_texture.outputs:rgb>
+            color3f inputs:emissiveColor.connect = </Looks/lava_still/EmissiveTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/lava_still.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/lava_still/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/lava_still/UVReader.outputs:result>
             color3f outputs:rgb
         }
-        def Shader "emissive_texture"
+        def Shader "EmissiveTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/lava_still_e.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
-            float2 inputs:st.connect = </Looks/lava_still/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/lava_still/UVReader.outputs:result>
             float4 inputs:scale = (20, 20, 20, 1.0)
             float3 outputs:rgb
         }
@@ -1205,32 +1231,32 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.878431, 0.866667, 0.843137)
-            color3f inputs:diffuseColor.connect = </Looks/chiseled_quartz_block_top/diffuse_texture.outputs:rgb>
+            color3f inputs:diffuseColor.connect = </Looks/chiseled_quartz_block_top/DiffuseTexture.outputs:rgb>
             float inputs:opacity = 1
-            float inputs:roughness.connect = </Looks/chiseled_quartz_block_top/roughness_texture.outputs:r>
+            float inputs:roughness.connect = </Looks/chiseled_quartz_block_top/RoughnessTexture.outputs:r>
             float inputs:metallic = 0
-            normal3f inputs:normal.connect = </Looks/chiseled_quartz_block_top/normal_texture.outputs:rgb>
+            normal3f inputs:normal.connect = </Looks/chiseled_quartz_block_top/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/chiseled_quartz_block_top_r.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/chiseled_quartz_block_top/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/chiseled_quartz_block_top/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/chiseled_quartz_block_top_n.png@
@@ -1239,17 +1265,17 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/chiseled_quartz_block_top/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/chiseled_quartz_block_top/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/chiseled_quartz_block_top.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/chiseled_quartz_block_top/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/chiseled_quartz_block_top/UVReader.outputs:result>
             color3f outputs:rgb
         }
     }
@@ -1264,32 +1290,32 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.878431, 0.866667, 0.843137)
-            color3f inputs:diffuseColor.connect = </Looks/chiseled_quartz_block/diffuse_texture.outputs:rgb>
+            color3f inputs:diffuseColor.connect = </Looks/chiseled_quartz_block/DiffuseTexture.outputs:rgb>
             float inputs:opacity = 1
-            float inputs:roughness.connect = </Looks/chiseled_quartz_block/roughness_texture.outputs:r>
-            float inputs:metallic.connect = </Looks/chiseled_quartz_block/metallic_texture.outputs:r>
-            normal3f inputs:normal.connect = </Looks/chiseled_quartz_block/normal_texture.outputs:rgb>
+            float inputs:roughness.connect = </Looks/chiseled_quartz_block/RoughnessTexture.outputs:r>
+            float inputs:metallic.connect = </Looks/chiseled_quartz_block/MetallicTexture.outputs:r>
+            normal3f inputs:normal.connect = </Looks/chiseled_quartz_block/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/chiseled_quartz_block_r.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/chiseled_quartz_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/chiseled_quartz_block/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/chiseled_quartz_block_n.png@
@@ -1298,27 +1324,27 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/chiseled_quartz_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/chiseled_quartz_block/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "metallic_texture"
+        def Shader "MetallicTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/chiseled_quartz_block_m.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/chiseled_quartz_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/chiseled_quartz_block/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/chiseled_quartz_block.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/chiseled_quartz_block/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/chiseled_quartz_block/UVReader.outputs:result>
             color3f outputs:rgb
         }
     }
@@ -1333,32 +1359,32 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.878431, 0.866667, 0.843137)
-            color3f inputs:diffuseColor.connect = </Looks/quartz_pillar/diffuse_texture.outputs:rgb>
+            color3f inputs:diffuseColor.connect = </Looks/quartz_pillar/DiffuseTexture.outputs:rgb>
             float inputs:opacity = 1
-            float inputs:roughness.connect = </Looks/quartz_pillar/roughness_texture.outputs:r>
+            float inputs:roughness.connect = </Looks/quartz_pillar/RoughnessTexture.outputs:r>
             float inputs:metallic = 0
-            normal3f inputs:normal.connect = </Looks/quartz_pillar/normal_texture.outputs:rgb>
+            normal3f inputs:normal.connect = </Looks/quartz_pillar/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/quartz_pillar_r.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/quartz_pillar/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/quartz_pillar/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/quartz_pillar_n.png@
@@ -1367,17 +1393,17 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/quartz_pillar/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/quartz_pillar/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/quartz_pillar.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/quartz_pillar/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/quartz_pillar/UVReader.outputs:result>
             color3f outputs:rgb
         }
     }
@@ -1392,33 +1418,33 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.54902, 0.741176, 0.341176)
-            color3f inputs:diffuseColor.connect = </Looks/sunflower_back/diffuse_texture.outputs:rgb>
-            float inputs:opacity.connect = </Looks/sunflower_back/diffuse_texture.outputs:a>
+            color3f inputs:diffuseColor.connect = </Looks/sunflower_back/DiffuseTexture.outputs:rgb>
+            float inputs:opacity.connect = </Looks/sunflower_back/DiffuseTexture.outputs:a>
             float inputs:opacityThreshold = 0.500000
-            float inputs:roughness.connect = </Looks/sunflower_back/roughness_texture.outputs:r>
+            float inputs:roughness.connect = </Looks/sunflower_back/RoughnessTexture.outputs:r>
             float inputs:metallic = 0
-            normal3f inputs:normal.connect = </Looks/sunflower_back/normal_texture.outputs:rgb>
+            normal3f inputs:normal.connect = </Looks/sunflower_back/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/sunflower_back_r.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "clamp"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/sunflower_back/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/sunflower_back/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/sunflower_back_n.png@
@@ -1427,17 +1453,17 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/sunflower_back/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/sunflower_back/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/sunflower_back.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "clamp"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/sunflower_back/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/sunflower_back/UVReader.outputs:result>
             float outputs:a
             color3f outputs:rgb
         }
@@ -1453,33 +1479,33 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.54902, 0.741176, 0.341176)
-            color3f inputs:diffuseColor.connect = </Looks/sunflower_front/diffuse_texture.outputs:rgb>
-            float inputs:opacity.connect = </Looks/sunflower_front/diffuse_texture.outputs:a>
+            color3f inputs:diffuseColor.connect = </Looks/sunflower_front/DiffuseTexture.outputs:rgb>
+            float inputs:opacity.connect = </Looks/sunflower_front/DiffuseTexture.outputs:a>
             float inputs:opacityThreshold = 0.500000
-            float inputs:roughness.connect = </Looks/sunflower_front/roughness_texture.outputs:r>
+            float inputs:roughness.connect = </Looks/sunflower_front/RoughnessTexture.outputs:r>
             float inputs:metallic = 0
-            normal3f inputs:normal.connect = </Looks/sunflower_front/normal_texture.outputs:rgb>
+            normal3f inputs:normal.connect = </Looks/sunflower_front/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/sunflower_front_r.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "clamp"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/sunflower_front/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/sunflower_front/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/sunflower_front_n.png@
@@ -1488,17 +1514,17 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/sunflower_front/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/sunflower_front/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/sunflower_front.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "clamp"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/sunflower_front/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/sunflower_front/UVReader.outputs:result>
             float outputs:a
             color3f outputs:rgb
         }
@@ -1514,33 +1540,33 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.54902, 0.741176, 0.341176)
-            color3f inputs:diffuseColor.connect = </Looks/sunflower_bottom/diffuse_texture.outputs:rgb>
-            float inputs:opacity.connect = </Looks/sunflower_bottom/diffuse_texture.outputs:a>
+            color3f inputs:diffuseColor.connect = </Looks/sunflower_bottom/DiffuseTexture.outputs:rgb>
+            float inputs:opacity.connect = </Looks/sunflower_bottom/DiffuseTexture.outputs:a>
             float inputs:opacityThreshold = 0.500000
-            float inputs:roughness.connect = </Looks/sunflower_bottom/roughness_texture.outputs:r>
+            float inputs:roughness.connect = </Looks/sunflower_bottom/RoughnessTexture.outputs:r>
             float inputs:metallic = 0
-            normal3f inputs:normal.connect = </Looks/sunflower_bottom/normal_texture.outputs:rgb>
+            normal3f inputs:normal.connect = </Looks/sunflower_bottom/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/sunflower_bottom_r.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "clamp"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/sunflower_bottom/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/sunflower_bottom/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/sunflower_bottom_n.png@
@@ -1549,17 +1575,17 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/sunflower_bottom/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/sunflower_bottom/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/sunflower_bottom.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "clamp"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/sunflower_bottom/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/sunflower_bottom/UVReader.outputs:result>
             float outputs:a
             color3f outputs:rgb
         }
@@ -1575,33 +1601,33 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.54902, 0.741176, 0.341176)
-            color3f inputs:diffuseColor.connect = </Looks/sunflower_top/diffuse_texture.outputs:rgb>
-            float inputs:opacity.connect = </Looks/sunflower_top/diffuse_texture.outputs:a>
+            color3f inputs:diffuseColor.connect = </Looks/sunflower_top/DiffuseTexture.outputs:rgb>
+            float inputs:opacity.connect = </Looks/sunflower_top/DiffuseTexture.outputs:a>
             float inputs:opacityThreshold = 0.500000
-            float inputs:roughness.connect = </Looks/sunflower_top/roughness_texture.outputs:r>
+            float inputs:roughness.connect = </Looks/sunflower_top/RoughnessTexture.outputs:r>
             float inputs:metallic = 0
-            normal3f inputs:normal.connect = </Looks/sunflower_top/normal_texture.outputs:rgb>
+            normal3f inputs:normal.connect = </Looks/sunflower_top/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/sunflower_top_r.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "clamp"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/sunflower_top/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/sunflower_top/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/sunflower_top_n.png@
@@ -1610,17 +1636,17 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/sunflower_top/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/sunflower_top/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/sunflower_top.png@
             token inputs:wrapS = "clamp"
             token inputs:wrapT = "clamp"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/sunflower_top/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/sunflower_top/UVReader.outputs:result>
             float outputs:a
             color3f outputs:rgb
         }
@@ -1636,34 +1662,34 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.937255, 0.937255, 0.937255)
-            color3f inputs:diffuseColor.connect = </Looks/purple_stained_glass/diffuse_texture.outputs:rgb>
-            float inputs:opacity.connect = </Looks/purple_stained_glass/diffuse_texture.outputs:a>
+            color3f inputs:diffuseColor.connect = </Looks/purple_stained_glass/DiffuseTexture.outputs:rgb>
+            float inputs:opacity.connect = </Looks/purple_stained_glass/DiffuseTexture.outputs:a>
             float inputs:opacityThreshold = 0.000000
-            float inputs:roughness.connect = </Looks/purple_stained_glass/roughness_texture.outputs:r>
-            float inputs:metallic.connect = </Looks/purple_stained_glass/metallic_texture.outputs:r>
+            float inputs:roughness.connect = </Looks/purple_stained_glass/RoughnessTexture.outputs:r>
+            float inputs:metallic.connect = </Looks/purple_stained_glass/MetallicTexture.outputs:r>
             float inputs:ior = 1.52
-            normal3f inputs:normal.connect = </Looks/purple_stained_glass/normal_texture.outputs:rgb>
+            normal3f inputs:normal.connect = </Looks/purple_stained_glass/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/purple_stained_glass_r.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/purple_stained_glass/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/purple_stained_glass/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/purple_stained_glass_n.png@
@@ -1672,27 +1698,27 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/purple_stained_glass/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/purple_stained_glass/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "metallic_texture"
+        def Shader "MetallicTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/purple_stained_glass_m.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/purple_stained_glass/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/purple_stained_glass/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/purple_stained_glass.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/purple_stained_glass/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/purple_stained_glass/UVReader.outputs:result>
             float outputs:a
             color3f outputs:rgb
         }
@@ -1708,32 +1734,32 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.4, 0.678431, 0.631373)
-            color3f inputs:diffuseColor.connect = </Looks/prismarine/diffuse_texture.outputs:rgb>
+            color3f inputs:diffuseColor.connect = </Looks/prismarine/DiffuseTexture.outputs:rgb>
             float inputs:opacity = 1
-            float inputs:roughness.connect = </Looks/prismarine/roughness_texture.outputs:r>
+            float inputs:roughness.connect = </Looks/prismarine/RoughnessTexture.outputs:r>
             float inputs:metallic = 0
-            normal3f inputs:normal.connect = </Looks/prismarine/normal_texture.outputs:rgb>
+            normal3f inputs:normal.connect = </Looks/prismarine/NormalTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "roughness_texture"
+        def Shader "RoughnessTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/prismarine_r.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/prismarine/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/prismarine/UVReader.outputs:result>
             float outputs:r
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/prismarine_n.png@
@@ -1742,17 +1768,17 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/prismarine/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/prismarine/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/prismarine.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/prismarine/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/prismarine/UVReader.outputs:result>
             color3f outputs:rgb
         }
     }
@@ -1767,23 +1793,23 @@ def Scope "Looks" (
             uniform token info:id = "UsdPreviewSurface"
             int inputs:useSpecularWorkflow = 0
             color3f inputs:diffuseColor = (0.960784, 0.427451, 0)
-            color3f inputs:diffuseColor.connect = </Looks/lava_flow/diffuse_texture.outputs:rgb>
+            color3f inputs:diffuseColor.connect = </Looks/lava_flow/DiffuseTexture.outputs:rgb>
             float inputs:opacity = 1
             float inputs:roughness = 1
             float inputs:metallic = 0
-            normal3f inputs:normal.connect = </Looks/lava_flow/normal_texture.outputs:rgb>
-            color3f inputs:emissiveColor.connect = </Looks/lava_flow/emissive_texture.outputs:rgb>
+            normal3f inputs:normal.connect = </Looks/lava_flow/NormalTexture.outputs:rgb>
+            color3f inputs:emissiveColor.connect = </Looks/lava_flow/EmissiveTexture.outputs:rgb>
             token outputs:out
             token outputs:surface
         }
-        def Shader "uv_reader"
+        def Shader "UVReader"
         {
             uniform token info:id = "UsdPrimvarReader_float2"
             float2 inputs:fallback = (0, 0)
             token inputs:varname = "st"
             float2 outputs:result
         }
-        def Shader "normal_texture"
+        def Shader "NormalTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/lava_flow_n.png@
@@ -1792,55 +1818,28 @@ def Scope "Looks" (
             float4 inputs:scale = (2.0, -2.0, 2.0, 2.0)
             float4 inputs:bias = (-1.0, 1.0, -1.0, -1.0)
             token inputs:sourceColorSpace = "raw"
-            float2 inputs:st.connect = </Looks/lava_flow/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/lava_flow/UVReader.outputs:result>
             float3 outputs:rgb
         }
-        def Shader "diffuse_texture"
+        def Shader "DiffuseTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/lava_flow.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
             token inputs:sourceColorSpace = "sRGB"
-            float2 inputs:st.connect = </Looks/lava_flow/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/lava_flow/UVReader.outputs:result>
             color3f outputs:rgb
         }
-        def Shader "emissive_texture"
+        def Shader "EmissiveTexture"
         {
             uniform token info:id = "UsdUVTexture"
             asset inputs:file = @./McUsd_materials/tex/lava_flow_e.png@
             token inputs:wrapS = "repeat"
             token inputs:wrapT = "repeat"
-            float2 inputs:st.connect = </Looks/lava_flow/uv_reader.outputs:result>
+            float2 inputs:st.connect = </Looks/lava_flow/UVReader.outputs:result>
             float4 inputs:scale = (20, 20, 20, 1.0)
             float3 outputs:rgb
         }
     }
-}
-
-def Camera "Camera" (
-    hide_in_stage_window = false
-    no_delete = false
-)
-{
-    float4[] clippingPlanes = []
-    float2 clippingRange = (1, 10000000)
-    float focalLength = 18.147562
-    float focusDistance = 0
-    float fStop = 0
-    float horizontalAperture = 20.955
-    float horizontalApertureOffset = 0
-    custom vector3d omni:kit:centerOfInterest = (0, 0, -955.35)
-    token projection = "perspective"
-    uniform token purpose = "default"
-    double shutter:close = 0
-    double shutter:open = 0
-    uniform token stereoRole = "mono"
-    float verticalAperture = 15.2908
-    float verticalApertureOffset = 0
-    token visibility = "inherited"
-    float3 xformOp:rotateYXZ = (-24.094843, 50.76848, 26.56505)
-    float3 xformOp:scale = (1, 1, 1)
-    double3 xformOp:translate = (551.57, 551.57, 551.57)
-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateYXZ", "xformOp:scale"]
 }
