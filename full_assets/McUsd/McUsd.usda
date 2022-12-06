@@ -57,7 +57,6 @@
         }
         dictionary renderSettings = {
             bool "rtx:raytracing:fractionalCutoutOpacity" = 1
-            token "rtx:rendermode" = "PathTracing"
             float3 "rtx:sceneDb:ambientLightColor" = (0, 0, 0)
         }
     }
@@ -87,10 +86,10 @@ def Camera "Camera" (
     float verticalAperture = 15.2908
     float verticalApertureOffset = 0
     token visibility = "inherited"
-    float3 xformOp:rotateXZY = (-35, 45, 0)
+    float3 xformOp:rotateZXY = (-35, 45, 0)
     float3 xformOp:scale = (1, 1, 1)
     double3 xformOp:translate = (535, 535, 535)
-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXZY", "xformOp:scale"]
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZXY", "xformOp:scale"]
 }
 
 def DistantLight "Sun" (

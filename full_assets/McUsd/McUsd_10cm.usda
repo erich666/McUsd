@@ -57,11 +57,10 @@
         }
         dictionary renderSettings = {
             bool "rtx:raytracing:fractionalCutoutOpacity" = 1
-            token "rtx:rendermode" = "PathTracing"
             float3 "rtx:sceneDb:ambientLightColor" = (0, 0, 0)
         }
     }
-    defaultPrim = "McUsd"
+    defaultPrim = "McUsd_10cm"
     metersPerUnit = 0.01
     upAxis = "Y"
 )
@@ -87,10 +86,10 @@ def Camera "Camera" (
     float verticalAperture = 15.2908
     float verticalApertureOffset = 0
     token visibility = "inherited"
-    float3 xformOp:rotateXZY = (-35, 45, 0)
+    float3 xformOp:rotateZXY = (-35, 45, 0)
     float3 xformOp:scale = (1, 1, 1)
     double3 xformOp:translate = (53.5, 53.5, 53.5)
-    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateXZY", "xformOp:scale"]
+    uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZXY", "xformOp:scale"]
 }
 
 def DistantLight "Sun" (
@@ -127,7 +126,7 @@ def DomeLight "DomeLight" (
     uniform token[] xformOpOrder = ["xformOp:translate", "xformOp:rotateZXY"]
 }
 
-def Xform "McUsd"
+def Xform "McUsd_10cm"
 {
     double3 xformOp:rotateXYZ = (0, 0, 0)
     double3 xformOp:scale = (10, 10, 10)
