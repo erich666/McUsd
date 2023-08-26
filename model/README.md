@@ -1,4 +1,7 @@
 # McUsd Test Model
+
+*IMPORTANT:* This McUsd model and the normals test model are now part of the [ASWF USD assets repository](https://github.com/usd-wg/assets). Find the updated version of this model in [here](https://github.com/usd-wg/assets/tree/main/full_assets/McUsd) and the normals test in [here](https://github.com/usd-wg/assets/tree/main/test_assets/NormalsTextureBiasAndScale). I will leave this old version of the model and page available here, but will not update it.
+
 Go to the [main page](https://github.com/erich666/McUsd) for an explanation and renderings of this simple USD test scene.
 
 The files in this directory include:

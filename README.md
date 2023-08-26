@@ -1,4 +1,6 @@
 # McUsd
+*IMPORTANT:* The McUsd model and the normals test model are now part of the [ASWF USD assets repository](https://github.com/usd-wg/assets). Find the updated version of this model in [here](https://github.com/usd-wg/assets/tree/main/full_assets/McUsd) and the normals test in [here](https://github.com/usd-wg/assets/tree/main/test_assets/NormalsTextureBiasAndScale). I will leave these old versions of the models and page available here, but will not update it.
+
 Simple [USD](https://graphics.pixar.com/usd/release/index.html) scene geometry with a variety of [UsdPreviewSurface](https://graphics.pixar.com/usd/release/spec_usdpreviewsurface.html) materials applied, for casual material and light testing.
 
 Download this repository and then load the McUsd.usda file in the models directory into your favorite USD file viewer. Or, [**view the model in your browser**](https://skfb.ly/oyps9) through Sketchfab. Or, have an iPhone or iPad? Try out [**the McUSD USDZ**](https://erich.realtimerendering.com/mcusd/McUsd.usdz). You'll have to shrink the model down in AR mode (pinch, on an iPhone) - each block is a meter in size!

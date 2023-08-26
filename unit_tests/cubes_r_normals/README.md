@@ -1,4 +1,5 @@
 # Cubes R Normals test scene
+*IMPORTANT:* This normals test model and the McUsd model are now part of the [ASWF USD assets repository](https://github.com/usd-wg/assets). Find the updated version of this model in [here](https://github.com/usd-wg/assets/tree/main/full_assets/McUsd) and the normals test in [here](https://github.com/usd-wg/assets/tree/main/test_assets/NormalsTextureBiasAndScale). I will leave these old versions of the models and page available here, but will not update it.
 
 This test file, cubes_r_normal.usda, is for testing how well a USD display application interprets the bias and scale inputs for normal map textures. Each cube uses a different normal map texture, combined with different bias and scale values applied to that texture, to give what should be an identical result. The USDZ version of the file is included in this directory, also [directly accessible here](https://github.com/erich666/McUsd/raw/main/unit_tests/cubes_r_normals/cubes_r_normals.usdz).
 
